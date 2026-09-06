@@ -176,8 +176,8 @@ class AnomalyDetector:
         ))
 
         # Overall anomaly decision:
-        # Triggered if rule violated OR ensemble exceeds threshold (0.38) OR both ML models flag it
-        is_anomaly = bool(rule_res["is_violation"] or ensemble_score >= 0.38 or (if_flag and lstm_flag))
+        # Triggered if rule violated OR ensemble exceeds threshold (0.55) OR both ML models flag it
+        is_anomaly = bool(rule_res["is_violation"] or ensemble_score >= 0.55 or (if_flag and lstm_flag))
 
         # 6. XGBoost Root Cause Classification
         root_cause = "normal"
