@@ -30,10 +30,9 @@ export const StationMap: React.FC<StationMapProps> = ({
         attributionControl: false,
       });
 
-      // Dark theme map tiles (CartoDB Dark Matter)
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19,
-        subdomains: 'abcd',
+      // Clean Dark theme map tiles (Esri Dark Gray Canvas - free & keyless, zero watermark)
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 16,
       }).addTo(map);
 
       mapInstanceRef.current = map;
