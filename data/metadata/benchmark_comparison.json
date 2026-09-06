@@ -1,0 +1,46 @@
+{
+  "RuleBased": {
+    "name": "Rule-Based Expert System",
+    "precision": 0.699724517906336,
+    "recall": 0.1493239271017049,
+    "f1_score": 0.24612403100775193,
+    "fpr": 0.005079453842210728,
+    "latency_ms": 0.0,
+    "true_positives": 254,
+    "false_positives": 109,
+    "false_negatives": 1447
+  },
+  "IsolationForest": {
+    "name": "Isolation Forest (40 features)",
+    "precision": 0.34575569358178054,
+    "recall": 0.2945326278659612,
+    "f1_score": 0.3180952380952381,
+    "fpr": 0.04417726827904376,
+    "latency_ms": 0.0299,
+    "true_positives": 501,
+    "false_positives": 948,
+    "false_negatives": 1200
+  },
+  "LSTMAutoencoder": {
+    "name": "LSTM Autoencoder (Deep Temporal)",
+    "precision": 0.21439668565510098,
+    "recall": 0.24338624338624337,
+    "f1_score": 0.22797356828193832,
+    "fpr": 0.07072920552032824,
+    "latency_ms": 0.0123,
+    "true_positives": 414,
+    "false_positives": 1517,
+    "false_negatives": 1287
+  },
+  "SkyGuardHybrid": {
+    "name": "SkyGuard Hybrid Ensemble (Rules + IF + LSTM)",
+    "precision": 0.461212976022567,
+    "recall": 0.19223985890652556,
+    "f1_score": 0.2713692946058091,
+    "fpr": 0.017810518463259976,
+    "latency_ms": 0.0422,
+    "true_positives": 327,
+    "false_positives": 382,
+    "false_negatives": 1374
+  }
+}
