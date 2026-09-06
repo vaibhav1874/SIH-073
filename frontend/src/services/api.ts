@@ -163,16 +163,30 @@ export const apiService = {
   },
 
   async injectFault(payload: FaultInjectionPayload): Promise<{ status: string; message?: string }> {
+    const body = {
+      fault_type: payload.fault_type,
+      target_sensor: payload.fault_type.includes('humidity')
+        ? 'humidity'
+        : payload.fault_type.includes('pressure')
+        ? 'pressure'
+        : 'temperature',
+      duration_steps: (payload.duration_hours || 3) * 4,
+      magnitude: payload.magnitude || 25.0,
+    };
+
+    // Dispatch custom event for immediate UI responsiveness
+    window.dispatchEvent(new CustomEvent('skyguard:fault_injected', { detail: body }));
+
     try {
-      const res = await fetch(`${API_BASE}/faults/inject`, {
+      const res = await fetch(`${API_BASE}/fault/inject`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(body),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.json();
     } catch {
-      return { status: 'mock_injected', message: `Synthetic fault queued locally: ${payload.fault_type}` };
+      return { status: 'mock_injected', message: `Synthetic fault queued: ${payload.fault_type}` };
     }
   },
 

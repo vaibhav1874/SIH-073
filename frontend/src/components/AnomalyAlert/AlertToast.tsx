@@ -39,11 +39,16 @@ export const AlertToast: React.FC<AlertToastProps> = ({ alert, onDismiss }) => {
         {/* Content Body */}
         <div className="p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-bold text-slate-100">
-              {formatCause(alert.root_cause)}
-            </span>
+            <div>
+              <span className="text-sm font-bold text-slate-100 block">
+                {formatCause(alert.root_cause)}
+              </span>
+              <span className="text-[10px] font-mono text-slate-400">
+                Station: {alert.health?.station_id || 'AWS Network'}
+              </span>
+            </div>
             <span className="text-xs font-mono font-bold text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-full border border-rose-500/30">
-              Score: {alert.ensemble_score.toFixed(1)}/100
+              Score: {(alert.ensemble_score <= 1.0 ? alert.ensemble_score * 100 : alert.ensemble_score).toFixed(1)}/100
             </span>
           </div>
 
