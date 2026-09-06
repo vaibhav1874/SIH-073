@@ -37,12 +37,12 @@ REGIONAL_STATIONS = [
 
 
 def load_stream_dataset() -> pd.DataFrame:
-    if TEST_DATA_FILE.exists():
-        print(f"[Simulator] Loading test split replay data: {TEST_DATA_FILE}")
-        return pd.read_csv(TEST_DATA_FILE)
-    elif CLEAN_DATA_FILE.exists():
+    if CLEAN_DATA_FILE.exists():
         print(f"[Simulator] Loading clean replay data: {CLEAN_DATA_FILE}")
         return pd.read_csv(CLEAN_DATA_FILE)
+    elif TEST_DATA_FILE.exists():
+        print(f"[Simulator] Loading test split replay data: {TEST_DATA_FILE}")
+        return pd.read_csv(TEST_DATA_FILE)
     else:
         print("[Simulator] Warning: Historical data file not found, will synthesize purely online.")
         return pd.DataFrame()
@@ -54,11 +54,9 @@ def run_simulator(api_url: str, interval_sec: float, loop: bool = True):
     row_idx = 0
     total_rows = len(df)
 
-    # Simulated clock starting now
-    sim_clock = datetime.utcnow()
-
+    # Simulated clock using live local time
     while True:
-        sim_clock += timedelta(hours=1)
+        sim_clock = datetime.now()
 
         # 1. Base telemetry for Primary Station (Abohar)
         if total_rows > 0 and row_idx < total_rows:
