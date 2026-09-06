@@ -7,10 +7,11 @@ from fastapi import APIRouter
 from backend.app.schemas.schemas import FaultInjectionRequest
 from ml.anomaly_injection.live_injector import live_injector
 
-router = APIRouter(prefix="/api/fault", tags=["Fault Injection"])
+router = APIRouter(tags=["Fault Injection"])
 
 
-@router.post("/inject")
+@router.post("/api/fault/inject")
+@router.post("/api/faults/inject")
 async def trigger_live_fault(payload: FaultInjectionRequest):
     """Triggers an interactive fault injection on the streaming simulator."""
     res = live_injector.trigger_fault(
@@ -22,13 +23,15 @@ async def trigger_live_fault(payload: FaultInjectionRequest):
     return res
 
 
-@router.post("/clear")
+@router.post("/api/fault/clear")
+@router.post("/api/faults/clear")
 async def clear_live_fault():
     """Clears any active live fault."""
     return live_injector.clear_fault()
 
 
-@router.get("/status")
+@router.get("/api/fault/status")
+@router.get("/api/faults/status")
 async def get_fault_status():
     """Returns current active fault details and steps remaining."""
     return {

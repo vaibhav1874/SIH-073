@@ -13,7 +13,8 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
     );
   }
 
-  const ensembleScore = telemetry.ensemble_score ?? 0;
+  const rawScore = telemetry.ensemble_score ?? 0;
+  const ensembleScore = rawScore <= 1.0 ? rawScore * 100 : rawScore;
   const isAnomaly = telemetry.is_anomaly;
   const breakdown = telemetry.model_breakdown;
   const explanation = telemetry.explanation;
