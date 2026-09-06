@@ -19,15 +19,17 @@ interface TelemetryChartsProps {
 export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => {
   const [selectedSensor, setSelectedSensor] = useState<'all' | 'temp' | 'hum' | 'pres'>('all');
 
-  // Format data for chart
+  // Format data for chart with detailed hour, min, and sec
   const chartData = history.map((item) => {
     const d = new Date(item.timestamp);
-    const hours = d.getHours();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const h12 = hours % 12 || 12;
-    const timeStr = `${h12} ${ampm}`;
+    const timeStr = d.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    });
     const dateStr = d.toLocaleDateString([], { month: 'short', day: 'numeric' });
-    const fullTimeStr = `${dateStr} ${h12}:00 ${ampm} (Hourly)`;
+    const fullTimeStr = `${dateStr} ${timeStr}`;
 
     return {
       ...item,
@@ -115,7 +117,7 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="timeStr" stroke="#64748b" tick={{ fontSize: 10 }} interval={3} />
+                  <XAxis dataKey="timeStr" stroke="#64748b" tick={{ fontSize: 9, fill: '#94a3b8' }} interval={4} />
                   <YAxis domain={['auto', 'auto']} stroke="#64748b" tick={{ fontSize: 10 }} />
                   <Tooltip
                     labelFormatter={(_val, p) => p?.[0]?.payload?.fullTimeStr || _val}
@@ -168,7 +170,7 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="timeStr" stroke="#64748b" tick={{ fontSize: 10 }} interval={3} />
+                  <XAxis dataKey="timeStr" stroke="#64748b" tick={{ fontSize: 9, fill: '#94a3b8' }} interval={4} />
                   <YAxis domain={['auto', 'auto']} stroke="#64748b" tick={{ fontSize: 10 }} />
                   <Tooltip
                     labelFormatter={(_val, p) => p?.[0]?.payload?.fullTimeStr || _val}
@@ -221,7 +223,7 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="timeStr" stroke="#64748b" tick={{ fontSize: 10 }} interval={3} />
+                  <XAxis dataKey="timeStr" stroke="#64748b" tick={{ fontSize: 9, fill: '#94a3b8' }} interval={4} />
                   <YAxis domain={['auto', 'auto']} stroke="#64748b" tick={{ fontSize: 10 }} />
                   <Tooltip
                     labelFormatter={(_val, p) => p?.[0]?.payload?.fullTimeStr || _val}

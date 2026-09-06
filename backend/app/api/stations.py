@@ -58,7 +58,7 @@ async def get_recent_readings(
     stmt = (
         select(TelemetryReading)
         .where(TelemetryReading.station_id == station_id.upper())
-        .order_by(desc(TelemetryReading.timestamp))
+        .order_by(desc(TelemetryReading.id))
         .limit(limit)
     )
     result = await db.execute(stmt)
