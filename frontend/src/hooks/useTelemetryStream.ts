@@ -292,15 +292,13 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
             const normalizedScore = data.ensemble_score <= 1.0 ? data.ensemble_score * 100 : data.ensemble_score;
             data.ensemble_score = normalizedScore;
 
-            // Trigger alert toast if anomaly detected on any station
-            if (data.is_anomaly) {
-              setActiveAlert(data);
-            }
-
-            // ONLY update chart and latest telemetry if packet belongs to selected station!
             const targetStation = selectedStationRef.current.toUpperCase();
             if (payload.station_id.toUpperCase() === targetStation) {
               setLatestTelemetry(data);
+
+              if (data.is_anomaly) {
+                setActiveAlert(data);
+              }
 
               const historyItem: ReadingHistoryItem = {
                 id: Date.now(),
