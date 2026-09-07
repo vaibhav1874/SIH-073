@@ -33,6 +33,7 @@ ENV MKL_NUM_THREADS=1
 ENV OPENBLAS_NUM_THREADS=1
 ENV NUMEXPR_NUM_THREADS=1
 ENV VECLIB_MAXIMUM_THREADS=1
+ENV MALLOC_ARENA_MAX=2
 
 # Make entrypoint script executable
 RUN chmod +x /app/backend/entrypoint.sh
