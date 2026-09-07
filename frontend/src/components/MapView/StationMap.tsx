@@ -22,10 +22,10 @@ export const StationMap: React.FC<StationMapProps> = ({
     if (!mapContainerRef.current) return;
 
     if (!mapInstanceRef.current) {
-      // Initialize map centered on Northern/Central India
+      // Initialize map centered on India to view all multi-state observatories
       const map = L.map(mapContainerRef.current, {
-        center: [28.6139, 77.209],
-        zoom: 5,
+        center: [22.0, 78.5],
+        zoom: 4.5,
         zoomControl: true,
         attributionControl: false,
       });
@@ -116,10 +116,10 @@ export const StationMap: React.FC<StationMapProps> = ({
       markersRef.current[st.id] = marker;
     });
 
-    // Fly to selected station if changed
+    // Fly smoothly to selected station
     const sel = stations.find((s) => s.id === selectedStationId);
     if (sel) {
-      map.panTo([sel.latitude, sel.longitude], { animate: true, duration: 1 });
+      map.flyTo([sel.latitude, sel.longitude], 8, { animate: true, duration: 1.2 });
     }
   }, [stations, selectedStationId, onSelectStation]);
 

@@ -1,0 +1,27 @@
+{
+  "model_type": "LSTMAutoencoder",
+  "sequence_length": 12,
+  "features": [
+    "temperature",
+    "humidity",
+    "pressure",
+    "temp_diff_1",
+    "humidity_diff_1",
+    "pressure_diff_1"
+  ],
+  "n_features": 6,
+  "hidden_dim": 32,
+  "threshold": 0.5838222792683814,
+  "validation_metrics": {
+    "f1": 0.2407754846779237,
+    "precision": 0.22957662492546213,
+    "recall": 0.25312294543063774,
+    "roc_auc": 0.6731707655022647
+  },
+  "test_metrics": {
+    "f1": 0.22797356828193832,
+    "precision": 0.21439668565510098,
+    "recall": 0.24338624338624337,
+    "roc_auc": 0.6695040529508389
+  }
+}

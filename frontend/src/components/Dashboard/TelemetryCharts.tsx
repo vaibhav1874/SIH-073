@@ -18,7 +18,7 @@ interface TelemetryChartsProps {
 
 export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => {
   const [selectedSensor, setSelectedSensor] = useState<'all' | 'temp' | 'hum' | 'pres'>('all');
-
+  
   // Format data for chart with detailed hour, min, and sec
   const chartData = history.map((item) => {
     const d = new Date(item.timestamp);

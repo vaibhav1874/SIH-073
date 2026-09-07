@@ -1,0 +1,17 @@
+{
+  "city": "bhopal",
+  "n_features": 6,
+  "feature_names": [
+    "temperature",
+    "humidity",
+    "pressure",
+    "temp_diff_1",
+    "humidity_diff_1",
+    "pressure_diff_1"
+  ],
+  "sequence_length": 12,
+  "threshold": 0.5779676437377921,
+  "best_val_loss": 0.16220246701410254,
+  "hidden_dim": 32,
+  "n_layers": 1
+}

@@ -1,0 +1,102 @@
+{
+  "model_type": "XGBoostClassifier",
+  "classes": [
+    "communication_failure",
+    "frozen_sensor",
+    "humidity_spike",
+    "multivariate_inconsistency",
+    "normal",
+    "pressure_spike",
+    "sensor_drift",
+    "temperature_spike"
+  ],
+  "n_classes": 8,
+  "feature_names": [
+    "temperature",
+    "humidity",
+    "pressure",
+    "hour_sin",
+    "hour_cos",
+    "month_sin",
+    "month_cos",
+    "day_of_year_sin",
+    "day_of_year_cos",
+    "day_of_week_sin",
+    "day_of_week_cos",
+    "temp_diff_1",
+    "humidity_diff_1",
+    "pressure_diff_1",
+    "temp_diff_2",
+    "humidity_diff_2",
+    "pressure_diff_2",
+    "temp_rolling_mean_3h",
+    "temp_rolling_std_3h",
+    "temp_rolling_mean_6h",
+    "temp_rolling_std_6h",
+    "temp_rolling_mean_24h",
+    "temp_rolling_std_24h",
+    "humidity_rolling_mean_3h",
+    "humidity_rolling_std_3h",
+    "humidity_rolling_mean_6h",
+    "humidity_rolling_std_6h",
+    "humidity_rolling_mean_24h",
+    "humidity_rolling_std_24h",
+    "pressure_rolling_mean_3h",
+    "pressure_rolling_std_3h",
+    "pressure_rolling_mean_6h",
+    "pressure_rolling_std_6h",
+    "pressure_rolling_mean_24h",
+    "pressure_rolling_std_24h",
+    "temp_zscore_24h",
+    "humidity_zscore_24h",
+    "pressure_zscore_24h",
+    "dew_point_spread",
+    "temp_humidity_ratio"
+  ],
+  "validation_accuracy": 0.9062956871345029,
+  "validation_macro_f1": 0.8504305800253986,
+  "test_accuracy": 0.9114421416234888,
+  "test_macro_f1": 0.855733919193358,
+  "top_features": [
+    {
+      "feature": "pressure",
+      "importance": 0.1996142864227295
+    },
+    {
+      "feature": "pressure_rolling_std_3h",
+      "importance": 0.11645179241895676
+    },
+    {
+      "feature": "temperature",
+      "importance": 0.10269688814878464
+    },
+    {
+      "feature": "temp_humidity_ratio",
+      "importance": 0.07160300761461258
+    },
+    {
+      "feature": "humidity_rolling_std_3h",
+      "importance": 0.06895363330841064
+    },
+    {
+      "feature": "temp_rolling_std_3h",
+      "importance": 0.06310048699378967
+    },
+    {
+      "feature": "temp_rolling_std_6h",
+      "importance": 0.060094963759183884
+    },
+    {
+      "feature": "humidity",
+      "importance": 0.0518864281475544
+    },
+    {
+      "feature": "humidity_rolling_std_6h",
+      "importance": 0.035435065627098083
+    },
+    {
+      "feature": "pressure_rolling_std_6h",
+      "importance": 0.03133224695920944
+    }
+  ]
+}

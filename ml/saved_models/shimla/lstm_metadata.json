@@ -1,0 +1,17 @@
+{
+  "city": "shimla",
+  "n_features": 6,
+  "feature_names": [
+    "temperature",
+    "humidity",
+    "pressure",
+    "temp_diff_1",
+    "humidity_diff_1",
+    "pressure_diff_1"
+  ],
+  "sequence_length": 12,
+  "threshold": 0.7804408043622967,
+  "best_val_loss": 0.1996398618931495,
+  "hidden_dim": 32,
+  "n_layers": 1
+}

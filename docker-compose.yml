@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: skyguard_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./ml/saved_models:/app/ml/saved_models
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DATABASE_URL=sqlite+aiosqlite:///data/skyguard.db
+    networks:
+      - skyguard_net
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: skyguard_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - skyguard_net
+
+  simulator:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: skyguard_simulator
+    restart: unless-stopped
+    command: ["python", "-u", "simulator/aws_simulator.py", "--api-url", "http://backend:8000"]
+    depends_on:
+      - backend
+    networks:
+      - skyguard_net
+
+networks:
+  skyguard_net:
+    driver: bridge

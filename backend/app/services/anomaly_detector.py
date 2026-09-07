@@ -35,6 +35,7 @@ from backend.app.services.explanation import anomaly_explainer
 from backend.app.services.health_score import sensor_health_tracker
 
 MODELS_DIR = PROJECT_ROOT / "ml" / "saved_models"
+DEFAULT_CITY = "abohar"
 
 
 class AnomalyDetector:
@@ -57,46 +58,93 @@ class AnomalyDetector:
         # station_id -> list of telemetry dicts
         self.buffers: Dict[str, List[Dict[str, Any]]] = {}
 
-        self._load_models()
+        # Track which city's models are currently loaded
+        self._active_city: str = DEFAULT_CITY
 
-    def _load_models(self):
+        self._load_models_for_city(DEFAULT_CITY)
+
+    def _load_models_for_city(self, city: str):
+        """Load city-specific ML models from ml/saved_models/<city>/.
+        Falls back to Abohar models if city-specific models don't exist yet."""
+        city = city.strip().lower()
+
+        # Prefer city-specific subfolder; fall back to legacy flat layout (abohar)
+        city_dir = MODELS_DIR / city
+        fallback_dir = MODELS_DIR / DEFAULT_CITY
+
+        def resolve(filename: str) -> Path:
+            """Return city-specific path if it exists, else fallback to abohar or flat legacy."""
+            city_path = city_dir / filename
+            if city_path.exists():
+                return city_path
+            fallback_path = fallback_dir / filename
+            if fallback_path.exists():
+                return fallback_path
+            # Legacy flat layout (original placement before multi-city)
+            return MODELS_DIR / filename
+
+        print(f"[AnomalyDetector] Loading models for city: {city.upper()}...")
+
+        self.if_feature_names = FEATURE_NAMES
+        self.lstm_feature_names = CORE_FEATURES
+
         # 1. Isolation Forest
-        if_path = MODELS_DIR / "isolation_forest.joblib"
-        if_scaler_path = MODELS_DIR / "if_scaler.joblib"
-        if_meta_path = MODELS_DIR / "if_metadata.json"
+        if_path        = resolve("isolation_forest.joblib")
+        if_scaler_path = resolve("if_scaler.joblib")
+        if_meta_path   = resolve("if_metadata.json")
         if if_path.exists() and if_scaler_path.exists():
             self.if_model = joblib.load(if_path)
             self.if_scaler = joblib.load(if_scaler_path)
             if if_meta_path.exists():
                 with open(if_meta_path, "r") as f:
                     meta = json.load(f)
-                self.if_threshold = meta.get("threshold", 0.50)
-                self.if_score_min = meta.get("score_min", 0.0)
-                self.if_score_max = meta.get("score_max", 1.0)
-            print("[AnomalyDetector] Loaded Isolation Forest model & scaler.")
+                self.if_threshold  = meta.get("threshold", 0.50)
+                self.if_score_min  = meta.get("score_min", 0.0)
+                self.if_score_max  = meta.get("score_max", 1.0)
+                self.if_feature_names = meta.get("feature_names", FEATURE_NAMES)
+            print(f"[AnomalyDetector] Loaded IF model from: {if_path.parent.name}/ ({len(self.if_feature_names)} features)")
 
         # 2. LSTM Autoencoder
-        lstm_path = MODELS_DIR / "lstm_autoencoder.pt"
-        lstm_scaler_path = MODELS_DIR / "lstm_scaler.joblib"
-        lstm_meta_path = MODELS_DIR / "lstm_metadata.json"
+        lstm_path        = resolve("lstm_autoencoder.pt")
+        lstm_scaler_path = resolve("lstm_scaler.joblib")
+        lstm_meta_path   = resolve("lstm_metadata.json")
         if lstm_path.exists() and lstm_scaler_path.exists():
             self.lstm_scaler = joblib.load(lstm_scaler_path)
-            self.lstm_model = LSTMAutoencoder(n_features=len(CORE_FEATURES), hidden_dim=32)
-            self.lstm_model.load_state_dict(torch.load(lstm_path, map_location=self.device))
-            self.lstm_model.eval()
+            # Read architecture params from metadata to ensure correct model reconstruction
+            n_feat = len(CORE_FEATURES)
+            hidden_dim = 32
+            n_layers = 1
             if lstm_meta_path.exists():
                 with open(lstm_meta_path, "r") as f:
                     meta = json.load(f)
+                n_feat = meta.get("n_features", n_feat)
+                hidden_dim = meta.get("hidden_dim", hidden_dim)
+                n_layers = meta.get("n_layers", n_layers)
                 self.lstm_threshold = meta.get("threshold", 0.50)
-            print("[AnomalyDetector] Loaded PyTorch LSTM Autoencoder.")
+                self.lstm_feature_names = meta.get("feature_names", CORE_FEATURES)
+            self.lstm_model = LSTMAutoencoder(n_features=n_feat, hidden_dim=hidden_dim, num_layers=n_layers)
+            self.lstm_model.load_state_dict(torch.load(lstm_path, map_location=self.device))
+            self.lstm_model.eval()
+            print(f"[AnomalyDetector] Loaded LSTM model from: {lstm_path.parent.name}/")
 
-        # 3. XGBoost Root Cause Classifier
-        xgb_path = MODELS_DIR / "root_cause_xgb.joblib"
-        enc_path = MODELS_DIR / "label_encoder.joblib"
+        # 3. XGBoost Root Cause Classifier (always use abohar's shared model)
+        xgb_path = resolve("root_cause_xgb.joblib")
+        enc_path = resolve("label_encoder.joblib")
         if xgb_path.exists() and enc_path.exists():
             self.xgb_model = joblib.load(xgb_path)
             self.label_encoder = joblib.load(enc_path)
-            print("[AnomalyDetector] Loaded XGBoost root cause classifier.")
+            print(f"[AnomalyDetector] Loaded XGBoost root cause classifier.")
+
+        self._active_city = city
+        print(f"[AnomalyDetector] [OK] Active city: {city.upper()}")
+
+    def load_models_for_city(self, city: str):
+        """Public method — called by simulator API on city/mode switch.
+        No-op if the same city is already loaded."""
+        city = city.strip().lower()
+        if city == self._active_city:
+            return
+        self._load_models_for_city(city)
 
     def process_reading(self, telemetry: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -134,14 +182,17 @@ class AnomalyDetector:
             # Fallback simple features
             features_dict = {f: float(telemetry.get(f, 0.0)) if f in telemetry else 0.0 for f in FEATURE_NAMES}
 
-        # Vector of 40 features
-        feature_vector = np.array([[features_dict[f] for f in FEATURE_NAMES]], dtype=np.float32)
+        # Vector of 40 features (used for XGBoost & explanation)
+        xgb_feature_vector = np.array([[features_dict.get(f, 0.0) for f in FEATURE_NAMES]], dtype=np.float32)
 
-        # 3. Isolation Forest Evaluation
+        # 3. Isolation Forest Evaluation (uses city-specific features)
+        if_cols = getattr(self, "if_feature_names", FEATURE_NAMES)
+        if_feature_vector = np.array([[features_dict.get(f, 0.0) for f in if_cols]], dtype=np.float32)
+
         if_score = 0.0
         if_flag = False
         if self.if_model is not None and self.if_scaler is not None:
-            X_scaled = self.if_scaler.transform(feature_vector)
+            X_scaled = self.if_scaler.transform(if_feature_vector)
             raw_score = -float(self.if_model.score_samples(X_scaled)[0])
             # Normalize to [0, 1]
             denom = max(1e-6, self.if_score_max - self.if_score_min)
@@ -151,13 +202,14 @@ class AnomalyDetector:
         # 4. LSTM Autoencoder Evaluation
         lstm_score = 0.0
         lstm_flag = False
+        lstm_cols = getattr(self, "lstm_feature_names", CORE_FEATURES)
         if self.lstm_model is not None and self.lstm_scaler is not None and len(buffer) >= SEQUENCE_LENGTH:
             # Prepare sequence of length SEQUENCE_LENGTH
             sub_buf = pd.DataFrame(buffer[-SEQUENCE_LENGTH:])
             sub_buf["timestamp"] = pd.to_datetime(sub_buf["timestamp"])
             from ml.feature_engineering.features import compute_features
             sub_feat = compute_features(sub_buf)
-            raw_core = sub_feat[CORE_FEATURES].to_numpy(dtype=np.float32)
+            raw_core = sub_feat[lstm_cols].to_numpy(dtype=np.float32)
             scaled_core = self.lstm_scaler.transform(raw_core)
             seq_tensor = torch.tensor(scaled_core[np.newaxis, :, :], dtype=torch.float32).to(self.device)
 
@@ -190,7 +242,7 @@ class AnomalyDetector:
         root_cause = "normal"
         root_cause_probs = {}
         if is_anomaly and self.xgb_model is not None and self.label_encoder is not None:
-            probs = self.xgb_model.predict_proba(feature_vector)[0]
+            probs = self.xgb_model.predict_proba(xgb_feature_vector)[0]
             classes = self.label_encoder.classes_
             root_cause_probs = {c: round(float(p), 4) for c, p in zip(classes, probs)}
 

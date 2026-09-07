@@ -46,6 +46,9 @@ async def set_simulator_mode(payload: SimulatorModeRequest):
     # If mode or city changed, clear historical pipeline state to prevent spurious rate-of-change spikes
     if mode_changed or city_changed:
         print(f"[Simulator Control] Regime switch detected: {simulator_state['mode'].upper()} ({simulator_state['city'].upper()}). Resetting pipeline filters...")
+
+        # 0. Load city-specific ML models (no-op if same city already loaded)
+        anomaly_detector.load_models_for_city(simulator_state["city"])
         
         # 1. Reset in-memory rolling buffers and Kalman filters
         anomaly_detector.buffers.clear()
