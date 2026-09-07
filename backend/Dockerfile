@@ -25,6 +25,9 @@ COPY simulator/ /app/simulator/
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/app
 
-EXPOSE 8000
+# Make entrypoint script executable
+RUN chmod +x /app/backend/entrypoint.sh
 
-CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 8000 10000
+
+CMD ["/bin/sh", "/app/backend/entrypoint.sh"]
