@@ -26,6 +26,7 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
   const simulationIntervalRef = useRef<any>(null);
   const simStepRef = useRef<number>(0);
   const selectedStationRef = useRef<string>(selectedStationId);
+  const lastDismissedAlertRef = useRef<string | null>(null);
 
   // Keep ref synchronized with current prop
   useEffect(() => {
@@ -142,14 +143,17 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
     simStepRef.current += 1;
     const step = simStepRef.current;
 
-    const hourOfDay = step % 24;
-    const baseTemp = 27 + Math.sin(((hourOfDay - 6) / 24) * 2 * Math.PI) * 7;
-    const baseHum = 65 - Math.sin(((hourOfDay - 6) / 24) * 2 * Math.PI) * 18;
-    const basePres = 1010 + Math.cos((hourOfDay / 24) * 2 * Math.PI) * 3;
+    // Use actual real-world clock time for diurnal curve so temperature remains realistic and stable
+    const now = new Date();
+    const hourOfDay = now.getHours() + (now.getMinutes() / 60.0) + (now.getSeconds() / 3600.0);
+    const baseTemp = 24 + Math.sin(((hourOfDay - 8) / 24) * 2 * Math.PI) * 6;
+    const baseHum = 60 - Math.sin(((hourOfDay - 8) / 24) * 2 * Math.PI) * 16;
+    const basePres = 1013 + Math.cos(((hourOfDay - 8) / 24) * 2 * Math.PI) * 2.5;
 
-    const tempNoise = (Math.random() - 0.5) * 0.4;
-    const humNoise = (Math.random() - 0.5) * 0.8;
-    const presNoise = (Math.random() - 0.5) * 0.2;
+    // Subtle thermal sensor micro-noise (±0.05°C)
+    const tempNoise = (Math.random() - 0.5) * 0.08;
+    const humNoise = (Math.random() - 0.5) * 0.15;
+    const presNoise = (Math.random() - 0.5) * 0.05;
 
     const temp = parseFloat((baseTemp + tempNoise).toFixed(2));
     const hum = parseFloat(Math.min(99, Math.max(15, baseHum + humNoise)).toFixed(2));
@@ -297,7 +301,12 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
               setLatestTelemetry(data);
 
               if (data.is_anomaly) {
-                setActiveAlert(data);
+                const alertKey = `${data.root_cause}_${data.alert_id || ''}`;
+                if (lastDismissedAlertRef.current !== alertKey) {
+                  setActiveAlert(data);
+                }
+              } else {
+                lastDismissedAlertRef.current = null;
               }
 
               const historyItem: ReadingHistoryItem = {
@@ -385,7 +394,15 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
     };
   }, [connectWebSocket]);
 
-  const clearAlert = () => setActiveAlert(null);
+  const clearAlert = useCallback(() => {
+    if (activeAlert) {
+      if (activeAlert.alert_id) {
+        apiService.acknowledgeAlert(activeAlert.alert_id);
+      }
+      lastDismissedAlertRef.current = `${activeAlert.root_cause}_${activeAlert.alert_id || ''}`;
+    }
+    setActiveAlert(null);
+  }, [activeAlert]);
 
   const sendWsMessage = (msg: any) => {
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
