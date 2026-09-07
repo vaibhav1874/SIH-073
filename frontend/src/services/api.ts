@@ -1,6 +1,7 @@
 import { Station, AnomalyAlert, HealthSummary, BenchmarkMetrics } from '../types';
 
-const API_BASE = '/api';
+const rawApiUrl = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '');
+const API_BASE = rawApiUrl ? `${rawApiUrl}/api` : '/api';
 
 export interface StationDetailResponse {
   station: Station;

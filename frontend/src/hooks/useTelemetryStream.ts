@@ -293,9 +293,22 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
 
     setConnectionStatus('connecting');
 
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.port === '5173' ? 'localhost:8000' : window.location.host;
-    const wsUrl = `${protocol}//${host}/ws/telemetry`;
+    let wsUrl: string;
+    const customApi = (import.meta.env.VITE_API_URL as string | undefined)?.trim();
+    if (customApi) {
+      try {
+        const parsed = new URL(customApi);
+        const wsProto = parsed.protocol === 'https:' ? 'wss:' : 'ws:';
+        wsUrl = `${wsProto}//${parsed.host}/ws/telemetry`;
+      } catch {
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        wsUrl = `${protocol}//${customApi.replace(/^https?:\/\//, '').replace(/\/.*$/, '')}/ws/telemetry`;
+      }
+    } else {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const host = window.location.port === '5173' ? 'localhost:8000' : window.location.host;
+      wsUrl = `${protocol}//${host}/ws/telemetry`;
+    }
 
     try {
       const socket = new WebSocket(wsUrl);
