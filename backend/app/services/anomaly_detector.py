@@ -34,6 +34,12 @@ from backend.app.services.severity import severity_engine
 from backend.app.services.explanation import anomaly_explainer
 from backend.app.services.health_score import sensor_health_tracker
 
+# Restrict PyTorch thread count to save memory on low-RAM containers (Render 512MB)
+try:
+    torch.set_num_threads(1)
+except Exception:
+    pass
+
 MODELS_DIR = PROJECT_ROOT / "ml" / "saved_models"
 DEFAULT_CITY = "abohar"
 
@@ -60,8 +66,12 @@ class AnomalyDetector:
 
         # Track which city's models are currently loaded
         self._active_city: str = DEFAULT_CITY
+        self._models_loaded: bool = False
 
-        self._load_models_for_city(DEFAULT_CITY)
+    def ensure_models_loaded(self):
+        """Lazy loader: loads models only when first telemetry request is processed."""
+        if not self._models_loaded:
+            self.load_models_for_city(self._active_city)
 
     def _load_models_for_city(self, city: str):
         """Load city-specific ML models from ml/saved_models/<city>/.
@@ -142,14 +152,16 @@ class AnomalyDetector:
         """Public method — called by simulator API on city/mode switch.
         No-op if the same city is already loaded."""
         city = city.strip().lower()
-        if city == self._active_city:
+        if city == self._active_city and self._models_loaded:
             return
         self._load_models_for_city(city)
+        self._models_loaded = True
 
     def process_reading(self, telemetry: Dict[str, Any]) -> Dict[str, Any]:
         """
         Executes full real-time anomaly detection pipeline on an incoming AWS telemetry packet.
         """
+        self.ensure_models_loaded()
         start_time = time.perf_counter()
         station_id = telemetry.get("station_id", "ABOHAR")
 
