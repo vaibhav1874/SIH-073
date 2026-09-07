@@ -269,6 +269,15 @@ class AnomalyDetector:
 
         # 7. Identify Affected Sensors
         affected_sensors = list(set(rule_res["affected_sensors"]))
+
+        # Hard physical boundary checks (guarantee anomalous sensor is flagged even if classifier labels general fault)
+        if telemetry.get("temperature") is not None and (telemetry["temperature"] > 50.0 or telemetry["temperature"] < -10.0):
+            affected_sensors.append("temperature")
+        if telemetry.get("humidity") is not None and (telemetry["humidity"] > 100.0 or telemetry["humidity"] < 0.0):
+            affected_sensors.append("humidity")
+        if telemetry.get("pressure") is not None and (telemetry["pressure"] > 1080.0 or telemetry["pressure"] < 900.0):
+            affected_sensors.append("pressure")
+
         if not affected_sensors and is_anomaly:
             # Infer from root cause or largest Z-scores
             if "temp" in root_cause:
@@ -285,6 +294,8 @@ class AnomalyDetector:
                 }
                 max_s = max(z_map, key=z_map.get)
                 affected_sensors.append(max_s)
+
+        affected_sensors = list(set(affected_sensors))
 
         # 8. Severity Assessment
         severity_info = severity_engine.assess_severity(

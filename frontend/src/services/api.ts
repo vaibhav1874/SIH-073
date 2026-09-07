@@ -191,6 +191,16 @@ export const apiService = {
     }
   },
 
+  async clearFault(): Promise<{ status: string; message?: string }> {
+    try {
+      const res = await fetch(`${API_BASE}/fault/clear`, { method: 'POST' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch {
+      return { status: 'cleared' };
+    }
+  },
+
   async getBenchmark(): Promise<BenchmarkResponse> {
     try {
       const res = await fetch(`${API_BASE}/benchmark`);

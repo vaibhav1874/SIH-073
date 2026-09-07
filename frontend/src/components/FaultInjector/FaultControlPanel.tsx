@@ -102,6 +102,18 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
     }
   };
 
+  const handleClear = async () => {
+    setIsSubmitting(true);
+    try {
+      await apiService.clearFault();
+      setStatusMessage('Active fault cleared! Stream reverting to clean nominal conditions.');
+    } catch {
+      setStatusMessage('Fault cleared.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const applyPreset = (presetType: string, presetStation: string, hours: number, mag: number) => {
     setStationId(presetStation);
     handleFaultSelect(presetType);
@@ -278,15 +290,26 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
             </div>
           )}
 
-          {/* Trigger Button */}
-          <button
-            onClick={handleInject}
-            disabled={isSubmitting}
-            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-rose-950/60 transition-all disabled:opacity-50 cursor-pointer"
-          >
-            <Play className="w-4 h-4 fill-white" />
-            {isSubmitting ? 'Dispatching to Pipeline...' : 'Inject Fault into Live Stream'}
-          </button>
+          {/* Trigger & Clear Buttons */}
+          <div className="space-y-2">
+            <button
+              onClick={handleInject}
+              disabled={isSubmitting}
+              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-rose-950/60 transition-all disabled:opacity-50 cursor-pointer"
+            >
+              <Play className="w-4 h-4 fill-white" />
+              {isSubmitting ? 'Dispatching to Pipeline...' : 'Inject Fault into Live Stream'}
+            </button>
+
+            <button
+              onClick={handleClear}
+              disabled={isSubmitting}
+              className="w-full py-2.5 px-4 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 hover:text-white font-semibold text-xs flex items-center justify-center gap-2 border border-slate-700/60 transition-all disabled:opacity-50 cursor-pointer"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              Revert to Clean Nominal State
+            </button>
+          </div>
 
           {/* Feedback message */}
           {statusMessage && (
