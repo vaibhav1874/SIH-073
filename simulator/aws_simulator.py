@@ -185,8 +185,15 @@ def run_simulator(api_url: str, interval_sec: float, loop: bool = True, mode: st
             if f_resp.status_code == 200:
                 f_json = f_resp.json()
                 if f_json.get("is_active"):
-                    local_fault = f_json.get("active_fault")
-                    local_fault_steps = local_fault.get("duration_steps", 10)
+                    active_f = f_json.get("active_fault", {})
+                    # Only accept as a new fault if start_time is different from current local_fault
+                    if not local_fault or active_f.get("start_time") != local_fault.get("start_time"):
+                        local_fault = active_f
+                        local_fault_steps = active_f.get("duration_steps", 10)
+                else:
+                    local_fault = None
+                    local_fault_steps = 0
+                    drift_val = 0.0
         except Exception:
             pass
 
@@ -270,8 +277,7 @@ def run_simulator(api_url: str, interval_sec: float, loop: bool = True, mode: st
                     requests.post(f"{api_url}/api/fault/clear", timeout=1.0)
                 except Exception:
                     pass
-        else:
-            primary_packet = live_injector.apply(primary_packet)
+
 
         # Send Primary Station packet
         try:

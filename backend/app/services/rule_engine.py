@@ -15,9 +15,9 @@ import numpy as np
 
 
 class RuleEngine:
-    # Sensor physical plausibility limits
+    # Sensor physical plausibility limits (IMD / WMO Standards)
     TEMP_MIN = -10.0
-    TEMP_MAX = 55.0
+    TEMP_MAX = 50.0  # IMD AWS absolute climatological threshold
     HUMIDITY_MIN = 0.0
     HUMIDITY_MAX = 100.0
     PRESSURE_MIN = 900.0
@@ -138,6 +138,25 @@ class RuleEngine:
                     affected.add("pressure")
                     if severity in ["none", "low", "medium"]:
                         severity = "high"
+
+        # 3b. Sustained Deviation against Rolling Buffer Baseline (captures multi-step spikes)
+        if history_window and len(history_window) >= 4:
+            recent_baseline = history_window[:-1]
+            for s, max_dev in [("temperature", 7.0), ("humidity", 25.0), ("pressure", 6.0)]:
+                s_vals = [p[s] for p in recent_baseline if s in p and p[s] is not None]
+                if s_vals:
+                    # Compare against median of recent window to ignore single outliers
+                    base_val = float(np.median(s_vals))
+                    curr_val = current.get(s)
+                    if curr_val is not None and abs(curr_val - base_val) > max_dev:
+                        violations.append({
+                            "rule_id": f"SUSTAINED_DEVIATION_{s.upper()}",
+                            "sensor": s,
+                            "message": f"{s.capitalize()} reading {curr_val} deviates {abs(curr_val - base_val):.1f} from recent median baseline ({base_val:.1f}).",
+                        })
+                        affected.add(s)
+                        if severity in ["none", "low", "medium"]:
+                            severity = "high"
 
         # 4. Cross-Sensor Meteorological Inconsistency
         if temp is not None and hum is not None:
