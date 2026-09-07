@@ -35,6 +35,56 @@ REGIONAL_STATIONS = [
     {"id": "PATIALA",  "temp_offset": -0.3, "hum_offset": 1.5, "pres_offset": -2.8},
 ]
 
+CITY_COORDINATES = {
+    "abohar": (30.1453, 74.1993),
+    "bathinda": (30.2110, 74.9455),
+    "ludhiana": (30.9010, 75.8573),
+    "amritsar": (31.6340, 74.8723),
+    "patiala": (30.3398, 76.3869),
+    "chandigarh": (30.7333, 76.7794),
+    "delhi": (28.6139, 77.2090),
+    "jaipur": (26.9124, 75.7873),
+    "mumbai": (19.0760, 72.8777),
+    "bengaluru": (12.9716, 77.5946),
+    "kolkata": (22.5726, 88.3639),
+    "pune": (18.5204, 73.8567),
+}
+
+# Live Open-Meteo cache state
+_live_cache = {
+    "last_fetch": 0.0,
+    "temp": 24.0,
+    "humidity": 55.0,
+    "pressure": 1012.0,
+}
+
+
+def fetch_live_openmeteo(lat: float, lon: float) -> dict:
+    """Fetch live meteorological observations from Open-Meteo free API (cached for 60s)"""
+    now = time.time()
+    if now - _live_cache["last_fetch"] < 60.0:
+        return _live_cache
+
+    try:
+        url = (
+            f"https://api.open-meteo.com/v1/forecast?"
+            f"latitude={lat}&longitude={lon}&current="
+            f"temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m"
+        )
+        resp = requests.get(url, timeout=4.0)
+        if resp.status_code == 200:
+            data = resp.json()
+            curr = data.get("current", {})
+            _live_cache["temp"] = float(curr.get("temperature_2m", _live_cache["temp"]))
+            _live_cache["humidity"] = float(curr.get("relative_humidity_2m", _live_cache["humidity"]))
+            _live_cache["pressure"] = float(curr.get("surface_pressure", _live_cache["pressure"]))
+            _live_cache["last_fetch"] = now
+            print(f"[Simulator Live] Fetched live Open-Meteo weather: {_live_cache['temp']}°C, {_live_cache['humidity']}%, {_live_cache['pressure']} hPa")
+    except Exception as e:
+        print(f"[Simulator Live] Notice: Could not refresh Open-Meteo ({e}), using last reading.")
+
+    return _live_cache
+
 
 def load_stream_dataset() -> pd.DataFrame:
     if CLEAN_DATA_FILE.exists():
@@ -48,9 +98,13 @@ def load_stream_dataset() -> pd.DataFrame:
         return pd.DataFrame()
 
 
-def run_simulator(api_url: str, interval_sec: float, loop: bool = True):
-    print(f"[Simulator] Starting AWS telemetry stream to {api_url} at {interval_sec}s interval...")
-    df = load_stream_dataset()
+def run_simulator(api_url: str, interval_sec: float, loop: bool = True, mode: str = "replay", lat: float = 30.1453, lon: float = 74.1993, location_label: str = "ABOHAR"):
+    print(f"[Simulator] Starting AWS telemetry stream to {api_url} [Mode: {mode.upper()}] at {interval_sec}s interval...")
+    if mode == "live":
+        print(f"[Simulator] Live Station GPS Target: {location_label} ({lat}, {lon})")
+        # Pre-fetch initial real-time reading
+        fetch_live_openmeteo(lat, lon)
+    df = load_stream_dataset() if mode == "replay" else pd.DataFrame()
     row_idx = 0
     sub_step = 0
     STEPS_PER_HOUR = 60  # Smoothly interpolate across 60 steps (2 mins per hour) so delta T per tick is realistic (~0.01C)
@@ -76,8 +130,13 @@ def run_simulator(api_url: str, interval_sec: float, loop: bool = True):
         except Exception:
             pass
 
-        # 1. Base telemetry for Primary Station (Abohar) with smooth meteorological physics
-        if total_rows > 1 and row_idx < total_rows:
+        # 1. Base telemetry for Primary Station (Abohar or live station)
+        if mode == "live":
+            live_obs = fetch_live_openmeteo(lat, lon)
+            base_temp = live_obs["temp"]
+            base_hum = live_obs["humidity"]
+            base_pres = live_obs["pressure"]
+        elif total_rows > 1 and row_idx < total_rows:
             curr_row = df.iloc[row_idx]
             next_idx = (row_idx + 1) % total_rows
             next_row = df.iloc[next_idx]
@@ -185,6 +244,34 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="SkyGuard AI AWS Telemetry Simulator")
     parser.add_argument("--api-url", default="http://localhost:8000", help="Backend API URL")
     parser.add_argument("--interval", type=float, default=1.5, help="Playback cadence in seconds")
+    parser.add_argument("--mode", choices=["replay", "live"], default="replay", help="Replay historical IMD data or stream live Open-Meteo weather")
+    parser.add_argument("--city", type=str, default=None, help="City name (e.g. abohar, delhi, chandigarh, jaipur, etc.)")
+    parser.add_argument("--lat", type=float, default=None, help="Custom latitude for live mode")
+    parser.add_argument("--lon", type=float, default=None, help="Custom longitude for live mode")
     args = parser.parse_args()
 
-    run_simulator(api_url=args.api_url, interval_sec=args.interval)
+    # Determine coordinates
+    target_lat = 30.1453
+    target_lon = 74.1993
+    target_label = "ABOHAR"
+
+    if args.city:
+        city_key = args.city.strip().lower()
+        if city_key in CITY_COORDINATES:
+            target_lat, target_lon = CITY_COORDINATES[city_key]
+            target_label = args.city.upper()
+        else:
+            print(f"[Simulator] City '{args.city}' not in presets, using Abohar default.")
+    elif args.lat is not None and args.lon is not None:
+        target_lat = args.lat
+        target_lon = args.lon
+        target_label = f"CUSTOM ({target_lat:.2f}, {target_lon:.2f})"
+
+    run_simulator(
+        api_url=args.api_url,
+        interval_sec=args.interval,
+        mode=args.mode,
+        lat=target_lat,
+        lon=target_lon,
+        location_label=target_label,
+    )
