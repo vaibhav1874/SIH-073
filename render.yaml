@@ -20,7 +20,7 @@ services:
       - key: PYTHONUNBUFFERED
         value: 1
       - key: RUN_SIMULATOR
-        value: 1
+        value: 0
       - key: DATABASE_URL
         value: sqlite+aiosqlite:///data/skyguard.db
 

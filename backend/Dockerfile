@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy backend dependencies
 COPY backend/requirements.txt /app/backend/requirements.txt
 
+# Install PyTorch CPU-only first (saves ~1.5GB disk and ~150MB RAM on Render 512MB)
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+
 # Install python dependencies
 RUN pip install --no-cache-dir -r /app/backend/requirements.txt
 
@@ -22,8 +25,14 @@ COPY data/ /app/data/
 COPY scripts/ /app/scripts/
 COPY simulator/ /app/simulator/
 
+# Strict memory controls for low-RAM containers
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/app
+ENV OMP_NUM_THREADS=1
+ENV MKL_NUM_THREADS=1
+ENV OPENBLAS_NUM_THREADS=1
+ENV NUMEXPR_NUM_THREADS=1
+ENV VECLIB_MAXIMUM_THREADS=1
 
 # Make entrypoint script executable
 RUN chmod +x /app/backend/entrypoint.sh
