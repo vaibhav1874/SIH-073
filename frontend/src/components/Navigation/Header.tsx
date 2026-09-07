@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Station } from '../../types';
 import { ConnectionStatus } from '../../hooks/useTelemetryStream';
-import { CloudLightning, Radio, Activity, ShieldAlert, Cpu, Wrench, BarChart2 } from 'lucide-react';
+import { CloudLightning, Radio, Activity, ShieldAlert, Cpu, Wrench, BarChart2, History, Wifi, Globe } from 'lucide-react';
+import { apiService } from '../../services/api';
 
 interface HeaderProps {
   stations: Station[];
@@ -23,6 +24,28 @@ export const Header: React.FC<HeaderProps> = ({
   activeAlertCount,
 }) => {
   const currentStation = stations.find((s) => s.id === selectedStationId) || stations[0];
+  const [simMode, setSimMode] = useState<'replay' | 'live'>('live');
+  const [liveCity, setLiveCity] = useState<string>('abohar');
+  const [isSwitching, setIsSwitching] = useState<boolean>(false);
+
+  useEffect(() => {
+    apiService.getSimulatorMode().then((res) => {
+      setSimMode(res.mode);
+      if (res.city) setLiveCity(res.city);
+    });
+  }, []);
+
+  const handleToggleMode = async (mode: 'replay' | 'live') => {
+    setIsSwitching(true);
+    setSimMode(mode);
+    await apiService.setSimulatorMode(mode, liveCity);
+    setIsSwitching(false);
+  };
+
+  const handleCityChange = async (city: string) => {
+    setLiveCity(city);
+    await apiService.setSimulatorMode('live', city);
+  };
 
   const getStatusBadge = () => {
     switch (connectionStatus) {
@@ -137,8 +160,63 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </nav>
 
-          {/* Right Controls: Station Selector + Status */}
-          <div className="flex items-center gap-3">
+          {/* Right Controls: Telemetry Source Switcher + Station Selector + Status */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Dynamic Telemetry Source Switcher (Historical Replay vs Live Real-Time) */}
+            <div className="flex items-center bg-slate-900/90 border border-slate-800 rounded-xl p-1 shadow-inner">
+              <button
+                onClick={() => handleToggleMode('replay')}
+                disabled={isSwitching}
+                title="Replay historical IMD AWS dataset (Winter 2010)"
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                  simMode === 'replay'
+                    ? 'bg-amber-500/20 border border-amber-500/40 text-amber-300 shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <History className="w-3 h-3 text-amber-400" />
+                <span className="hidden sm:inline">Historical IMD</span>
+                <span className="sm:hidden">Historic</span>
+              </button>
+
+              <button
+                onClick={() => handleToggleMode('live')}
+                disabled={isSwitching}
+                title="Stream real-time live weather from Open-Meteo"
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                  simMode === 'live'
+                    ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Wifi className="w-3 h-3 text-emerald-400 animate-pulse" />
+                <span className="hidden sm:inline">Real-Time Live</span>
+                <span className="sm:hidden">Live</span>
+              </button>
+
+              {simMode === 'live' && (
+                <div className="hidden lg:flex items-center gap-1 pl-2 border-l border-slate-800 ml-1">
+                  <Globe className="w-3 h-3 text-emerald-400/80" />
+                  <select
+                    value={liveCity}
+                    onChange={(e) => handleCityChange(e.target.value)}
+                    className="bg-transparent text-[11px] font-medium text-emerald-300 focus:outline-none cursor-pointer pr-1"
+                  >
+                    <option value="abohar" className="bg-slate-900 text-slate-200">Abohar (Punjab)</option>
+                    <option value="delhi" className="bg-slate-900 text-slate-200">Delhi NCT</option>
+                    <option value="chandigarh" className="bg-slate-900 text-slate-200">Chandigarh</option>
+                    <option value="jaipur" className="bg-slate-900 text-slate-200">Jaipur</option>
+                    <option value="bathinda" className="bg-slate-900 text-slate-200">Bathinda</option>
+                    <option value="ludhiana" className="bg-slate-900 text-slate-200">Ludhiana</option>
+                    <option value="amritsar" className="bg-slate-900 text-slate-200">Amritsar</option>
+                    <option value="patiala" className="bg-slate-900 text-slate-200">Patiala</option>
+                    <option value="mumbai" className="bg-slate-900 text-slate-200">Mumbai</option>
+                    <option value="bengaluru" className="bg-slate-900 text-slate-200">Bengaluru</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
             {/* Station Dropdown */}
             <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5">
               <Radio className="w-3.5 h-3.5 text-sky-400 animate-pulse" />

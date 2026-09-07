@@ -250,4 +250,27 @@ export const apiService = {
       };
     }
   },
+
+  async getSimulatorMode(): Promise<{ mode: 'replay' | 'live'; city: string }> {
+    try {
+      const res = await fetch(`${API_BASE}/simulator/mode`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch {
+      return { mode: 'live', city: 'abohar' };
+    }
+  },
+
+  async setSimulatorMode(mode: 'replay' | 'live', city?: string): Promise<boolean> {
+    try {
+      const res = await fetch(`${API_BASE}/simulator/mode`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode, city }),
+      });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  },
 };
