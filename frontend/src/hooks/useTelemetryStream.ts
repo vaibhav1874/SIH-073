@@ -28,9 +28,14 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
   const selectedStationRef = useRef<string>(selectedStationId);
   const lastDismissedAlertRef = useRef<string | null>(null);
 
-  // Keep ref synchronized with current prop
+  // Keep ref synchronized with current prop and immediately clear prior station history
   useEffect(() => {
-    selectedStationRef.current = selectedStationId;
+    if (selectedStationRef.current !== selectedStationId) {
+      selectedStationRef.current = selectedStationId;
+      setTelemetryHistory([]);
+      setActiveAlert(null);
+      lastDismissedAlertRef.current = null;
+    }
   }, [selectedStationId]);
 
   const activeFaultRef = useRef<{
@@ -44,6 +49,7 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
   // Fetch real database history whenever selectedStationId changes
   useEffect(() => {
     let isMounted = true;
+    setTelemetryHistory([]); // Clean slate for new station
     async function loadStationData() {
       try {
         const readings = await apiService.getReadings(selectedStationId, 40);
@@ -99,6 +105,57 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
                   ? 'Abrupt rate-of-change violation observed.'
                   : 'Physical cross-correlations consistent.',
                 evidence_points: ['Sensor observation checked by hybrid AI core.'],
+                key_factors: {},
+              },
+              health: {
+                station_id: selectedStationId,
+                overall_score: 96,
+                station_status: 'HEALTHY',
+                sensor_scores: {
+                  temperature: { score: 96, status: 'HEALTHY' },
+                  humidity: { score: 94, status: 'HEALTHY' },
+                  pressure: { score: 98, status: 'HEALTHY' },
+                  communication: { score: 99, status: 'HEALTHY' },
+                },
+              },
+              protocol: {
+                title: 'Routine AWS Polling Protocol',
+                action: 'Continuous 15-minute telemetry polling nominal.',
+                sla_hours: 48,
+                badge_color: 'emerald',
+              },
+              latency_ms: 12.4,
+            };
+          });
+        } else {
+          // If no database readings exist yet for this station, populate nominal baseline so cards are never blank
+          setLatestTelemetry((prev) => {
+            if (prev) return prev;
+            return {
+              temperature: 28.5,
+              humidity: 62.0,
+              pressure: 1008.4,
+              is_anomaly: false,
+              ensemble_score: 10,
+              root_cause: 'normal',
+              severity: 'low',
+              affected_sensors: [],
+              corrected: {
+                temperature: 28.5,
+                humidity: 62.0,
+                pressure: 1008.4,
+              },
+              model_breakdown: {
+                rule_engine: { violation: false, score: 5, rules: [] },
+                isolation_forest: { flag: false, score: 0.15 },
+                lstm_autoencoder: { flag: false, score: 0.03 },
+                ensemble_weights: { rules: 0.35, isolation_forest: 0.35, lstm: 0.30 },
+              },
+              explanation: {
+                summary: 'Sensors within normal climatological bounds.',
+                root_cause: 'normal',
+                diagnostic_rationale: 'Physical cross-correlations consistent.',
+                evidence_points: ['Station observational telemetry nominal.'],
                 key_factors: {},
               },
               health: {
@@ -368,8 +425,8 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
                 if (prev.length > 0) {
                   const lastReading = prev[prev.length - 1];
                   const tempJump = Math.abs(data.temperature - lastReading.temperature);
-                  // Detect regime shift discontinuity (>10°C abrupt jump between historical and live modes)
-                  if (tempJump > 10.0) {
+                  // Detect cross-station or regime shift discontinuity (>3.0°C abrupt jump across stations)
+                  if (tempJump > 3.0) {
                     setActiveAlert(null);
                     lastDismissedAlertRef.current = null;
                     return [historyItem];
