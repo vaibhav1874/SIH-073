@@ -1,4 +1,4 @@
-﻿# ============================================================
+# ============================================================
 # SkyGuard AI -- .gitignore
 # ============================================================
 
@@ -48,15 +48,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# --- ML Models (large binary -- store separately) ---
+# --- ML Models (Temporary models dir ignored, pre-trained saved_models tracked for deployment) ---
 models/*.joblib
 models/*.pt
 models/*.pkl
 models/*.h5
-ml/saved_models/*.joblib
-ml/saved_models/*.pt
-ml/saved_models/*.pkl
-ml/saved_models/*.h5
 
 # --- Data Files (large CSVs -- never commit) ---
 data/raw/*.csv

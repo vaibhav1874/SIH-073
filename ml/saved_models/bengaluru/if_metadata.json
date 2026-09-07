@@ -1,0 +1,31 @@
+{
+  "model_type": "IsolationForest",
+  "city": "bengaluru",
+  "feature_names": [
+    "temperature",
+    "humidity",
+    "pressure",
+    "hour_sin",
+    "hour_cos",
+    "month_sin",
+    "month_cos",
+    "temp_diff_1",
+    "humidity_diff_1",
+    "pressure_diff_1",
+    "temp_rolling_mean_3h",
+    "temp_rolling_std_3h",
+    "temp_rolling_mean_6h",
+    "temp_rolling_std_6h",
+    "humidity_rolling_mean_3h",
+    "humidity_rolling_std_3h",
+    "humidity_rolling_mean_6h",
+    "humidity_rolling_std_6h",
+    "pressure_rolling_mean_3h",
+    "pressure_rolling_std_3h"
+  ],
+  "n_features": 20,
+  "threshold": 0.5055432903416314,
+  "score_min": 0.3934083384116466,
+  "score_max": 0.6857302836134772,
+  "n_train_samples": 12280
+}

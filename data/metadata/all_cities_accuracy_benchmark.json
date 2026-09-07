@@ -1,0 +1,493 @@
+{
+  "abohar": {
+    "RuleBased": {
+      "accuracy": 0.9328,
+      "precision": 0.6997,
+      "recall": 0.1493,
+      "f1_score": 0.2461,
+      "roc_auc": "N/A",
+      "fpr": 0.0051,
+      "true_positives": 254,
+      "false_positives": 109,
+      "false_negatives": 1447,
+      "true_negatives": 21350,
+      "support_total": 23160,
+      "anomalies_count": 1701
+    },
+    "IsolationForest": {
+      "accuracy": 0.9073,
+      "precision": 0.3458,
+      "recall": 0.2945,
+      "f1_score": 0.3181,
+      "roc_auc": 0.7406,
+      "fpr": 0.0442,
+      "true_positives": 501,
+      "false_positives": 948,
+      "false_negatives": 1200,
+      "true_negatives": 20511,
+      "support_total": 23160,
+      "anomalies_count": 1701
+    },
+    "LSTMAutoencoder": {
+      "accuracy": 0.8789,
+      "precision": 0.2144,
+      "recall": 0.2434,
+      "f1_score": 0.228,
+      "roc_auc": 0.6695,
+      "fpr": 0.0707,
+      "true_positives": 414,
+      "false_positives": 1517,
+      "false_negatives": 1287,
+      "true_negatives": 19931,
+      "support_total": 23149,
+      "anomalies_count": 1701
+    },
+    "SkyGuardHybrid": {
+      "accuracy": 0.9241,
+      "precision": 0.4612,
+      "recall": 0.1922,
+      "f1_score": 0.2714,
+      "roc_auc": 0.721,
+      "fpr": 0.0178,
+      "true_positives": 327,
+      "false_positives": 382,
+      "false_negatives": 1374,
+      "true_negatives": 21066,
+      "support_total": 23149,
+      "anomalies_count": 1701
+    },
+    "RootCauseClassifier": {
+      "overall_test_accuracy": 0.9114,
+      "macro_f1": 0.8557,
+      "weighted_f1": 0.9169,
+      "anomaly_subset_accuracy": 0.535,
+      "total_samples_evaluated": 23160,
+      "fault_samples_evaluated": 1701,
+      "num_classes": 8,
+      "classes": [
+        "communication_failure",
+        "frozen_sensor",
+        "humidity_spike",
+        "multivariate_inconsistency",
+        "normal",
+        "pressure_spike",
+        "sensor_drift",
+        "temperature_spike"
+      ]
+    }
+  },
+  "delhi": {
+    "nominal_stability": {
+      "test_records_evaluated": 3509,
+      "if_threshold": 0.5091,
+      "if_clean_pass_rate_pct": 94.47,
+      "if_false_alarm_rate_pct": 5.53,
+      "lstm_threshold": 0.6385,
+      "lstm_clean_pass_rate_pct": 95.0,
+      "lstm_false_alarm_rate_pct": 5.0
+    },
+    "fault_injection_benchmark": {
+      "RuleBased": {
+        "accuracy": 0.9327,
+        "precision": 0.6,
+        "recall": 0.1793,
+        "f1_score": 0.2761,
+        "roc_auc": "N/A",
+        "fpr": 0.0092,
+        "true_positives": 45,
+        "false_positives": 30,
+        "false_negatives": 206,
+        "true_negatives": 3228,
+        "support_total": 3509,
+        "anomalies_count": 251
+      },
+      "IsolationForest": {
+        "accuracy": 0.8803,
+        "precision": 0.2817,
+        "recall": 0.4343,
+        "f1_score": 0.3417,
+        "roc_auc": 0.8229,
+        "fpr": 0.0853,
+        "true_positives": 109,
+        "false_positives": 278,
+        "false_negatives": 142,
+        "true_negatives": 2980,
+        "support_total": 3509,
+        "anomalies_count": 251
+      },
+      "LSTMAutoencoder": {
+        "accuracy": 0.8093,
+        "precision": 0.1389,
+        "recall": 0.3187,
+        "f1_score": 0.1935,
+        "roc_auc": 0.6581,
+        "fpr": 0.1528,
+        "true_positives": 80,
+        "false_positives": 496,
+        "false_negatives": 171,
+        "true_negatives": 2751,
+        "support_total": 3498,
+        "anomalies_count": 251
+      },
+      "SkyGuardHybrid": {
+        "accuracy": 0.9037,
+        "precision": 0.2806,
+        "recall": 0.2191,
+        "f1_score": 0.2461,
+        "roc_auc": 0.7777,
+        "fpr": 0.0434,
+        "true_positives": 55,
+        "false_positives": 141,
+        "false_negatives": 196,
+        "true_negatives": 3106,
+        "support_total": 3498,
+        "anomalies_count": 251
+      }
+    }
+  },
+  "jaipur": {
+    "nominal_stability": {
+      "test_records_evaluated": 3509,
+      "if_threshold": 0.5016,
+      "if_clean_pass_rate_pct": 95.73,
+      "if_false_alarm_rate_pct": 4.27,
+      "lstm_threshold": 0.5263,
+      "lstm_clean_pass_rate_pct": 95.0,
+      "lstm_false_alarm_rate_pct": 5.0
+    },
+    "fault_injection_benchmark": {
+      "RuleBased": {
+        "accuracy": 0.933,
+        "precision": 0.6111,
+        "recall": 0.1753,
+        "f1_score": 0.2724,
+        "roc_auc": "N/A",
+        "fpr": 0.0086,
+        "true_positives": 44,
+        "false_positives": 28,
+        "false_negatives": 207,
+        "true_negatives": 3230,
+        "support_total": 3509,
+        "anomalies_count": 251
+      },
+      "IsolationForest": {
+        "accuracy": 0.8911,
+        "precision": 0.3281,
+        "recall": 0.498,
+        "f1_score": 0.3956,
+        "roc_auc": 0.8541,
+        "fpr": 0.0786,
+        "true_positives": 125,
+        "false_positives": 256,
+        "false_negatives": 126,
+        "true_negatives": 3002,
+        "support_total": 3509,
+        "anomalies_count": 251
+      },
+      "LSTMAutoencoder": {
+        "accuracy": 0.7836,
+        "precision": 0.0906,
+        "recall": 0.2231,
+        "f1_score": 0.1289,
+        "roc_auc": 0.6686,
+        "fpr": 0.1731,
+        "true_positives": 56,
+        "false_positives": 562,
+        "false_negatives": 195,
+        "true_negatives": 2685,
+        "support_total": 3498,
+        "anomalies_count": 251
+      },
+      "SkyGuardHybrid": {
+        "accuracy": 0.9062,
+        "precision": 0.2849,
+        "recall": 0.2032,
+        "f1_score": 0.2372,
+        "roc_auc": 0.7616,
+        "fpr": 0.0394,
+        "true_positives": 51,
+        "false_positives": 128,
+        "false_negatives": 200,
+        "true_negatives": 3119,
+        "support_total": 3498,
+        "anomalies_count": 251
+      }
+    }
+  },
+  "shimla": {
+    "nominal_stability": {
+      "test_records_evaluated": 3509,
+      "if_threshold": 0.5173,
+      "if_clean_pass_rate_pct": 95.5,
+      "if_false_alarm_rate_pct": 4.5,
+      "lstm_threshold": 0.7804,
+      "lstm_clean_pass_rate_pct": 95.0,
+      "lstm_false_alarm_rate_pct": 5.0
+    },
+    "fault_injection_benchmark": {
+      "RuleBased": {
+        "accuracy": 0.0715,
+        "precision": 0.0715,
+        "recall": 1.0,
+        "f1_score": 0.1335,
+        "roc_auc": "N/A",
+        "fpr": 1.0,
+        "true_positives": 251,
+        "false_positives": 3258,
+        "false_negatives": 0,
+        "true_negatives": 0,
+        "support_total": 3509,
+        "anomalies_count": 251
+      },
+      "IsolationForest": {
+        "accuracy": 0.8914,
+        "precision": 0.2917,
+        "recall": 0.3625,
+        "f1_score": 0.3233,
+        "roc_auc": 0.8205,
+        "fpr": 0.0678,
+        "true_positives": 91,
+        "false_positives": 221,
+        "false_negatives": 160,
+        "true_negatives": 3037,
+        "support_total": 3509,
+        "anomalies_count": 251
+      },
+      "LSTMAutoencoder": {
+        "accuracy": 0.8165,
+        "precision": 0.1276,
+        "recall": 0.2669,
+        "f1_score": 0.1727,
+        "roc_auc": 0.706,
+        "fpr": 0.1411,
+        "true_positives": 67,
+        "false_positives": 458,
+        "false_negatives": 184,
+        "true_negatives": 2789,
+        "support_total": 3498,
+        "anomalies_count": 251
+      },
+      "SkyGuardHybrid": {
+        "accuracy": 0.2664,
+        "precision": 0.0891,
+        "recall": 1.0,
+        "f1_score": 0.1636,
+        "roc_auc": 0.7725,
+        "fpr": 0.7903,
+        "true_positives": 251,
+        "false_positives": 2566,
+        "false_negatives": 0,
+        "true_negatives": 681,
+        "support_total": 3498,
+        "anomalies_count": 251
+      }
+    }
+  },
+  "mumbai": {
+    "nominal_stability": {
+      "test_records_evaluated": 3509,
+      "if_threshold": 0.4894,
+      "if_clean_pass_rate_pct": 96.27,
+      "if_false_alarm_rate_pct": 3.73,
+      "lstm_threshold": 0.3569,
+      "lstm_clean_pass_rate_pct": 95.0,
+      "lstm_false_alarm_rate_pct": 5.0
+    },
+    "fault_injection_benchmark": {
+      "RuleBased": {
+        "accuracy": 0.9345,
+        "precision": 0.6522,
+        "recall": 0.1793,
+        "f1_score": 0.2812,
+        "roc_auc": "N/A",
+        "fpr": 0.0074,
+        "true_positives": 45,
+        "false_positives": 24,
+        "false_negatives": 206,
+        "true_negatives": 3234,
+        "support_total": 3509,
+        "anomalies_count": 251
+      },
+      "IsolationForest": {
+        "accuracy": 0.8983,
+        "precision": 0.352,
+        "recall": 0.502,
+        "f1_score": 0.4138,
+        "roc_auc": 0.8751,
+        "fpr": 0.0712,
+        "true_positives": 126,
+        "false_positives": 232,
+        "false_negatives": 125,
+        "true_negatives": 3026,
+        "support_total": 3509,
+        "anomalies_count": 251
+      },
+      "LSTMAutoencoder": {
+        "accuracy": 0.793,
+        "precision": 0.1025,
+        "recall": 0.243,
+        "f1_score": 0.1442,
+        "roc_auc": 0.563,
+        "fpr": 0.1645,
+        "true_positives": 61,
+        "false_positives": 534,
+        "false_negatives": 190,
+        "true_negatives": 2713,
+        "support_total": 3498,
+        "anomalies_count": 251
+      },
+      "SkyGuardHybrid": {
+        "accuracy": 0.9051,
+        "precision": 0.2811,
+        "recall": 0.2072,
+        "f1_score": 0.2385,
+        "roc_auc": 0.718,
+        "fpr": 0.041,
+        "true_positives": 52,
+        "false_positives": 133,
+        "false_negatives": 199,
+        "true_negatives": 3114,
+        "support_total": 3498,
+        "anomalies_count": 251
+      }
+    }
+  },
+  "bengaluru": {
+    "nominal_stability": {
+      "test_records_evaluated": 3509,
+      "if_threshold": 0.5055,
+      "if_clean_pass_rate_pct": 94.84,
+      "if_false_alarm_rate_pct": 5.16,
+      "lstm_threshold": 0.4716,
+      "lstm_clean_pass_rate_pct": 95.0,
+      "lstm_false_alarm_rate_pct": 5.0
+    },
+    "fault_injection_benchmark": {
+      "RuleBased": {
+        "accuracy": 0.9336,
+        "precision": 0.6286,
+        "recall": 0.1753,
+        "f1_score": 0.2741,
+        "roc_auc": "N/A",
+        "fpr": 0.008,
+        "true_positives": 44,
+        "false_positives": 26,
+        "false_negatives": 207,
+        "true_negatives": 3232,
+        "support_total": 3509,
+        "anomalies_count": 251
+      },
+      "IsolationForest": {
+        "accuracy": 0.8883,
+        "precision": 0.3259,
+        "recall": 0.5259,
+        "f1_score": 0.4024,
+        "roc_auc": 0.8883,
+        "fpr": 0.0838,
+        "true_positives": 132,
+        "false_positives": 273,
+        "false_negatives": 119,
+        "true_negatives": 2985,
+        "support_total": 3509,
+        "anomalies_count": 251
+      },
+      "LSTMAutoencoder": {
+        "accuracy": 0.7896,
+        "precision": 0.112,
+        "recall": 0.2789,
+        "f1_score": 0.1598,
+        "roc_auc": 0.72,
+        "fpr": 0.1709,
+        "true_positives": 70,
+        "false_positives": 555,
+        "false_negatives": 181,
+        "true_negatives": 2692,
+        "support_total": 3498,
+        "anomalies_count": 251
+      },
+      "SkyGuardHybrid": {
+        "accuracy": 0.8974,
+        "precision": 0.2404,
+        "recall": 0.1992,
+        "f1_score": 0.2179,
+        "roc_auc": 0.8097,
+        "fpr": 0.0487,
+        "true_positives": 50,
+        "false_positives": 158,
+        "false_negatives": 201,
+        "true_negatives": 3089,
+        "support_total": 3498,
+        "anomalies_count": 251
+      }
+    }
+  },
+  "bhopal": {
+    "nominal_stability": {
+      "test_records_evaluated": 3509,
+      "if_threshold": 0.5077,
+      "if_clean_pass_rate_pct": 94.13,
+      "if_false_alarm_rate_pct": 5.87,
+      "lstm_threshold": 0.578,
+      "lstm_clean_pass_rate_pct": 95.0,
+      "lstm_false_alarm_rate_pct": 5.0
+    },
+    "fault_injection_benchmark": {
+      "RuleBased": {
+        "accuracy": 0.9333,
+        "precision": 0.6164,
+        "recall": 0.1793,
+        "f1_score": 0.2778,
+        "roc_auc": "N/A",
+        "fpr": 0.0086,
+        "true_positives": 45,
+        "false_positives": 28,
+        "false_negatives": 206,
+        "true_negatives": 3230,
+        "support_total": 3509,
+        "anomalies_count": 251
+      },
+      "IsolationForest": {
+        "accuracy": 0.8812,
+        "precision": 0.3014,
+        "recall": 0.502,
+        "f1_score": 0.3767,
+        "roc_auc": 0.8724,
+        "fpr": 0.0896,
+        "true_positives": 126,
+        "false_positives": 292,
+        "false_negatives": 125,
+        "true_negatives": 2966,
+        "support_total": 3509,
+        "anomalies_count": 251
+      },
+      "LSTMAutoencoder": {
+        "accuracy": 0.8033,
+        "precision": 0.1239,
+        "recall": 0.2869,
+        "f1_score": 0.1731,
+        "roc_auc": 0.643,
+        "fpr": 0.1568,
+        "true_positives": 72,
+        "false_positives": 509,
+        "false_negatives": 179,
+        "true_negatives": 2738,
+        "support_total": 3498,
+        "anomalies_count": 251
+      },
+      "SkyGuardHybrid": {
+        "accuracy": 0.9059,
+        "precision": 0.299,
+        "recall": 0.2311,
+        "f1_score": 0.2607,
+        "roc_auc": 0.778,
+        "fpr": 0.0419,
+        "true_positives": 58,
+        "false_positives": 136,
+        "false_negatives": 193,
+        "true_negatives": 3111,
+        "support_total": 3498,
+        "anomalies_count": 251
+      }
+    }
+  }
+}

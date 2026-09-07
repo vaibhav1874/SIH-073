@@ -46,9 +46,11 @@ export const Header: React.FC<HeaderProps> = ({
 
   const handleCityChange = async (city: string) => {
     setLiveCity(city);
+    onSelectStation(city.toUpperCase());
     // Immediately reset graphs and alerts so no vertical cliff spike appears
     window.dispatchEvent(new CustomEvent('skyguard:reset-telemetry'));
-    await apiService.setSimulatorMode('live', city);
+    // Preserve current mode when switching city (works for both replay and live)
+    await apiService.setSimulatorMode(simMode, city);
   };
 
   const getStatusBadge = () => {
@@ -85,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-950/98 backdrop-blur-md shadow-lg shadow-black/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo & Identity */}
@@ -198,42 +200,63 @@ export const Header: React.FC<HeaderProps> = ({
                 <span className="sm:hidden">Live</span>
               </button>
 
-              {simMode === 'live' && (
-                <div className="hidden lg:flex items-center gap-1 pl-2 border-l border-slate-800 ml-1">
-                  <Globe className="w-3 h-3 text-emerald-400/80" />
-                  <select
-                    value={liveCity}
-                    onChange={(e) => handleCityChange(e.target.value)}
-                    className="bg-transparent text-[11px] font-medium text-emerald-300 focus:outline-none cursor-pointer pr-1"
-                  >
-                    <option value="abohar" className="bg-slate-900 text-slate-200">Abohar (Punjab)</option>
+              {/* City selector — visible in BOTH modes */}
+              <div className="hidden lg:flex items-center gap-1 pl-2 border-l border-slate-800 ml-1">
+                <Globe className="w-3 h-3 text-sky-400/80" />
+                <select
+                  value={liveCity}
+                  onChange={(e) => handleCityChange(e.target.value)}
+                  className={`bg-transparent text-[11px] font-medium focus:outline-none cursor-pointer pr-1 ${
+                    simMode === 'live' ? 'text-emerald-300' : 'text-amber-300'
+                  }`}
+                >
+                  <optgroup label="─── Punjab ───" className="bg-slate-900 text-slate-400">
+                    <option value="abohar" className="bg-slate-900 text-slate-200">Abohar, Punjab</option>
+                    <option value="amritsar" className="bg-slate-900 text-slate-200">Amritsar, Punjab</option>
+                    <option value="ludhiana" className="bg-slate-900 text-slate-200">Ludhiana, Punjab</option>
+                    <option value="bathinda" className="bg-slate-900 text-slate-200">Bathinda, Punjab</option>
+                    <option value="patiala" className="bg-slate-900 text-slate-200">Patiala, Punjab</option>
+                  </optgroup>
+                  <optgroup label="─── Multi-State ───" className="bg-slate-900 text-slate-400">
                     <option value="delhi" className="bg-slate-900 text-slate-200">Delhi NCT</option>
-                    <option value="chandigarh" className="bg-slate-900 text-slate-200">Chandigarh</option>
-                    <option value="jaipur" className="bg-slate-900 text-slate-200">Jaipur</option>
-                    <option value="bathinda" className="bg-slate-900 text-slate-200">Bathinda</option>
-                    <option value="ludhiana" className="bg-slate-900 text-slate-200">Ludhiana</option>
-                    <option value="amritsar" className="bg-slate-900 text-slate-200">Amritsar</option>
-                    <option value="patiala" className="bg-slate-900 text-slate-200">Patiala</option>
-                    <option value="mumbai" className="bg-slate-900 text-slate-200">Mumbai</option>
-                    <option value="bengaluru" className="bg-slate-900 text-slate-200">Bengaluru</option>
-                  </select>
-                </div>
-              )}
+                    <option value="jaipur" className="bg-slate-900 text-slate-200">Jaipur, Rajasthan</option>
+                    <option value="shimla" className="bg-slate-900 text-slate-200">Shimla, Himachal Pradesh</option>
+                    <option value="mumbai" className="bg-slate-900 text-slate-200">Mumbai, Maharashtra</option>
+                    <option value="bengaluru" className="bg-slate-900 text-slate-200">Bengaluru, Karnataka</option>
+                    <option value="bhopal" className="bg-slate-900 text-slate-200">Bhopal, Madhya Pradesh</option>
+                  </optgroup>
+                </select>
+              </div>
             </div>
 
             {/* Station Dropdown */}
-            <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5">
-              <Radio className="w-3.5 h-3.5 text-sky-400 animate-pulse" />
+            <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 max-w-[200px] sm:max-w-[260px] min-w-0">
+              <Radio className="w-3.5 h-3.5 text-sky-400 animate-pulse shrink-0" />
               <select
                 value={selectedStationId}
-                onChange={(e) => onSelectStation(e.target.value)}
-                className="bg-transparent text-xs font-medium text-slate-200 focus:outline-none cursor-pointer"
+                onChange={(e) => {
+                  const newSt = e.target.value;
+                  onSelectStation(newSt);
+                  setLiveCity(newSt.toLowerCase());
+                  window.dispatchEvent(new CustomEvent('skyguard:reset-telemetry'));
+                  apiService.setSimulatorMode(simMode, newSt.toLowerCase());
+                }}
+                className="bg-transparent text-xs font-medium text-slate-200 focus:outline-none cursor-pointer w-full truncate"
               >
-                {stations.map((st) => (
-                  <option key={st.id} value={st.id} className="bg-slate-900 text-slate-200">
-                    {st.name} ({st.id})
-                  </option>
-                ))}
+                <optgroup label="─── Punjab Stations ───" className="bg-slate-900 text-slate-400 font-semibold">
+                  {stations.filter((s) => s.state?.includes('Punjab')).map((st) => (
+                    <option key={st.id} value={st.id} className="bg-slate-900 text-slate-200">
+                      {st.name} ({st.id})
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="─── Multi-State IMD Stations ───" className="bg-slate-900 text-slate-400 font-semibold">
+                  {stations.filter((s) => !s.state?.includes('Punjab')).map((st) => (
+                    <option key={st.id} value={st.id} className="bg-slate-900 text-slate-200">
+                      {st.name} ({st.id})
+                    </option>
+                  ))}
+                </optgroup>
               </select>
             </div>
 
