@@ -128,12 +128,19 @@ def run_simulator(api_url: str, interval_sec: float, loop: bool = True, mode: st
                 if remote_mode != mode:
                     print(f"[Simulator] Mode switch: {mode.upper()} -> {remote_mode.upper()}")
                     mode = remote_mode
+                    sub_step = 0
+                    row_idx = 0
+                    drift_val = 0.0
+                    local_fault = None
                 remote_city = m_data.get("city", "").strip().lower()
                 if remote_city and remote_city in CITY_COORDINATES:
                     c_lat, c_lon = CITY_COORDINATES[remote_city]
                     if c_lat != lat or c_lon != lon:
                         lat, lon = c_lat, c_lon
                         location_label = remote_city.upper()
+                        sub_step = 0
+                        drift_val = 0.0
+                        local_fault = None
                         print(f"[Simulator] Location updated: {location_label} ({lat}, {lon})")
         except Exception:
             pass

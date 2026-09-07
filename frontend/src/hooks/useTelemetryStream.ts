@@ -55,7 +55,16 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
           ensemble_score: r.ensemble_score <= 1.0 ? r.ensemble_score * 100 : r.ensemble_score,
         }));
 
-        setTelemetryHistory(normalized);
+        // Filter out any historical readings from a prior regime across a >10°C mode switch jump
+        let cleanHistory = normalized;
+        for (let i = normalized.length - 1; i > 0; i--) {
+          if (Math.abs(normalized[i].temperature - normalized[i - 1].temperature) > 10.0) {
+            cleanHistory = normalized.slice(i);
+            break;
+          }
+        }
+
+        setTelemetryHistory(cleanHistory);
 
         if (normalized.length > 0) {
           const last = normalized[normalized.length - 1];
@@ -136,6 +145,17 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
     };
     window.addEventListener('skyguard:fault_injected', handleInjected);
     return () => window.removeEventListener('skyguard:fault_injected', handleInjected);
+  }, []);
+
+  // Listen for telemetry regime / mode change reset events to clear graph history
+  useEffect(() => {
+    const handleReset = () => {
+      setTelemetryHistory([]);
+      setActiveAlert(null);
+      lastDismissedAlertRef.current = null;
+    };
+    window.addEventListener('skyguard:reset-telemetry', handleReset);
+    return () => window.removeEventListener('skyguard:reset-telemetry', handleReset);
   }, []);
 
   // Natural diurnal simulation generator only used when offline
@@ -288,7 +308,14 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
 
       socket.onmessage = (event) => {
         try {
-          const payload: LiveTelemetryPayload = JSON.parse(event.data);
+          const payload: any = JSON.parse(event.data);
+          if (payload.type === 'RESET_HISTORY') {
+            setTelemetryHistory([]);
+            setActiveAlert(null);
+            lastDismissedAlertRef.current = null;
+            return;
+          }
+
           if (payload.type === 'TELEMETRY_UPDATE' && payload.data) {
             const data = payload.data;
 
@@ -325,6 +352,16 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
               };
 
               setTelemetryHistory((prev) => {
+                if (prev.length > 0) {
+                  const lastReading = prev[prev.length - 1];
+                  const tempJump = Math.abs(data.temperature - lastReading.temperature);
+                  // Detect regime shift discontinuity (>10°C abrupt jump between historical and live modes)
+                  if (tempJump > 10.0) {
+                    setActiveAlert(null);
+                    lastDismissedAlertRef.current = null;
+                    return [historyItem];
+                  }
+                }
                 const updated = [...prev, historyItem];
                 return updated.slice(-40);
               });
