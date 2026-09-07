@@ -95,6 +95,14 @@ class AnomalyDetector:
 
         print(f"[AnomalyDetector] Loading models for city: {city.upper()}...")
 
+        # Explicitly release previous city model tensors from memory
+        self.if_model = None
+        self.if_scaler = None
+        self.lstm_model = None
+        self.lstm_scaler = None
+        import gc
+        gc.collect()
+
         self.if_feature_names = FEATURE_NAMES
         self.lstm_feature_names = CORE_FEATURES
 

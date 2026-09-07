@@ -3,16 +3,44 @@ SkyGuard AI - Telemetry Ingestion API Endpoint
 SIH26073 - Intelligent Real-Time Anomaly Detection System for AWS
 """
 
+import gc
+import ctypes
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.app.database.session import get_db
+from backend.app.database.session import get_db, AsyncSessionLocal
 from backend.app.db_models.models import TelemetryReading, AnomalyAlert
 from backend.app.schemas.schemas import TelemetryInput
 from backend.app.services.anomaly_detector import anomaly_detector
 from backend.app.api.websocket import ws_manager
 
 router = APIRouter(prefix="/api/telemetry", tags=["Telemetry"])
+
+# Global ingestion counter to schedule periodic memory reclamation
+_packet_count: int = 0
+
+# Safe glibc memory trim for low-RAM Linux Docker containers (Render 512MB)
+try:
+    _libc = ctypes.CDLL("libc.so.6")
+    def _trim_system_memory():
+        gc.collect()
+        _libc.malloc_trim(0)
+except Exception:
+    def _trim_system_memory():
+        gc.collect()
+
+
+async def _prune_old_readings():
+    """Retains the most recent 250 telemetry records to keep SQLite in-memory footprint negligible."""
+    try:
+        async with AsyncSessionLocal() as session:
+            await session.execute(
+                text("DELETE FROM telemetry_readings WHERE id NOT IN (SELECT id FROM telemetry_readings ORDER BY id DESC LIMIT 250)")
+            )
+            await session.commit()
+    except Exception:
+        pass
 
 
 @router.post("")
@@ -106,6 +134,14 @@ async def ingest_telemetry(
 
     # Asynchronous broadcast without blocking response
     background_tasks.add_task(ws_manager.broadcast, ws_payload)
+
+    # Periodic memory reclamation on low-RAM containers
+    global _packet_count
+    _packet_count += 1
+    if _packet_count % 30 == 0:
+        background_tasks.add_task(_trim_system_memory)
+    if _packet_count % 100 == 0:
+        background_tasks.add_task(_prune_old_readings)
 
     return {
         "status": "processed",
