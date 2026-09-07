@@ -38,12 +38,16 @@ export const Header: React.FC<HeaderProps> = ({
   const handleToggleMode = async (mode: 'replay' | 'live') => {
     setIsSwitching(true);
     setSimMode(mode);
+    // Immediately reset graphs and alerts so no vertical cliff spike appears
+    window.dispatchEvent(new CustomEvent('skyguard:reset-telemetry'));
     await apiService.setSimulatorMode(mode, liveCity);
     setIsSwitching(false);
   };
 
   const handleCityChange = async (city: string) => {
     setLiveCity(city);
+    // Immediately reset graphs and alerts so no vertical cliff spike appears
+    window.dispatchEvent(new CustomEvent('skyguard:reset-telemetry'));
     await apiService.setSimulatorMode('live', city);
   };
 

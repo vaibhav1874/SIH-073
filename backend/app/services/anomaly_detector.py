@@ -179,6 +179,13 @@ class AnomalyDetector:
         # Triggered if rule violated OR ensemble exceeds threshold (0.55) OR both ML models flag it
         is_anomaly = bool(rule_res["is_violation"] or ensemble_score >= 0.55 or (if_flag and lstm_flag))
 
+        # Baseline stabilization safeguard: after regime switch or cold start (<= 2 readings),
+        # require baseline to stabilize to prevent false rate-of-change flags
+        if len(buffer) <= 2:
+            is_anomaly = False
+            ensemble_score = min(ensemble_score, 0.08)
+            rule_score = 0.0
+
         # 6. XGBoost Root Cause Classification
         root_cause = "normal"
         root_cause_probs = {}

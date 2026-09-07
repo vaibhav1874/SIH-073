@@ -19,12 +19,18 @@ class KalmanFilter1D:
         self.r = measurement_noise  # Measurement noise covariance
         self.k = 0.0            # Kalman gain
 
-    def update(self, measurement: float, is_anomalous: bool = False) -> float:
+    def update(self, measurement: float, is_anomalous: bool = False, max_regime_jump: float = 10.0) -> float:
         # Time update (Prediction)
         self.p = self.p + self.q
 
         if is_anomalous:
             # If measurement is an anomaly, don't assimilate outlier. Rely on process prediction.
+            return round(float(self.x), 2)
+
+        # Discontinuity / regime shift realignment: snap state immediately to prevent lag
+        if abs(measurement - self.x) > max_regime_jump:
+            self.x = measurement
+            self.p = 1.0
             return round(float(self.x), 2)
 
         # Measurement update
@@ -82,8 +88,9 @@ class SensorCorrector:
             sensor_anomalous = is_anomaly and (sensor in affected_sensors or "all" in affected_sensors)
             kf = self._get_or_init_filter(station_id, sensor, val if not sensor_anomalous else 25.0)
 
-            # Filter or impute
-            smoothed_val = kf.update(val, is_anomalous=sensor_anomalous)
+            # Filter or impute with auto-realignment on regime jumps
+            jump_thresh = 10.0 if sensor == "temperature" else (25.0 if sensor == "humidity" else 12.0)
+            smoothed_val = kf.update(val, is_anomalous=sensor_anomalous, max_regime_jump=jump_thresh)
             corrected[sensor] = smoothed_val
 
         return corrected
