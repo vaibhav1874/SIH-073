@@ -12,6 +12,7 @@ from backend.app.api.telemetry import router as telemetry_router
 from backend.app.api.alerts import router as alerts_router
 from backend.app.api.benchmark import router as benchmark_router
 from backend.app.api.faults import router as faults_router
+from backend.app.api.simulator import router as simulator_router
 from backend.app.api.websocket import ws_manager
 
 
@@ -47,6 +48,7 @@ app.include_router(telemetry_router)
 app.include_router(alerts_router)
 app.include_router(benchmark_router)
 app.include_router(faults_router)
+app.include_router(simulator_router)
 
 
 @app.get("/")

@@ -104,7 +104,7 @@ def run_simulator(api_url: str, interval_sec: float, loop: bool = True, mode: st
         print(f"[Simulator] Live Station GPS Target: {location_label} ({lat}, {lon})")
         # Pre-fetch initial real-time reading
         fetch_live_openmeteo(lat, lon)
-    df = load_stream_dataset() if mode == "replay" else pd.DataFrame()
+    df = load_stream_dataset()
     row_idx = 0
     sub_step = 0
     STEPS_PER_HOUR = 60  # Smoothly interpolate across 60 steps (2 mins per hour) so delta T per tick is realistic (~0.01C)
@@ -119,9 +119,28 @@ def run_simulator(api_url: str, interval_sec: float, loop: bool = True, mode: st
     while True:
         sim_clock = datetime.now()
 
+        # Check backend for dynamic mode changes from Dashboard (Replay vs Live, City selection)
+        try:
+            m_resp = requests.get(f"{api_url}/api/simulator/mode", timeout=0.8)
+            if m_resp.status_code == 200:
+                m_data = m_resp.json()
+                remote_mode = m_data.get("mode", mode)
+                if remote_mode != mode:
+                    print(f"[Simulator] Mode switch: {mode.upper()} -> {remote_mode.upper()}")
+                    mode = remote_mode
+                remote_city = m_data.get("city", "").strip().lower()
+                if remote_city and remote_city in CITY_COORDINATES:
+                    c_lat, c_lon = CITY_COORDINATES[remote_city]
+                    if c_lat != lat or c_lon != lon:
+                        lat, lon = c_lat, c_lon
+                        location_label = remote_city.upper()
+                        print(f"[Simulator] Location updated: {location_label} ({lat}, {lon})")
+        except Exception:
+            pass
+
         # Check backend for active fault injection if triggered from UI
         try:
-            f_resp = requests.get(f"{api_url}/api/fault/status", timeout=1.0)
+            f_resp = requests.get(f"{api_url}/api/fault/status", timeout=0.8)
             if f_resp.status_code == 200:
                 f_json = f_resp.json()
                 if f_json.get("is_active"):
