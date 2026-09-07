@@ -5,6 +5,7 @@ import { useTelemetryStream } from './hooks/useTelemetryStream';
 
 import { Header } from './components/Navigation/Header';
 import { TelemetryCards } from './components/Dashboard/TelemetryCards';
+import { LivePipelineFlow } from './components/Dashboard/LivePipelineFlow';
 import { TelemetryCharts } from './components/Dashboard/TelemetryCharts';
 import { AIDiagnosisPanel } from './components/AnomalyAlert/AIDiagnosisPanel';
 import { HealthMatrix } from './components/SensorHealth/HealthMatrix';
@@ -68,11 +69,14 @@ export const App: React.FC = () => {
       <AlertToast alert={activeAlert} onDismiss={clearAlert} />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      <main className="flex-1 max-w-[1700px] w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-6">
         {/* TAB 1: LIVE AWS MONITOR */}
         {activeTab === 'monitor' && (
           <div className="space-y-6">
-            {/* Top Cards: Temperature, Humidity, Pressure */}
+            {/* Real-Time Telemetry Pipeline Flow Architecture */}
+            <LivePipelineFlow telemetry={latestTelemetry} />
+
+            {/* Top Cards: Temperature, Humidity, Pressure with Arc Gauges */}
             <TelemetryCards telemetry={latestTelemetry} />
 
             {/* Mid Grid: Charts (2 cols) & Station GIS Map (1 col) */}
