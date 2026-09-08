@@ -14,12 +14,22 @@ import { AlertToast } from './components/AnomalyAlert/AlertToast';
 import { AlertLogTable } from './components/AnomalyAlert/AlertLogTable';
 import { FaultControlPanel } from './components/FaultInjector/FaultControlPanel';
 import { BenchmarkHub } from './components/Metrics/BenchmarkHub';
+import { LandingPage } from './components/Landing/LandingPage';
 
 export const App: React.FC = () => {
   const [stations, setStations] = useState<Station[]>([]);
   const [selectedStationId, setSelectedStationId] = useState<string>('ABOHAR');
   const [activeTab, setActiveTab] = useState<'monitor' | 'alerts' | 'faults' | 'benchmark'>('monitor');
   const [alerts, setAlerts] = useState<AnomalyAlert[]>([]);
+  const [currentView, setCurrentView] = useState<'landing' | 'dashboard'>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('view') === 'dashboard' || window.location.hash === '#dashboard') {
+        return 'dashboard';
+      }
+    }
+    return 'landing';
+  });
 
   // Telemetry stream hook
   const {
@@ -49,8 +59,28 @@ export const App: React.FC = () => {
     setAlerts(alts);
   };
 
+  const handleLaunchDashboard = (tab?: 'monitor' | 'alerts' | 'faults' | 'benchmark', stationId?: string) => {
+    if (tab) setActiveTab(tab);
+    if (stationId) setSelectedStationId(stationId.toUpperCase());
+    setCurrentView('dashboard');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const selectedStation = stations.find((s) => s.id === selectedStationId) || stations[0];
   const activeAlertCount = alerts.filter((a) => !a.is_acknowledged).length;
+
+  // Render Landing Page
+  if (currentView === 'landing') {
+    return (
+      <LandingPage
+        onLaunchDashboard={handleLaunchDashboard}
+        stations={stations}
+        selectedStationId={selectedStationId}
+        latestTelemetry={latestTelemetry}
+        connectionStatus={connectionStatus}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-sky-500 selection:text-white">
@@ -63,6 +93,10 @@ export const App: React.FC = () => {
         activeTab={activeTab}
         onSelectTab={setActiveTab}
         activeAlertCount={activeAlertCount}
+        onGoToLanding={() => {
+          setCurrentView('landing');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
       />
 
       {/* Floating Anomaly Toast */}
