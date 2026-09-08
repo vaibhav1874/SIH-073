@@ -111,3 +111,15 @@ export interface LiveTelemetryPayload {
     latency_ms: number;
   };
 }
+
+export interface StaffUser {
+  id: string;
+  name: string;
+  email: string;
+  badgeId: string;
+  role: 'officer' | 'engineer' | 'scientist';
+  department: string;
+  assignedStation: string;
+  clearanceLevel: string;
+  isLoggedIn: boolean;
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Station, AnomalyAlert } from './types';
+import { Station, AnomalyAlert, StaffUser } from './types';
 import { apiService } from './services/api';
 import { useTelemetryStream } from './hooks/useTelemetryStream';
 
@@ -15,12 +15,26 @@ import { AlertLogTable } from './components/AnomalyAlert/AlertLogTable';
 import { FaultControlPanel } from './components/FaultInjector/FaultControlPanel';
 import { BenchmarkHub } from './components/Metrics/BenchmarkHub';
 import { LandingPage } from './components/Landing/LandingPage';
+import { StaffAuthModal, PRESET_OFFICERS } from './components/Auth/StaffAuthModal';
 
 export const App: React.FC = () => {
   const [stations, setStations] = useState<Station[]>([]);
   const [selectedStationId, setSelectedStationId] = useState<string>('ABOHAR');
   const [activeTab, setActiveTab] = useState<'monitor' | 'alerts' | 'faults' | 'benchmark'>('monitor');
   const [alerts, setAlerts] = useState<AnomalyAlert[]>([]);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<StaffUser | null>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('skyguard_auth_user');
+        if (saved) return JSON.parse(saved);
+      } catch (err) {
+        console.error('Failed to parse saved user', err);
+      }
+    }
+    return PRESET_OFFICERS.officer;
+  });
+
   const [currentView, setCurrentView] = useState<'landing' | 'dashboard'>(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
@@ -66,19 +80,40 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleLoginSuccess = (user: StaffUser) => {
+    setCurrentUser(user);
+    if (user.assignedStation && user.assignedStation !== 'ALL') {
+      setSelectedStationId(user.assignedStation);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('skyguard_auth_user');
+    setCurrentUser(null);
+  };
+
   const selectedStation = stations.find((s) => s.id === selectedStationId) || stations[0];
   const activeAlertCount = alerts.filter((a) => !a.is_acknowledged).length;
 
   // Render Landing Page
   if (currentView === 'landing') {
     return (
-      <LandingPage
-        onLaunchDashboard={handleLaunchDashboard}
-        stations={stations}
-        selectedStationId={selectedStationId}
-        latestTelemetry={latestTelemetry}
-        connectionStatus={connectionStatus}
-      />
+      <>
+        <LandingPage
+          onLaunchDashboard={handleLaunchDashboard}
+          stations={stations}
+          selectedStationId={selectedStationId}
+          latestTelemetry={latestTelemetry}
+          connectionStatus={connectionStatus}
+          currentUser={currentUser}
+          onOpenAuth={() => setIsAuthModalOpen(true)}
+        />
+        <StaffAuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+          onLoginSuccess={handleLoginSuccess}
+        />
+      </>
     );
   }
 
@@ -93,10 +128,20 @@ export const App: React.FC = () => {
         activeTab={activeTab}
         onSelectTab={setActiveTab}
         activeAlertCount={activeAlertCount}
+        currentUser={currentUser}
+        onOpenAuth={() => setIsAuthModalOpen(true)}
+        onLogout={handleLogout}
         onGoToLanding={() => {
           setCurrentView('landing');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
+      />
+
+      {/* Staff Authentication Modal */}
+      <StaffAuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
       />
 
       {/* Floating Anomaly Toast */}

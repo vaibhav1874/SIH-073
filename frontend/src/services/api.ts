@@ -83,7 +83,11 @@ export const apiService = {
     try {
       const res = await fetch(`${API_BASE}/stations/${stationId}/readings?limit=${limit}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        return data;
+      }
+      throw new Error('No historical readings in DB for this station');
     } catch {
       // Generate synthetic chronological baseline for visualization
       const now = Date.now();
