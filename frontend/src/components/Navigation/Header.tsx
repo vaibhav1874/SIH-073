@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Station } from '../../types';
 import { ConnectionStatus } from '../../hooks/useTelemetryStream';
-import { CloudLightning, Radio, Activity, ShieldAlert, Cpu, Wrench, BarChart2, History, Wifi, UserCheck, Shield, ChevronDown, Check, Volume2, VolumeX } from 'lucide-react';
+import { CloudLightning, Radio, Activity, ShieldAlert, Cpu, Wrench, BarChart2, History, Wifi, UserCheck, Shield, ChevronDown, Check, Volume2, VolumeX, Compass } from 'lucide-react';
 import { apiService } from '../../services/api';
 
 interface HeaderProps {
@@ -12,6 +12,7 @@ interface HeaderProps {
   activeTab: 'monitor' | 'alerts' | 'faults' | 'benchmark';
   onSelectTab: (tab: 'monitor' | 'alerts' | 'faults' | 'benchmark') => void;
   activeAlertCount: number;
+  onGoToLanding?: () => void;
 }
 
 export type UserRole = 'officer' | 'engineer' | 'scientist';
@@ -60,6 +61,7 @@ export const Header: React.FC<HeaderProps> = ({
   activeTab,
   onSelectTab,
   activeAlertCount,
+  onGoToLanding,
 }) => {
   const currentStation = stations.find((s) => s.id === selectedStationId) || stations[0];
   const [simMode, setSimMode] = useState<'replay' | 'live'>('live');
@@ -138,13 +140,17 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-[1700px] w-full mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-3">
           {/* Logo & Identity - strictly protected against flex squishing */}
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="p-2 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white shadow-lg shadow-sky-500/20 ring-1 ring-white/20 shrink-0">
+          <div
+            onClick={onGoToLanding}
+            className={`flex items-center gap-3 shrink-0 ${onGoToLanding ? 'cursor-pointer group select-none' : ''}`}
+            title={onGoToLanding ? "Return to SkyGuard AI Landing Page" : undefined}
+          >
+            <div className="p-2 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white shadow-lg shadow-sky-500/20 ring-1 ring-white/20 shrink-0 group-hover:ring-sky-400 transition-all">
               <CloudLightning className="w-5 h-5" />
             </div>
             <div className="shrink-0">
               <div className="flex items-center gap-2">
-                <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-sky-400 via-indigo-300 to-white bg-clip-text text-transparent whitespace-nowrap">
+                <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-sky-400 via-indigo-300 to-white bg-clip-text text-transparent whitespace-nowrap group-hover:from-sky-300 transition-all">
                   SkyGuard AI
                 </span>
                 <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-sky-950/80 border border-sky-500/30 text-sky-400 font-semibold tracking-wider shrink-0">
@@ -159,6 +165,17 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Navigation Tabs */}
           <nav className="hidden md:flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+            {onGoToLanding && (
+              <button
+                onClick={onGoToLanding}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-sky-300 hover:bg-slate-800/50 transition-all border-r border-slate-800/80 pr-3 mr-1"
+                title="Return to SkyGuard AI Portal Overview"
+              >
+                <Compass className="w-3.5 h-3.5 text-sky-400" />
+                <span>Portal</span>
+              </button>
+            )}
+
             <button
               onClick={() => onSelectTab('monitor')}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
