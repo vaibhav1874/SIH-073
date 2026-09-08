@@ -25,8 +25,11 @@ import {
   Snowflake,
   Sun,
   Wind,
-  Gauge
+  Gauge,
+  Lock,
+  LogIn
 } from 'lucide-react';
+import { StaffUser } from '../../types';
 
 interface LandingPageProps {
   onLaunchDashboard: (tab?: 'monitor' | 'alerts' | 'faults' | 'benchmark', stationId?: string) => void;
@@ -34,6 +37,8 @@ interface LandingPageProps {
   selectedStationId: string;
   latestTelemetry?: LiveTelemetryPayload['data'] | null;
   connectionStatus: string;
+  currentUser?: StaffUser | null;
+  onOpenAuth?: () => void;
 }
 
 const STATION_CLIMATES: Record<string, { climate: string; icon: any; color: string; desc: string }> = {
@@ -52,6 +57,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   selectedStationId,
   latestTelemetry,
   connectionStatus,
+  currentUser,
+  onOpenAuth,
 }) => {
   const [activePipelineTab, setActivePipelineTab] = useState<number>(0);
 
@@ -142,12 +149,27 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <a href="#benchmarks" className="hover:text-sky-400 transition-colors">Benchmarks</a>
           </nav>
 
-          {/* Right Action: Live Status & Enter Dashboard */}
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
+          {/* Right Action: Live Status, Staff Auth & Enter Dashboard */}
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
               <span>PIPELINE NOMINAL</span>
             </div>
+
+            {onOpenAuth && (
+              <button
+                id="landing-staff-auth-btn"
+                onClick={onOpenAuth}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-700/80 shadow-sm transition-all"
+                title="MoES / IMD Staff Login & Field Officer Registration"
+              >
+                <Lock className="w-3.5 h-3.5 text-sky-400" />
+                <span className="hidden sm:inline">
+                  {currentUser?.name ? `${currentUser.name.split(' ')[0]} (${currentUser.badgeId})` : 'Staff Gateway'}
+                </span>
+                <span className="sm:hidden">Staff</span>
+              </button>
+            )}
 
             <button
               id="launch-dashboard-header-btn"
