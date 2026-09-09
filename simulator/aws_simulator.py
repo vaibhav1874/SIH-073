@@ -60,20 +60,16 @@ CITY_COORDINATES = {
     "guwahati":  (26.1445, 91.7362),
 }
 
-# Live Open-Meteo cache state
-_live_cache = {
-    "last_fetch": 0.0,
-    "temp": 24.0,
-    "humidity": 55.0,
-    "pressure": 1012.0,
-}
+# Live Open-Meteo cache state keyed by (lat, lon)
+_live_cache = {}
 
 
 def fetch_live_openmeteo(lat: float, lon: float) -> dict:
-    """Fetch live meteorological observations from Open-Meteo free API (cached for 60s)"""
+    """Fetch live meteorological observations from Open-Meteo free API (cached for 60s per coordinate)"""
+    coord_key = f"{round(lat, 2)}_{round(lon, 2)}"
     now = time.time()
-    if now - _live_cache["last_fetch"] < 60.0:
-        return _live_cache
+    if coord_key in _live_cache and (now - _live_cache[coord_key]["last_fetch"] < 60.0):
+        return _live_cache[coord_key]
 
     try:
         url = (
@@ -85,15 +81,21 @@ def fetch_live_openmeteo(lat: float, lon: float) -> dict:
         if resp.status_code == 200:
             data = resp.json()
             curr = data.get("current", {})
-            _live_cache["temp"] = float(curr.get("temperature_2m", _live_cache["temp"]))
-            _live_cache["humidity"] = float(curr.get("relative_humidity_2m", _live_cache["humidity"]))
-            _live_cache["pressure"] = float(curr.get("surface_pressure", _live_cache["pressure"]))
-            _live_cache["last_fetch"] = now
-            print(f"[Simulator Live] Fetched live Open-Meteo weather: {_live_cache['temp']}°C, {_live_cache['humidity']}%, {_live_cache['pressure']} hPa")
+            _live_cache[coord_key] = {
+                "temp": float(curr.get("temperature_2m", 25.0)),
+                "humidity": float(curr.get("relative_humidity_2m", 55.0)),
+                "pressure": float(curr.get("surface_pressure", 1012.0)),
+                "last_fetch": now,
+            }
+            print(f"[Simulator Live] Fetched live Open-Meteo weather for ({lat}, {lon}): {_live_cache[coord_key]['temp']}°C, {_live_cache[coord_key]['humidity']}%, {_live_cache[coord_key]['pressure']} hPa")
+            return _live_cache[coord_key]
     except Exception as e:
-        print(f"[Simulator Live] Notice: Could not refresh Open-Meteo ({e}), using last reading.")
+        print(f"[Simulator Live] Notice: Could not refresh Open-Meteo ({e}), using fallback.")
 
-    return _live_cache
+    if coord_key in _live_cache:
+        return _live_cache[coord_key]
+
+    return {"temp": 25.0, "humidity": 55.0, "pressure": 1012.0, "last_fetch": now}
 
 
 def load_stream_dataset(city: str = "abohar") -> pd.DataFrame:
@@ -171,6 +173,7 @@ def run_simulator(api_url: str, interval_sec: float, loop: bool = True, mode: st
                     # Reload replay dataset if city changed (for historical mode)
                     if remote_city != current_city:
                         print(f"[Simulator] City changed: {current_city.upper()} -> {remote_city.upper()}. Reloading dataset...")
+                        _live_cache.clear()
                         current_city = remote_city
                         df = load_stream_dataset(current_city)
                         total_rows = len(df)

@@ -12,7 +12,7 @@
 4. [The Self-Healing Mechanism (Kalman Filter Gating)](#4-the-self-healing-mechanism-kalman-filter-gating)
 5. [Step-by-Step Jury Demo Script (Word-for-Word Pitch)](#5-step-by-step-jury-demo-script-word-for-word-pitch)
 6. [Live Demo Walkthrough & Click Flow](#6-live-demo-walkthrough--click-flow)
-7. [Tough Jury Questions & Winning Answers (FAQ)](#7-tough-jury-questions--winning-answers-faq)
+7. [Tough Jury Questions & Winning Answers (FAQ)]http://localhost:5173/(#7-tough-jury-questions--winning-answers-faq)
 8. [Hardware & Edge Deployment Feasibility](#8-hardware--edge-deployment-feasibility)
 
 ---
