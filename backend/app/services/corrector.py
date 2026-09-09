@@ -29,15 +29,18 @@ class KalmanFilter1D:
         # Innovation gating:
         # If upstream ensemble flags the sensor as anomalous OR innovation residual exceeds physical plausibility
         if is_anomalous or residual > max_residual:
-            self.consecutive_rejects += 1
-            # If the measurement is physically plausible and persists for 3+ ticks,
-            # this is a station regime change or geographic switch, not a transient spike!
-            is_physically_sane = -20.0 <= measurement <= 60.0 or 800.0 <= measurement <= 1080.0
-            if self.consecutive_rejects >= 3 and is_physically_sane and not (measurement in [-99.0, 0.0, 999.0]):
-                self.x = float(measurement)
-                self.p = 1.0
+            if not is_anomalous:
+                self.consecutive_rejects += 1
+                # If upstream ensemble confirms reading is NOT anomalous, but residual persists
+                # for 10+ ticks (e.g. valid natural weather regime change), allow smooth convergence
+                is_physically_sane = -20.0 <= measurement <= 60.0 or 800.0 <= measurement <= 1080.0
+                if self.consecutive_rejects >= 10 and is_physically_sane and not (measurement in [-99.0, 0.0, 999.0]):
+                    self.x = float(measurement)
+                    self.p = 1.0
+                    self.consecutive_rejects = 0
+                    return round(float(self.x), 2)
+            else:
                 self.consecutive_rejects = 0
-                return round(float(self.x), 2)
 
             # Outlier rejected! Maintain estimated atmospheric baseline without corrupting state.
             return round(float(self.x), 2)
