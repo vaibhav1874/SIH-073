@@ -85,11 +85,16 @@ export const App: React.FC = () => {
     if (user.assignedStation && user.assignedStation !== 'ALL') {
       setSelectedStationId(user.assignedStation);
     }
+    // Redirect directly to mission control dashboard on login or signup
+    setCurrentView('dashboard');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleLogout = () => {
     localStorage.removeItem('skyguard_auth_user');
     setCurrentUser(null);
+    setCurrentView('landing');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const selectedStation = stations.find((s) => s.id === selectedStationId) || stations[0];
