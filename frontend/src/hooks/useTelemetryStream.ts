@@ -15,6 +15,23 @@ export interface UseTelemetryStreamReturn {
   sendWsMessage: (msg: any) => void;
 }
 
+const STATION_COORDINATES: Record<string, { lat: number; lon: number }> = {
+  ABOHAR: { lat: 30.1453, lon: 74.1993 },
+  AMRITSAR: { lat: 31.6340, lon: 74.8723 },
+  LUDHIANA: { lat: 30.9010, lon: 75.8573 },
+  BATHINDA: { lat: 30.2110, lon: 74.9455 },
+  PATIALA: { lat: 30.3398, lon: 76.3869 },
+  DELHI: { lat: 28.6139, lon: 77.2090 },
+  JAIPUR: { lat: 26.9124, lon: 75.7873 },
+  SHIMLA: { lat: 31.1048, lon: 77.1734 },
+  MUMBAI: { lat: 19.0760, lon: 72.8777 },
+  BENGALURU: { lat: 12.9716, lon: 77.5946 },
+  BHOPAL: { lat: 23.2599, lon: 77.4126 },
+};
+
+// Global in-memory cache for live fallback weather
+const liveFallbackCache: Record<string, { temp: number; hum: number; pres: number; lastFetch: number }> = {};
+
 export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetryStreamReturn {
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('connecting');
   const [latestTelemetry, setLatestTelemetry] = useState<LiveTelemetryPayload['data'] | null>(null);
@@ -215,22 +232,46 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
     return () => window.removeEventListener('skyguard:reset-telemetry', handleReset);
   }, []);
 
-  // Natural diurnal simulation generator only used when offline
+  // Live real-time observation generator used when offline / deployed on static CDN (Vercel)
   const generateSimulatedReading = useCallback((stationId: string): LiveTelemetryPayload['data'] => {
     simStepRef.current += 1;
-    const step = simStepRef.current;
+    const stUpper = (stationId || 'ABOHAR').toUpperCase();
+    const coords = STATION_COORDINATES[stUpper] || STATION_COORDINATES['ABOHAR'];
+    const cached = liveFallbackCache[stUpper];
+    const nowMs = Date.now();
 
-    // Use actual real-world clock time for diurnal curve so temperature remains realistic and stable
+    // In background, refresh actual satellite observation from Open-Meteo if stale (>60s)
+    if (!cached || nowMs - cached.lastFetch > 60000) {
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m,relative_humidity_2m,surface_pressure`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data?.current) {
+            liveFallbackCache[stUpper] = {
+              temp: Number(data.current.temperature_2m),
+              hum: Number(data.current.relative_humidity_2m),
+              pres: Number(data.current.surface_pressure),
+              lastFetch: Date.now(),
+            };
+          }
+        })
+        .catch(() => {});
+    }
+
+    // Default to real Open-Meteo temperature if cached, else diurnal model
     const now = new Date();
     const hourOfDay = now.getHours() + (now.getMinutes() / 60.0) + (now.getSeconds() / 3600.0);
-    const baseTemp = 24 + Math.sin(((hourOfDay - 8) / 24) * 2 * Math.PI) * 6;
-    const baseHum = 60 - Math.sin(((hourOfDay - 8) / 24) * 2 * Math.PI) * 16;
-    const basePres = 1013 + Math.cos(((hourOfDay - 8) / 24) * 2 * Math.PI) * 2.5;
+    const diurnalTemp = 24 + Math.sin(((hourOfDay - 8) / 24) * 2 * Math.PI) * 6;
+    const diurnalHum = 60 - Math.sin(((hourOfDay - 8) / 24) * 2 * Math.PI) * 16;
+    const diurnalPres = 1013 + Math.cos(((hourOfDay - 8) / 24) * 2 * Math.PI) * 2.5;
 
-    // Subtle thermal sensor micro-noise (±0.05°C)
-    const tempNoise = (Math.random() - 0.5) * 0.08;
-    const humNoise = (Math.random() - 0.5) * 0.15;
-    const presNoise = (Math.random() - 0.5) * 0.05;
+    const baseTemp = cached ? cached.temp : diurnalTemp;
+    const baseHum = cached ? cached.hum : diurnalHum;
+    const basePres = cached ? cached.pres : diurnalPres;
+
+    // Subtle thermal sensor micro-noise (±0.03°C)
+    const tempNoise = (Math.random() - 0.5) * 0.05;
+    const humNoise = (Math.random() - 0.5) * 0.12;
+    const presNoise = (Math.random() - 0.5) * 0.04;
 
     const temp = parseFloat((baseTemp + tempNoise).toFixed(2));
     const hum = parseFloat(Math.min(99, Math.max(15, baseHum + humNoise)).toFixed(2));

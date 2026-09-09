@@ -18,6 +18,7 @@ class KalmanFilter1D:
         self.q = process_noise         # Process noise covariance
         self.r = measurement_noise     # Measurement noise covariance
         self.k = 0.0                   # Kalman gain
+        self.consecutive_rejects = 0   # Recovery counter for regime switches
 
     def update(self, measurement: float, is_anomalous: bool = False, max_residual: float = 5.0) -> float:
         # Time update (Prediction)
@@ -28,10 +29,21 @@ class KalmanFilter1D:
         # Innovation gating:
         # If upstream ensemble flags the sensor as anomalous OR innovation residual exceeds physical plausibility
         if is_anomalous or residual > max_residual:
+            self.consecutive_rejects += 1
+            # If the measurement is physically plausible and persists for 3+ ticks,
+            # this is a station regime change or geographic switch, not a transient spike!
+            is_physically_sane = -20.0 <= measurement <= 60.0 or 800.0 <= measurement <= 1080.0
+            if self.consecutive_rejects >= 3 and is_physically_sane and not (measurement in [-99.0, 0.0, 999.0]):
+                self.x = float(measurement)
+                self.p = 1.0
+                self.consecutive_rejects = 0
+                return round(float(self.x), 2)
+
             # Outlier rejected! Maintain estimated atmospheric baseline without corrupting state.
             return round(float(self.x), 2)
 
         # Valid measurement update
+        self.consecutive_rejects = 0
         self.k = self.p / (self.p + self.r)
         self.x = self.x + self.k * (measurement - self.x)
         self.p = (1.0 - self.k) * self.p

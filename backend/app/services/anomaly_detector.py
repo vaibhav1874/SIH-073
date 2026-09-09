@@ -177,6 +177,21 @@ class AnomalyDetector:
             self.buffers[station_id] = []
 
         buffer = self.buffers[station_id]
+
+        # Discontinuity / regime switch safeguard:
+        # If incoming packet differs dramatically from previous reading in this station's buffer
+        # (>5.0°C or >15.0 hPa), it indicates a simulator city switch or regime reset.
+        if len(buffer) > 0:
+            last = buffer[-1]
+            last_t = last.get("temperature")
+            curr_t = telemetry.get("temperature")
+            last_p = last.get("pressure")
+            curr_p = telemetry.get("pressure")
+            if (last_t is not None and curr_t is not None and abs(curr_t - last_t) > 5.0) or \
+               (last_p is not None and curr_p is not None and abs(curr_p - last_p) > 15.0):
+                buffer.clear()
+                sensor_corrector.reset_station(station_id)
+
         buffer.append(telemetry)
         # Retain last 30 samples for rolling statistics
         if len(buffer) > 30:
