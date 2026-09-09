@@ -178,19 +178,7 @@ class AnomalyDetector:
 
         buffer = self.buffers[station_id]
 
-        # Discontinuity / regime switch safeguard:
-        # If incoming packet differs dramatically from previous reading in this station's buffer
-        # (>5.0°C or >15.0 hPa), it indicates a simulator city switch or regime reset.
-        if len(buffer) > 0:
-            last = buffer[-1]
-            last_t = last.get("temperature")
-            curr_t = telemetry.get("temperature")
-            last_p = last.get("pressure")
-            curr_p = telemetry.get("pressure")
-            if (last_t is not None and curr_t is not None and abs(curr_t - last_t) > 5.0) or \
-               (last_p is not None and curr_p is not None and abs(curr_p - last_p) > 15.0):
-                buffer.clear()
-                sensor_corrector.reset_station(station_id)
+
 
         buffer.append(telemetry)
         # Retain last 30 samples for rolling statistics
@@ -301,15 +289,18 @@ class AnomalyDetector:
         if telemetry.get("pressure") is not None and (telemetry["pressure"] > 1080.0 or telemetry["pressure"] < 900.0):
             affected_sensors.append("pressure")
 
-        if not affected_sensors and is_anomaly:
-            # Infer from root cause or largest Z-scores
-            if "temp" in root_cause:
+        if is_anomaly:
+            if root_cause == "communication_failure":
+                affected_sensors.extend(["temperature", "humidity", "pressure"])
+            elif root_cause == "multivariate_inconsistency":
+                affected_sensors.extend(["temperature", "humidity"])
+            elif "temp" in root_cause or root_cause in ["sensor_drift", "frozen_sensor"]:
                 affected_sensors.append("temperature")
             elif "humidity" in root_cause:
                 affected_sensors.append("humidity")
             elif "pressure" in root_cause:
                 affected_sensors.append("pressure")
-            else:
+            elif not affected_sensors:
                 z_map = {
                     "temperature": abs(features_dict.get("temp_zscore_24h", 0.0)),
                     "humidity": abs(features_dict.get("humidity_zscore_24h", 0.0)),

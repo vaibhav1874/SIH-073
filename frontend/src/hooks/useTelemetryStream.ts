@@ -466,8 +466,8 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
                 if (prev.length > 0) {
                   const lastReading = prev[prev.length - 1];
                   const tempJump = Math.abs(data.temperature - lastReading.temperature);
-                  // Detect cross-station or regime shift discontinuity (>3.0°C abrupt jump across stations)
-                  if (tempJump > 3.0) {
+                  // Detect unannounced cross-station or regime shift discontinuity (>15.0°C abrupt jump only when NOT an anomaly)
+                  if (!data.is_anomaly && tempJump > 15.0) {
                     setActiveAlert(null);
                     lastDismissedAlertRef.current = null;
                     return [historyItem];
