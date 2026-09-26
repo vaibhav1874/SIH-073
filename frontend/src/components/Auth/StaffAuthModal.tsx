@@ -170,11 +170,11 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl shadow-sky-950/60 overflow-hidden text-slate-100 max-h-[92vh] flex flex-col">
-        <div className="p-5 sm:p-6 border-b border-slate-800 bg-gradient-to-r from-slate-900 via-sky-950/40 to-slate-900 flex items-start justify-between gap-3">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#0a0c10]/85 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-2xl bg-[#1c1f2b] border border-[#282c3c] rounded-3xl shadow-2xl overflow-hidden text-slate-100 max-h-[92vh] flex flex-col">
+        <div className="p-5 sm:p-6 border-b border-[#282c3c] bg-[#161822] flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-2xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white shadow-lg shadow-sky-500/25 ring-1 ring-white/20">
+            <div className="p-2.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400">
               <Shield className="w-6 h-6" />
             </div>
             <div>
@@ -182,7 +182,7 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
                 <span className="font-bold text-base sm:text-lg text-white tracking-tight">
                   MoES / IMD Staff Gateway
                 </span>
-                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-sky-950 border border-sky-500/40 text-sky-400 font-semibold">
+                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 font-semibold">
                   SECURE ACCESS
                 </span>
               </div>
@@ -194,16 +194,16 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-[#222634] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <div className="p-5 sm:p-6 space-y-5 overflow-y-auto flex-1">
-          <div className="p-4 rounded-2xl bg-slate-950/80 border border-sky-500/30 space-y-2.5">
+          <div className="p-4 rounded-2xl bg-[#161822] border border-[#282c3c] space-y-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono text-sky-400 font-semibold flex items-center gap-1.5">
+              <span className="text-xs font-mono text-amber-400 font-semibold flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
                 ⚡ 1-Click Fast Pass for Jury / Demonstration
               </span>
@@ -214,12 +214,12 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
               <button
                 type="button"
                 onClick={() => handleQuickLogin('officer')}
-                className="p-3 rounded-xl bg-slate-900 hover:bg-sky-950/50 border border-sky-500/30 hover:border-sky-400 text-left transition-all group"
+                className="p-3 rounded-xl bg-[#1c1f2b] hover:bg-[#222634] border border-[#282c3c] hover:border-amber-500/50 text-left transition-all group"
               >
-                <div className="text-[10px] font-mono text-sky-400 font-semibold mb-0.5">
+                <div className="text-[10px] font-mono text-cyan-400 font-semibold mb-0.5">
                   IMD-OP-402
                 </div>
-                <div className="text-xs font-bold text-white group-hover:text-sky-300">
+                <div className="text-xs font-bold text-white group-hover:text-amber-300">
                   Duty Officer
                 </div>
                 <div className="text-[10px] text-slate-400 mt-1">
@@ -230,7 +230,7 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
               <button
                 type="button"
                 onClick={() => handleQuickLogin('engineer')}
-                className="p-3 rounded-xl bg-slate-900 hover:bg-amber-950/50 border border-amber-500/30 hover:border-amber-400 text-left transition-all group"
+                className="p-3 rounded-xl bg-[#1c1f2b] hover:bg-[#222634] border border-[#282c3c] hover:border-amber-500/50 text-left transition-all group"
               >
                 <div className="text-[10px] font-mono text-amber-400 font-semibold mb-0.5">
                   IMD-ENG-108
@@ -246,12 +246,12 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
               <button
                 type="button"
                 onClick={() => handleQuickLogin('scientist')}
-                className="p-3 rounded-xl bg-slate-900 hover:bg-purple-950/50 border border-purple-500/30 hover:border-purple-400 text-left transition-all group"
+                className="p-3 rounded-xl bg-[#1c1f2b] hover:bg-[#222634] border border-[#282c3c] hover:border-amber-500/50 text-left transition-all group"
               >
-                <div className="text-[10px] font-mono text-purple-400 font-semibold mb-0.5">
+                <div className="text-[10px] font-mono text-emerald-400 font-semibold mb-0.5">
                   IMD-DIR-001
                 </div>
-                <div className="text-xs font-bold text-white group-hover:text-purple-300">
+                <div className="text-xs font-bold text-white group-hover:text-amber-300">
                   Chief Scientist
                 </div>
                 <div className="text-[10px] text-slate-400 mt-1">
@@ -261,13 +261,13 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
             </div>
           </div>
 
-          <div className="flex rounded-xl bg-slate-950 p-1 border border-slate-800">
+          <div className="flex rounded-xl bg-[#161822] p-1 border border-[#282c3c]">
             <button
               type="button"
               onClick={() => { setActiveTab('login'); setErrorMessage(''); }}
               className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all ${
                 activeTab === 'login'
-                  ? 'bg-sky-600 text-white shadow-sm shadow-sky-500/30'
+                  ? 'bg-amber-500 text-slate-950 font-bold shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -278,7 +278,7 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
               onClick={() => { setActiveTab('signup'); setErrorMessage(''); }}
               className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all ${
                 activeTab === 'signup'
-                  ? 'bg-sky-600 text-white shadow-sm shadow-sky-500/30'
+                  ? 'bg-amber-500 text-slate-950 font-bold shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -305,7 +305,7 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
                     value={badgeInput}
                     onChange={(e) => setBadgeInput(e.target.value)}
                     placeholder="e.g. IMD-OP-402 or officer.sharma@imd.gov.in"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#161822] border border-[#282c3c] text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
                   />
                   <FileBadge className="w-4 h-4 text-slate-500 absolute right-3 top-3 pointer-events-none" />
                 </div>
@@ -320,7 +320,7 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
                     type={showPassword ? 'text' : 'password'}
                     value={passwordInput}
                     onChange={(e) => setPasswordInput(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 font-mono"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#161822] border border-[#282c3c] text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
                   />
                   <button
                     type="button"
@@ -339,22 +339,22 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
                 <select
                   value={selectedStation}
                   onChange={(e) => setSelectedStation(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700/80 text-sm text-white focus:outline-none focus:border-sky-500 font-mono"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#161822] border border-[#282c3c] text-sm text-white focus:outline-none focus:border-amber-500 font-mono"
                 >
-                  <option value="DELHI">Delhi AWS (National Capital)</option>
-                  <option value="ABOHAR">Abohar AWS (Punjab Agricultural Belt)</option>
-                  <option value="JAIPUR">Jaipur AWS (Thar Arid Zone)</option>
-                  <option value="SHIMLA">Shimla AWS (Alpine Himalayan)</option>
-                  <option value="MUMBAI">Mumbai AWS (Arabian Sea Coastal)</option>
-                  <option value="BENGALURU">Bengaluru AWS (Deccan Plateau)</option>
-                  <option value="BHOPAL">Bhopal AWS (Central Subtropical)</option>
-                  <option value="ALL">All-India HQ Meteorological Command</option>
+                  <option value="DELHI" className="bg-[#161822]">Delhi AWS (National Capital)</option>
+                  <option value="ABOHAR" className="bg-[#161822]">Abohar AWS (Punjab Agricultural Belt)</option>
+                  <option value="JAIPUR" className="bg-[#161822]">Jaipur AWS (Thar Arid Zone)</option>
+                  <option value="SHIMLA" className="bg-[#161822]">Shimla AWS (Alpine Himalayan)</option>
+                  <option value="MUMBAI" className="bg-[#161822]">Mumbai AWS (Arabian Sea Coastal)</option>
+                  <option value="BENGALURU" className="bg-[#161822]">Bengaluru AWS (Deccan Plateau)</option>
+                  <option value="BHOPAL" className="bg-[#161822]">Bhopal AWS (Central Subtropical)</option>
+                  <option value="ALL" className="bg-[#161822]">All-India HQ Meteorological Command</option>
                 </select>
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-sky-600 via-sky-500 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-lg shadow-sky-500/25 transition-all flex items-center justify-center gap-2 border border-white/10"
+                className="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md shadow-amber-500/20 transition-all flex items-center justify-center gap-2"
               >
                 <Lock className="w-4 h-4" />
                 <span>Authenticate & Access Live Telemetry</span>
@@ -375,7 +375,7 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
                     value={signupName}
                     onChange={(e) => setSignupName(e.target.value)}
                     placeholder="e.g. S. Narayanan"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#161822] border border-[#282c3c] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
                   />
                 </div>
                 <div>
@@ -387,7 +387,7 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
                     value={signupEmail}
                     onChange={(e) => setSignupEmail(e.target.value)}
                     placeholder="s.narayanan@imd.gov.in"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+                    className="w-full px-3 py-2 rounded-xl bg-[#161822] border border-[#282c3c] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
                   />
                 </div>
               </div>
@@ -402,7 +402,7 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
                     value={signupBadge}
                     onChange={(e) => setSignupBadge(e.target.value)}
                     placeholder="e.g. IMD-AWS-741"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 font-mono"
+                    className="w-full px-3 py-2 rounded-xl bg-[#161822] border border-[#282c3c] text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
                   />
                 </div>
                 <div>
@@ -412,15 +412,15 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
                   <select
                     value={signupStation}
                     onChange={(e) => setSignupStation(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-white focus:outline-none focus:border-sky-500 font-mono"
+                    className="w-full px-3 py-2 rounded-xl bg-[#161822] border border-[#282c3c] text-xs text-white focus:outline-none focus:border-amber-500 font-mono"
                   >
-                    <option value="DELHI">Delhi AWS</option>
-                    <option value="ABOHAR">Abohar AWS</option>
-                    <option value="JAIPUR">Jaipur AWS</option>
-                    <option value="SHIMLA">Shimla AWS</option>
-                    <option value="MUMBAI">Mumbai AWS</option>
-                    <option value="BENGALURU">Bengaluru AWS</option>
-                    <option value="BHOPAL">Bhopal AWS</option>
+                    <option value="DELHI" className="bg-[#161822]">Delhi AWS</option>
+                    <option value="ABOHAR" className="bg-[#161822]">Abohar AWS</option>
+                    <option value="JAIPUR" className="bg-[#161822]">Jaipur AWS</option>
+                    <option value="SHIMLA" className="bg-[#161822]">Shimla AWS</option>
+                    <option value="MUMBAI" className="bg-[#161822]">Mumbai AWS</option>
+                    <option value="BENGALURU" className="bg-[#161822]">Bengaluru AWS</option>
+                    <option value="BHOPAL" className="bg-[#161822]">Bhopal AWS</option>
                   </select>
                 </div>
               </div>
@@ -432,12 +432,12 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
                 <select
                   value={signupDept}
                   onChange={(e) => setSignupDept(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700/80 text-xs text-white focus:outline-none focus:border-sky-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#161822] border border-[#282c3c] text-xs text-white focus:outline-none focus:border-amber-500"
                 >
-                  <option value="National AWS Monitoring Cell">National AWS Monitoring Cell</option>
-                  <option value="Surface Instruments & Sensor Calibration">Surface Instruments & Sensor Calibration</option>
-                  <option value="NWP Assimilation & Climatology Division">NWP Assimilation & Climatology Division</option>
-                  <option value="Regional Meteorological Centre Operations">Regional Meteorological Centre Operations</option>
+                  <option value="National AWS Monitoring Cell" className="bg-[#161822]">National AWS Monitoring Cell</option>
+                  <option value="Surface Instruments & Sensor Calibration" className="bg-[#161822]">Surface Instruments & Sensor Calibration</option>
+                  <option value="NWP Assimilation & Climatology Division" className="bg-[#161822]">NWP Assimilation & Climatology Division</option>
+                  <option value="Regional Meteorological Centre Operations" className="bg-[#161822]">Regional Meteorological Centre Operations</option>
                 </select>
               </div>
 
@@ -451,8 +451,8 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
                     onClick={() => setSignupRole('officer')}
                     className={`p-2.5 rounded-xl border text-left transition-all ${
                       signupRole === 'officer'
-                        ? 'bg-sky-950/60 border-sky-400 text-sky-300'
-                        : 'bg-slate-950 border-slate-800 text-slate-400'
+                        ? 'bg-[#222634] border-cyan-400 text-cyan-300'
+                        : 'bg-[#161822] border-[#282c3c] text-slate-400'
                     }`}
                   >
                     <div className="text-[11px] font-bold">Duty Officer</div>
@@ -464,8 +464,8 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
                     onClick={() => setSignupRole('engineer')}
                     className={`p-2.5 rounded-xl border text-left transition-all ${
                       signupRole === 'engineer'
-                        ? 'bg-amber-950/60 border-amber-400 text-amber-300'
-                        : 'bg-slate-950 border-slate-800 text-slate-400'
+                        ? 'bg-[#222634] border-amber-400 text-amber-300'
+                        : 'bg-[#161822] border-[#282c3c] text-slate-400'
                     }`}
                   >
                     <div className="text-[11px] font-bold">Engineer</div>
@@ -477,8 +477,8 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
                     onClick={() => setSignupRole('scientist')}
                     className={`p-2.5 rounded-xl border text-left transition-all ${
                       signupRole === 'scientist'
-                        ? 'bg-purple-950/60 border-purple-400 text-purple-300'
-                        : 'bg-slate-950 border-slate-800 text-slate-400'
+                        ? 'bg-[#222634] border-emerald-400 text-emerald-300'
+                        : 'bg-[#161822] border-[#282c3c] text-slate-400'
                     }`}
                   >
                     <div className="text-[11px] font-bold">Scientist</div>
@@ -489,7 +489,7 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs shadow-lg shadow-emerald-500/25 transition-all flex items-center justify-center gap-2 border border-white/10"
+                className="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md shadow-amber-500/20 transition-all flex items-center justify-center gap-2"
               >
                 <UserCheck className="w-4 h-4" />
                 <span>Submit Field Registration & Authorize</span>
@@ -497,12 +497,12 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
             </form>
           )}
 
-          <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+          <div className="pt-2 border-t border-[#282c3c] flex items-center justify-between text-xs">
             <span className="text-slate-400">Reviewing for Hackathon?</span>
             <button
               type="button"
               onClick={handleGuestAccess}
-              className="text-sky-400 hover:text-sky-300 font-medium underline underline-offset-2"
+              className="text-amber-400 hover:text-amber-300 font-medium underline underline-offset-2"
             >
               Continue as Guest Observer (Read-Only) →
             </button>

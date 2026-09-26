@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Station, StaffUser } from '../../types';
 import { ConnectionStatus } from '../../hooks/useTelemetryStream';
-import { CloudLightning, Radio, Activity, ShieldAlert, Cpu, Wrench, BarChart2, History, Wifi, UserCheck, Shield, ChevronDown, Check, Volume2, VolumeX, Compass, LogIn, LogOut } from 'lucide-react';
+import { CloudLightning, Radio, Activity, ShieldAlert, Cpu, Wrench, BarChart2, Award, History, Wifi, UserCheck, Shield, ChevronDown, Check, Volume2, VolumeX, Compass, LogIn, LogOut } from 'lucide-react';
 import { apiService } from '../../services/api';
 
 interface HeaderProps {
@@ -145,7 +145,7 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-800/90 bg-[#0e1420]">
+    <header className="sticky top-0 z-40 w-full border-b border-[#282c3c] bg-[#1c1f2b]/95 backdrop-blur-md">
       <div className="max-w-[1440px] w-full mx-auto px-3 sm:px-5 lg:px-6">
         <div className="flex items-center justify-between h-16 gap-2 sm:gap-3">
           <div
@@ -153,24 +153,24 @@ export const Header: React.FC<HeaderProps> = ({
             className={`flex items-center gap-2.5 shrink-0 ${onGoToLanding ? 'cursor-pointer group select-none' : ''}`}
             title={onGoToLanding ? "Return to SkyGuard AWS Portal Overview" : undefined}
           >
-            <div className="p-2 rounded-lg bg-slate-800 border border-slate-700 text-sky-400 shrink-0">
+            <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 shrink-0">
               <CloudLightning className="w-4 h-4" />
             </div>
             <div className="shrink-0 flex items-center gap-2">
               <span className="font-bold text-base tracking-tight text-white whitespace-nowrap">
                 SkyGuard AI
               </span>
-              <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-semibold tracking-wider shrink-0">
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-[#161822] border border-[#282c3c] text-slate-300 font-semibold tracking-wider shrink-0">
                 SIH26073
               </span>
             </div>
           </div>
 
-          <nav className="hidden lg:flex items-center gap-1 bg-slate-900/90 p-1 rounded-lg border border-slate-800 shrink-0">
+          <nav className="hidden lg:flex items-center gap-1 bg-[#161822] p-1 rounded-xl border border-[#282c3c] shrink-0">
             {onGoToLanding && (
               <button
                 onClick={onGoToLanding}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-all border-r border-slate-800 pr-2.5 mr-0.5 whitespace-nowrap"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-[#1c1f2b] transition-all border-r border-[#282c3c] pr-3 mr-0.5 whitespace-nowrap"
                 title="Return to SkyGuard Portal Overview"
               >
                 <Compass className="w-3.5 h-3.5 text-slate-400" />
@@ -180,10 +180,10 @@ export const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={() => onSelectTab('monitor')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${
                 activeTab === 'monitor'
-                  ? 'bg-slate-800 text-white border border-slate-700 font-medium'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                  ? 'bg-amber-500/10 text-amber-300 border border-amber-500/40 shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-[#1c1f2b]'
               }`}
             >
               <Activity className="w-3.5 h-3.5" />
@@ -192,10 +192,10 @@ export const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={() => onSelectTab('alerts')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all relative whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all relative whitespace-nowrap ${
                 activeTab === 'alerts'
-                  ? 'bg-slate-800 text-white border border-slate-700 font-medium'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                  ? 'bg-amber-500/10 text-amber-300 border border-amber-500/40 shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-[#1c1f2b]'
               }`}
             >
               <ShieldAlert className="w-3.5 h-3.5" />
@@ -209,10 +209,10 @@ export const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={() => onSelectTab('faults')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${
                 activeTab === 'faults'
-                  ? 'bg-slate-800 text-white border border-slate-700 font-medium'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                  ? 'bg-amber-500/10 text-amber-300 border border-amber-500/40 shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-[#1c1f2b]'
               }`}
             >
               <Wrench className="w-3.5 h-3.5" />
@@ -221,13 +221,13 @@ export const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={() => onSelectTab('benchmark')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${
                 activeTab === 'benchmark'
-                  ? 'bg-slate-800 text-white border border-slate-700 font-medium'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                  ? 'bg-amber-500/10 text-amber-300 border border-amber-500/40 shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-[#1c1f2b]'
               }`}
             >
-              <BarChart2 className="w-3.5 h-3.5" />
+              <Award className="w-3.5 h-3.5" />
               <span>Benchmarks</span>
             </button>
           </nav>

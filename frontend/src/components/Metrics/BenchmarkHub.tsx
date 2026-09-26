@@ -52,16 +52,16 @@ export const BenchmarkHub: React.FC = () => {
   }));
 
   return (
-    <div className="bg-[#111827] border border-slate-800 rounded-lg p-5 space-y-5">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+    <div className="bg-[#1c1f2b] border border-[#282c3c] rounded-2xl p-6 shadow-sm space-y-5">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-[#282c3c]">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-md bg-slate-800 border border-slate-700 text-emerald-400">
+          <div className="p-2 rounded-xl bg-[#161822] border border-[#282c3c] text-amber-400">
             <Award className="w-4 h-4" />
           </div>
           <div>
             <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
               Statistical Model Validation & Benchmarks
-              <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-lg bg-[#161822] border border-[#282c3c] text-amber-300">
                 Abohar Chronological Test Split
               </span>
             </h3>
@@ -73,7 +73,7 @@ export const BenchmarkHub: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-        <div className="bg-slate-900 border border-slate-800 rounded-md p-3.5">
+        <div className="bg-[#161822] border border-[#282c3c] rounded-xl p-4">
           <span className="text-[10px] uppercase font-mono text-emerald-400 block font-semibold">Overall System Accuracy</span>
           <span className="text-xl font-bold font-mono text-emerald-400 mt-1 block">92.4%</span>
           <span className="text-[11px] text-slate-400 flex items-center gap-1 mt-1">
@@ -81,32 +81,32 @@ export const BenchmarkHub: React.FC = () => {
           </span>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-md p-3.5">
+        <div className="bg-[#161822] border border-[#282c3c] rounded-xl p-4">
           <span className="text-[10px] uppercase font-mono text-slate-400 block">Clean Data Stability</span>
-          <span className="text-xl font-bold font-mono text-sky-400 mt-1 block">98.2%</span>
+          <span className="text-xl font-bold font-mono text-amber-400 mt-1 block">98.2%</span>
           <span className="text-[11px] text-slate-400 mt-1">
             Only 1.78% False Alarm Rate
           </span>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-md p-3.5">
+        <div className="bg-[#161822] border border-[#282c3c] rounded-xl p-4">
           <span className="text-[10px] uppercase font-mono text-slate-400 block">Root Cause Accuracy</span>
-          <span className="text-xl font-bold font-mono text-indigo-400 mt-1 block">91.1%</span>
+          <span className="text-xl font-bold font-mono text-cyan-400 mt-1 block">91.1%</span>
           <span className="text-[11px] text-slate-400 mt-1">
             XGBoost 8-class diagnostic
           </span>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-md p-3.5">
+        <div className="bg-[#161822] border border-[#282c3c] rounded-xl p-4">
           <span className="text-[10px] uppercase font-mono text-slate-400 block">Mean Inference Latency</span>
-          <span className="text-xl font-bold font-mono text-amber-400 mt-1 block">&lt; 1 ms</span>
+          <span className="text-xl font-bold font-mono text-amber-300 mt-1 block">&lt; 1 ms</span>
           <span className="text-[11px] text-slate-400 mt-1">
             Real-time sub-second SLA
           </span>
         </div>
       </div>
 
-      <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-4 space-y-2">
+      <div className="bg-[#161822] border border-[#282c3c] rounded-2xl p-4 space-y-2">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-semibold text-slate-300">
             Multi-Model Performance Comparison (Test Split)
@@ -116,25 +116,25 @@ export const BenchmarkHub: React.FC = () => {
         <div className="h-64 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 10, right: 20, left: -20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#282c3c" />
               <XAxis dataKey="name" stroke="#64748b" tick={{ fontSize: 11 }} />
               <YAxis domain={[0, 100]} stroke="#64748b" tick={{ fontSize: 11 }} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#090d16', borderColor: '#334155', borderRadius: '8px', fontSize: '11px' }}
+                contentStyle={{ backgroundColor: '#161822', borderColor: '#282c3c', borderRadius: '12px', fontSize: '11px', color: '#f1f5f9' }}
               />
               <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
               <Bar dataKey="Overall Accuracy" fill="#10b981" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Precision" fill="#38bdf8" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Recall" fill="#818cf8" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Precision" fill="#06b6d4" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Recall" fill="#6366f1" radius={[4, 4, 0, 0]} />
               <Bar dataKey="F1-Score" fill="#f59e0b" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-800">
+      <div className="overflow-x-auto rounded-xl border border-[#282c3c]">
         <table className="w-full text-left text-xs">
-          <thead className="bg-slate-950/80 text-slate-400 font-mono text-[11px] border-b border-slate-800 uppercase tracking-wider">
+          <thead className="bg-[#161822] text-slate-400 font-mono text-[11px] border-b border-[#282c3c] uppercase tracking-wider">
             <tr>
               <th className="py-3 px-4">Architecture</th>
               <th className="py-3 px-4">Overall Accuracy</th>
@@ -146,7 +146,7 @@ export const BenchmarkHub: React.FC = () => {
               <th className="py-3 px-4">Operational Role</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60 font-sans">
+          <tbody className="divide-y divide-[#262a38] font-sans">
             {modelList.map((m: any, idx: number) => {
               const isEnsemble = m.name?.includes('Hybrid') || false;
               const accuracyVal = ((m.accuracy ?? 0.9241) * 100).toFixed(1);
@@ -154,15 +154,15 @@ export const BenchmarkHub: React.FC = () => {
                 <tr
                   key={idx}
                   className={`transition-colors ${
-                    isEnsemble ? 'bg-emerald-950/20 font-bold border-l-2 border-emerald-500' : 'hover:bg-slate-800/30'
+                    isEnsemble ? 'bg-amber-500/10 font-bold border-l-2 border-amber-500' : 'hover:bg-[#222634]/60'
                   }`}
                 >
                   <td className="py-3.5 px-4 font-mono text-slate-200 flex items-center gap-2">
-                    {isEnsemble && <Award className="w-4 h-4 text-emerald-400" />}
+                    {isEnsemble && <Award className="w-4 h-4 text-amber-400" />}
                     {m.name}
                   </td>
                   <td className="py-3.5 px-4 font-mono">
-                    <span className={`px-2 py-0.5 rounded text-xs font-bold ${isEnsemble ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'text-slate-200'}`}>
+                    <span className={`px-2 py-0.5 rounded text-xs font-bold ${isEnsemble ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'text-slate-200'}`}>
                       {accuracyVal}%
                     </span>
                   </td>
@@ -183,7 +183,7 @@ export const BenchmarkHub: React.FC = () => {
                   </td>
                   <td className="py-3.5 px-4">
                     {isEnsemble ? (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
                         Active Production Core
                       </span>
                     ) : (
@@ -197,26 +197,26 @@ export const BenchmarkHub: React.FC = () => {
         </table>
       </div>
 
-      <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-4 space-y-3">
-        <span className="text-xs font-bold uppercase tracking-wider text-slate-300 block">
+      <div className="bg-[#161822] border border-[#282c3c] rounded-2xl p-4 space-y-3">
+        <span className="text-xs font-bold uppercase tracking-wider text-slate-200 block">
           Hybrid Ensemble Confusion Matrix (22,968 Unseen Test Hours):
         </span>
         <div className="grid grid-cols-2 max-w-sm gap-2 text-center font-mono text-xs">
-          <div className="p-3 rounded-lg bg-emerald-950/40 border border-emerald-500/30">
+          <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
             <span className="text-[10px] text-slate-400 block">True Negatives (Nominal)</span>
             <span className="text-lg font-bold text-emerald-300">21,200</span>
           </div>
-          <div className="p-3 rounded-lg bg-rose-950/40 border border-rose-500/30">
+          <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30">
             <span className="text-[10px] text-slate-400 block">False Positives (Alarms)</span>
             <span className="text-lg font-bold text-rose-300">66</span>
           </div>
-          <div className="p-3 rounded-lg bg-amber-950/40 border border-amber-500/30">
+          <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30">
             <span className="text-[10px] text-slate-400 block">False Negatives (Missed)</span>
             <span className="text-lg font-bold text-amber-300">93</span>
           </div>
-          <div className="p-3 rounded-lg bg-sky-950/40 border border-sky-500/30">
+          <div className="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30">
             <span className="text-[10px] text-slate-400 block">True Positives (Detected)</span>
-            <span className="text-lg font-bold text-sky-300">1,507</span>
+            <span className="text-lg font-bold text-cyan-300">1,507</span>
           </div>
         </div>
       </div>

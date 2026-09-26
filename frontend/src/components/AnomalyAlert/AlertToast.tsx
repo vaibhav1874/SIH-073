@@ -17,19 +17,19 @@ export const AlertToast: React.FC<AlertToastProps> = ({ alert, onDismiss }) => {
       .join(' ');
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 max-w-md w-full">
-      <div className="bg-[#111827] border border-rose-700/80 rounded-lg shadow-2xl shadow-black/80 overflow-hidden">
-        <div className="bg-rose-950/90 border-b border-rose-800/80 px-4 py-2.5 flex items-center justify-between text-white">
+    <div className="fixed bottom-6 right-6 z-50 max-w-md w-full animate-fade-in">
+      <div className="bg-[#1c1f2b] border border-rose-500/60 rounded-2xl shadow-2xl shadow-black/80 overflow-hidden">
+        <div className="bg-[#161822] border-b border-[#282c3c] px-4 py-2.5 flex items-center justify-between text-white">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-rose-500" />
+            <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
             <ShieldAlert className="w-4 h-4 text-rose-400" />
-            <span className="text-xs font-bold uppercase tracking-wider font-mono text-rose-200">
+            <span className="text-xs font-bold uppercase tracking-wider font-mono text-rose-300">
               AWS Operational Anomaly Alert
             </span>
           </div>
           <button
             onClick={onDismiss}
-            className="p-1 rounded hover:bg-rose-900 transition-colors text-rose-300"
+            className="p-1 rounded-lg hover:bg-[#222634] transition-colors text-slate-400 hover:text-white"
           >
             <X className="w-4 h-4" />
           </button>
@@ -54,7 +54,7 @@ export const AlertToast: React.FC<AlertToastProps> = ({ alert, onDismiss }) => {
             {alert.explanation?.summary || 'Sensor observation diverges significantly from normal physical bounds.'}
           </p>
 
-          <div className="grid grid-cols-2 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 text-xs font-mono">
+          <div className="grid grid-cols-2 gap-2 bg-[#161822] p-2.5 rounded-xl border border-[#282c3c] text-xs font-mono">
             <div>
               <span className="text-[10px] text-slate-500 uppercase block">Observed Value</span>
               <span className="text-rose-400 font-bold">
@@ -67,7 +67,7 @@ export const AlertToast: React.FC<AlertToastProps> = ({ alert, onDismiss }) => {
             </div>
             <div>
               <span className="text-[10px] text-slate-500 uppercase block">Kalman Expected</span>
-              <span className="text-sky-400 font-bold">
+              <span className="text-amber-400 font-bold">
                 {alert.root_cause.includes('temp')
                   ? `${alert.corrected?.temperature?.toFixed(2) ?? alert.temperature.toFixed(2)} °C`
                   : alert.root_cause.includes('hum')
@@ -84,7 +84,7 @@ export const AlertToast: React.FC<AlertToastProps> = ({ alert, onDismiss }) => {
             </div>
             <button
               onClick={onDismiss}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-semibold transition-all shadow-md shadow-rose-600/30"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold transition-all shadow-md shadow-rose-600/30"
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
               Acknowledge & Triage

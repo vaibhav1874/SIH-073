@@ -122,16 +122,16 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
   };
 
   return (
-    <div className="bg-[#111827] border border-slate-800 rounded-lg p-5 space-y-5">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+    <div className="bg-[#1c1f2b] border border-[#282c3c] rounded-2xl p-6 shadow-sm space-y-5">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-[#282c3c]">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-md bg-slate-800 border border-slate-700 text-sky-400">
+          <div className="p-2 rounded-xl bg-[#161822] border border-[#282c3c] text-amber-400">
             <Wrench className="w-4 h-4" />
           </div>
           <div>
             <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
               Sensor Stress Testing & Fault Diagnostic Lab
-              <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-lg bg-[#161822] border border-[#282c3c] text-amber-300">
                 Evaluation Testbed
               </span>
             </h3>
@@ -149,7 +149,7 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
           <button
             onClick={() => applyPreset('temperature_spike', 'ABOHAR', 2, 28.0)}
-            className="text-left p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-amber-500/40 hover:bg-slate-900 transition-all group"
+            className="text-left p-3.5 rounded-xl bg-[#161822] border border-[#282c3c] hover:border-amber-500/60 hover:bg-[#222634] transition-all group"
           >
             <div className="flex items-center gap-2 text-xs font-semibold text-amber-400">
               <Flame className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
@@ -162,7 +162,7 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
 
           <button
             onClick={() => applyPreset('frozen_sensor', 'DELHI', 6, 0)}
-            className="text-left p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-cyan-500/40 hover:bg-slate-900 transition-all group"
+            className="text-left p-3.5 rounded-xl bg-[#161822] border border-[#282c3c] hover:border-cyan-500/60 hover:bg-[#222634] transition-all group"
           >
             <div className="flex items-center gap-2 text-xs font-semibold text-cyan-400">
               <Snowflake className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
@@ -175,9 +175,9 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
 
           <button
             onClick={() => applyPreset('sensor_drift', 'SHIMLA', 12, 1.5)}
-            className="text-left p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-indigo-500/40 hover:bg-slate-900 transition-all group"
+            className="text-left p-3.5 rounded-xl bg-[#161822] border border-[#282c3c] hover:border-amber-500/60 hover:bg-[#222634] transition-all group"
           >
-            <div className="flex items-center gap-2 text-xs font-semibold text-indigo-400">
+            <div className="flex items-center gap-2 text-xs font-semibold text-amber-300">
               <Compass className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
               Gradual Calibration Drift
             </div>
@@ -203,15 +203,15 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
                   onClick={() => handleFaultSelect(opt.id)}
                   className={`cursor-pointer p-3.5 rounded-xl border transition-all ${
                     isSelected
-                      ? 'bg-sky-950/40 border-sky-500 shadow-md shadow-sky-950 ring-1 ring-sky-500/40'
-                      : 'bg-slate-950/60 border-slate-800 hover:border-slate-700 hover:bg-slate-900/40'
+                      ? 'bg-[#222634] border-amber-500 shadow-md ring-1 ring-amber-500/40'
+                      : 'bg-[#161822] border-[#282c3c] hover:border-[#383d52] hover:bg-[#222634]'
                   }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <div className={`p-1.5 rounded-lg ${isSelected ? 'bg-sky-500 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                    <div className={`p-1.5 rounded-lg ${isSelected ? 'bg-amber-500 text-slate-950 font-bold' : 'bg-[#1c1f2b] text-slate-400'}`}>
                       <Icon className="w-4 h-4" />
                     </div>
-                    <span className={`text-xs font-bold ${isSelected ? 'text-sky-300' : 'text-slate-200'}`}>
+                    <span className={`text-xs font-bold ${isSelected ? 'text-amber-300' : 'text-slate-200'}`}>
                       {opt.name}
                     </span>
                   </div>
@@ -222,8 +222,8 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
           </div>
         </div>
 
-        <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 space-y-4">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-300 block">
+        <div className="bg-[#161822] border border-[#282c3c] rounded-2xl p-5 space-y-4">
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-200 block">
             Fault Parameters
           </span>
 
@@ -232,10 +232,10 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
             <select
               value={stationId}
               onChange={(e) => setStationId(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+              className="w-full bg-[#1c1f2b] border border-[#282c3c] rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500"
             >
               {stations.map((s) => (
-                <option key={s.id} value={s.id}>
+                <option key={s.id} value={s.id} className="bg-[#1c1f2b]">
                   {s.name} ({s.id})
                 </option>
               ))}
@@ -245,7 +245,7 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
               <span className="text-slate-400">Duration (Hours)</span>
-              <span className="font-mono font-bold text-sky-400">{durationHours}h</span>
+              <span className="font-mono font-bold text-amber-400">{durationHours}h</span>
             </div>
             <input
               type="range"
@@ -253,7 +253,7 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
               max={12}
               value={durationHours}
               onChange={(e) => setDurationHours(parseInt(e.target.value))}
-              className="w-full accent-sky-500"
+              className="w-full accent-amber-500"
             />
             <div className="flex justify-between text-[10px] text-slate-500 font-mono">
               <span>1h (Transient)</span>
@@ -287,16 +287,16 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
             <button
               onClick={handleInject}
               disabled={isSubmitting}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-rose-950/60 transition-all disabled:opacity-50 cursor-pointer"
+              className="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50 cursor-pointer"
             >
-              <Play className="w-4 h-4 fill-white" />
+              <Play className="w-4 h-4 fill-slate-950" />
               {isSubmitting ? 'Dispatching to Pipeline...' : 'Inject Fault into Live Stream'}
             </button>
 
             <button
               onClick={handleClear}
               disabled={isSubmitting}
-              className="w-full py-2.5 px-4 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 hover:text-white font-semibold text-xs flex items-center justify-center gap-2 border border-slate-700/60 transition-all disabled:opacity-50 cursor-pointer"
+              className="w-full py-2.5 px-4 rounded-xl bg-[#1c1f2b] hover:bg-[#222634] text-slate-300 hover:text-white font-semibold text-xs flex items-center justify-center gap-2 border border-[#282c3c] transition-all disabled:opacity-50 cursor-pointer"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               Revert to Clean Nominal State

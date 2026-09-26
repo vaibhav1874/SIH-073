@@ -18,8 +18,8 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
   const isTempAffected = affectedSensors.includes('temperature') || rootCause.includes('temp');
 
   return (
-    <div className="rounded-lg bg-[#111827] border border-slate-800 p-4">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+    <div className="rounded-2xl bg-[#1c1f2b] border border-[#282c3c] p-5 shadow-sm">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-[#262a38]">
         <div className="flex items-center gap-2.5">
           <div className={`p-2 rounded-md border ${isAnomaly ? 'bg-rose-950/50 text-rose-400 border-rose-700/50' : 'bg-slate-800 text-slate-300 border-slate-700'}`}>
             <Zap className="w-4 h-4" />
@@ -46,7 +46,7 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">
+        <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400 bg-[#161822] px-3 py-1.5 rounded-xl border border-[#282c3c]">
           <span className="text-slate-400">Latency:</span>
           <span className="text-slate-200 font-semibold">&lt; 14.8 ms</span>
           <span className="w-1 h-1 rounded-full bg-slate-600" />
@@ -55,11 +55,11 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
       </div>
 
       <div className="mt-5 grid grid-cols-1 md:grid-cols-5 gap-3 items-stretch relative">
-        <div className="flex flex-col justify-between p-3.5 rounded-xl bg-slate-950/70 border border-slate-800/90 group hover:border-slate-700 transition-all">
+        <div className="flex flex-col justify-between p-3.5 rounded-xl bg-[#161822] border border-[#282c3c] group hover:border-[#383d52] transition-all">
           <div>
             <div className="flex items-center justify-between text-[10px] uppercase font-mono text-slate-500 mb-1.5">
               <span>Stage 01</span>
-              <span className="text-sky-400 font-semibold">Raw Edge</span>
+              <span className="text-cyan-400 font-semibold">Raw Edge</span>
             </div>
             <div className="text-xs font-bold text-slate-200">AWS Telemetry Ingestion</div>
             <p className="text-[11px] text-slate-400 mt-1 leading-snug">
@@ -67,7 +67,7 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
             </p>
           </div>
 
-          <div className="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono">
+          <div className="mt-3 pt-2.5 border-t border-[#282c3c] flex items-center justify-between text-[11px] font-mono">
             <span className="text-slate-500">Observed:</span>
             <span className={`font-bold ${isTempAffected && isAnomaly ? 'text-rose-400' : 'text-slate-200'}`}>
               {rawTemp.toFixed(1)}°C
@@ -77,8 +77,8 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
 
         <div className={`flex flex-col justify-between p-3.5 rounded-xl border transition-all ${
           isAnomaly && affectedSensors.length > 0
-            ? 'bg-amber-950/20 border-amber-500/40 text-slate-200'
-            : 'bg-slate-950/70 border-slate-800/90 text-slate-200'
+            ? 'bg-amber-500/10 border-amber-500/40 text-slate-200'
+            : 'bg-[#161822] border-[#282c3c] text-slate-200'
         }`}>
           <div>
             <div className="flex items-center justify-between text-[10px] uppercase font-mono text-slate-500 mb-1.5">
@@ -91,7 +91,7 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
             </p>
           </div>
 
-          <div className="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono">
+          <div className="mt-3 pt-2.5 border-t border-[#282c3c] flex items-center justify-between text-[11px] font-mono">
             <span className="text-slate-500">Safety Status:</span>
             <span className={`font-bold ${isAnomaly ? 'text-amber-400' : 'text-emerald-400'}`}>
               {isAnomaly ? 'BREACH FLAGGED' : 'WMO PASSED'}
@@ -101,8 +101,8 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
 
         <div className={`flex flex-col justify-between p-3.5 rounded-xl border transition-all ${
           isAnomaly
-            ? 'bg-purple-950/20 border-purple-500/40 text-slate-200'
-            : 'bg-slate-950/70 border-slate-800/90 text-slate-200'
+            ? 'bg-purple-500/10 border-purple-500/40 text-slate-200'
+            : 'bg-[#161822] border-[#282c3c] text-slate-200'
         }`}>
           <div>
             <div className="flex items-center justify-between text-[10px] uppercase font-mono text-slate-500 mb-1.5">
@@ -115,7 +115,7 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
             </p>
           </div>
 
-          <div className="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono">
+          <div className="mt-3 pt-2.5 border-t border-[#282c3c] flex items-center justify-between text-[11px] font-mono">
             <span className="text-slate-500">Confidence:</span>
             <span className={`font-bold ${score >= 55 ? 'text-purple-400' : 'text-slate-300'}`}>
               {score} / 100
@@ -125,8 +125,8 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
 
         <div className={`flex flex-col justify-between p-3.5 rounded-xl border transition-all ${
           isAnomaly
-            ? 'bg-rose-950/25 border-rose-500/50 shadow-md shadow-rose-950/30'
-            : 'bg-slate-950/70 border-slate-800/90'
+            ? 'bg-rose-500/15 border-rose-500/50 shadow-md shadow-rose-950/30'
+            : 'bg-[#161822] border-[#282c3c]'
         }`}>
           <div>
             <div className="flex items-center justify-between text-[10px] uppercase font-mono text-slate-500 mb-1.5">
@@ -139,7 +139,7 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
             </p>
           </div>
 
-          <div className="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono">
+          <div className="mt-3 pt-2.5 border-t border-[#282c3c] flex items-center justify-between text-[11px] font-mono">
             <span className="text-slate-500">Diagnosis:</span>
             <span className={`font-bold uppercase text-[10px] ${isAnomaly ? 'text-rose-400' : 'text-emerald-400'}`}>
               {rootCause.replace(/_/g, ' ')}
@@ -149,18 +149,18 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
 
         <div className={`flex flex-col justify-between p-3.5 rounded-xl border transition-all ${
           isAnomaly && tempDiff > 1
-            ? 'bg-cyan-950/30 border-cyan-400/60 shadow-lg shadow-cyan-950/40 ring-1 ring-cyan-400/40'
-            : 'bg-slate-950/70 border-slate-800/90'
+            ? 'bg-amber-500/15 border-amber-400/60 shadow-lg shadow-amber-950/40 ring-1 ring-amber-400/40'
+            : 'bg-[#161822] border-[#282c3c]'
         }`}>
           <div>
             <div className="flex items-center justify-between text-[10px] uppercase font-mono text-slate-500 mb-1.5">
               <span>Stage 05</span>
-              <span className="text-cyan-400 font-semibold">Self-Healing</span>
+              <span className="text-amber-400 font-semibold">Self-Healing</span>
             </div>
             <div className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
               <span>Kalman Innovation Filter</span>
               {isAnomaly && tempDiff > 1 && (
-                <RefreshCw className="w-3 h-3 text-cyan-400 animate-spin" />
+                <RefreshCw className="w-3 h-3 text-amber-400 animate-spin" />
               )}
             </div>
             <p className="text-[11px] text-slate-400 mt-1 leading-snug">
@@ -170,9 +170,9 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
             </p>
           </div>
 
-          <div className="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono">
+          <div className="mt-3 pt-2.5 border-t border-[#282c3c] flex items-center justify-between text-[11px] font-mono">
             <span className="text-slate-500">Delivered State:</span>
-            <span className="font-bold text-cyan-400">
+            <span className="font-bold text-amber-400">
               {corrTemp.toFixed(1)}°C
             </span>
           </div>
@@ -180,14 +180,14 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
       </div>
 
       {isAnomaly && tempDiff > 1 && (
-        <div className="mt-3 p-3 rounded-xl bg-cyan-950/30 border border-cyan-500/40 flex items-center justify-between gap-3 animate-fade-in text-xs font-mono">
-          <div className="flex items-center gap-2 text-cyan-300">
-            <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
+        <div className="mt-3 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-between gap-3 animate-fade-in text-xs font-mono">
+          <div className="flex items-center gap-2 text-amber-300">
+            <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
             <span>
               <strong>SELF-HEALING ACTIVE:</strong> Faulty reading ({rawTemp.toFixed(2)}°C) intercepted and replaced with physical state estimate ({corrTemp.toFixed(2)}°C)
             </span>
           </div>
-          <span className="text-[11px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold shrink-0">
+          <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold shrink-0">
             NWP MODEL PROTECTED
           </span>
         </div>

@@ -61,8 +61,8 @@ export const AlertLogTable: React.FC<AlertLogTableProps> = ({ alerts, onAlertAck
   };
 
   return (
-    <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 backdrop-blur-xl space-y-5">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+    <div className="bg-[#1c1f2b] border border-[#282c3c] rounded-2xl p-6 shadow-sm space-y-5">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-[#282c3c]">
         <div className="flex items-center gap-3">
           <div className="p-2.5 rounded-xl bg-rose-500/10 text-rose-400">
             <ShieldAlert className="w-5 h-5" />
@@ -70,7 +70,7 @@ export const AlertLogTable: React.FC<AlertLogTableProps> = ({ alerts, onAlertAck
           <div>
             <h3 className="text-base font-bold text-slate-100 flex items-center gap-2">
               Anomaly Alert & Triage Center
-              <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+              <span className="text-xs font-mono px-2 py-0.5 rounded-lg bg-[#161822] border border-[#282c3c] text-amber-300">
                 {filteredAlerts.length} Events
               </span>
             </h3>
@@ -88,29 +88,29 @@ export const AlertLogTable: React.FC<AlertLogTableProps> = ({ alerts, onAlertAck
               placeholder="Search station, cause..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500"
+              className="w-full bg-[#161822] border border-[#282c3c] rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500"
             />
           </div>
 
-          <div className="flex items-center gap-1.5 bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs">
+          <div className="flex items-center gap-1.5 bg-[#161822] border border-[#282c3c] rounded-xl px-2.5 py-1.5 text-xs">
             <Filter className="w-3.5 h-3.5 text-slate-400" />
             <select
               value={filterSeverity}
               onChange={(e) => setFilterSeverity(e.target.value)}
               className="bg-transparent text-slate-200 focus:outline-none cursor-pointer"
             >
-              <option value="all" className="bg-slate-900">All Severities</option>
-              <option value="critical" className="bg-slate-900">Critical</option>
-              <option value="high" className="bg-slate-900">High</option>
-              <option value="medium" className="bg-slate-900">Medium</option>
-              <option value="low" className="bg-slate-900">Low</option>
+              <option value="all" className="bg-[#161822]">All Severities</option>
+              <option value="critical" className="bg-[#161822]">Critical</option>
+              <option value="high" className="bg-[#161822]">High</option>
+              <option value="medium" className="bg-[#161822]">Medium</option>
+              <option value="low" className="bg-[#161822]">Low</option>
             </select>
           </div>
 
           <button
             onClick={exportCSV}
             disabled={isExporting}
-            className="flex items-center gap-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl px-3 py-1.5 text-xs font-semibold transition-all shadow-sm shadow-sky-600/30"
+            className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl px-3.5 py-1.5 text-xs font-semibold transition-all shadow-md shadow-amber-500/20"
           >
             <Download className="w-3.5 h-3.5" />
             Export Log
@@ -118,9 +118,9 @@ export const AlertLogTable: React.FC<AlertLogTableProps> = ({ alerts, onAlertAck
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-800">
+      <div className="overflow-x-auto rounded-xl border border-[#282c3c]">
         <table className="w-full text-left text-xs">
-          <thead className="bg-slate-950/80 text-slate-400 font-mono text-[11px] border-b border-slate-800 uppercase tracking-wider">
+          <thead className="bg-[#161822] text-slate-400 font-mono text-[11px] border-b border-[#282c3c] uppercase tracking-wider">
             <tr>
               <th className="py-3 px-4">Station</th>
               <th className="py-3 px-4">Timestamp</th>
@@ -131,7 +131,7 @@ export const AlertLogTable: React.FC<AlertLogTableProps> = ({ alerts, onAlertAck
               <th className="py-3 px-4 text-center">Status / Triage</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60 font-sans">
+          <tbody className="divide-y divide-[#262a38] font-sans">
             {filteredAlerts.length === 0 ? (
               <tr>
                 <td colSpan={7} className="py-8 text-center text-slate-500 font-mono">
@@ -140,8 +140,8 @@ export const AlertLogTable: React.FC<AlertLogTableProps> = ({ alerts, onAlertAck
               </tr>
             ) : (
               filteredAlerts.map((a) => (
-                <tr key={a.id} className="hover:bg-slate-800/30 transition-colors">
-                  <td className="py-3.5 px-4 font-mono font-bold text-sky-400">
+                <tr key={a.id} className="hover:bg-[#222634]/60 transition-colors">
+                  <td className="py-3.5 px-4 font-mono font-bold text-amber-400">
                     {a.station_id}
                   </td>
                   <td className="py-3.5 px-4 font-mono text-slate-400">

@@ -116,11 +116,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-sky-500 selection:text-white">
-      <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-[#0e1420]/95 backdrop-blur-md">
+    <div className="min-h-screen bg-[#13151b] text-slate-100 flex flex-col font-sans selection:bg-amber-500/30 selection:text-white">
+      <header className="sticky top-0 z-50 w-full border-b border-[#282c3c] bg-[#161822]/95 backdrop-blur-md">
         <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-slate-800 border border-slate-700 text-sky-400">
+            <div className="p-2 rounded-xl bg-[#1c1f2b] border border-[#282c3c] text-amber-400">
               <CloudLightning className="w-5 h-5" />
             </div>
             <div>
@@ -128,7 +128,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <span className="font-bold text-lg tracking-tight text-white">
                   SkyGuard AI
                 </span>
-                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-semibold tracking-wider">
+                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-lg bg-[#1c1f2b] border border-[#282c3c] text-amber-300 font-semibold tracking-wider">
                   SIH26073
                 </span>
               </div>
@@ -147,7 +147,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </nav>
 
           <div className="flex items-center gap-2.5 sm:gap-3">
-            <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-950/60 border border-emerald-700/50 text-emerald-400 text-xs font-mono">
+            <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
               <span>PIPELINE NOMINAL</span>
             </div>
@@ -156,7 +156,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <button
                 id="landing-staff-auth-btn"
                 onClick={onOpenAuth}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-medium border border-slate-700/80 transition-colors"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1c1f2b] hover:bg-[#222634] text-slate-200 text-xs font-medium border border-[#282c3c] transition-colors"
                 title="MoES / IMD Staff Login & Field Officer Registration"
               >
                 <Lock className="w-3.5 h-3.5 text-slate-400" />
@@ -170,7 +170,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               id="launch-dashboard-header-btn"
               onClick={() => onLaunchDashboard('monitor')}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors border border-blue-500/40"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-semibold transition-all shadow-md shadow-amber-500/20"
             >
               <span>Enter Mission Control</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -179,15 +179,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </header>
 
-      <section className="relative pt-16 pb-20 overflow-hidden border-b border-slate-800/80">
+      <section className="relative pt-16 pb-20 overflow-hidden border-b border-[#282c3c]/80">
         <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-          <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-mono tracking-wider text-slate-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1c1f2b] border border-[#282c3c] text-xs font-mono tracking-wider text-slate-400">
+            <span className="w-2 h-2 rounded-full bg-amber-400 inline-block" />
             <span className="font-semibold text-slate-300">Smart India Hackathon 2024</span>
             <span className="text-slate-600">•</span>
             <span>Ministry of Earth Sciences (MoES)</span>
             <span className="text-slate-600">•</span>
-            <span className="text-slate-400">Problem ID: SIH26073</span>
+            <span className="text-amber-400/90">Problem ID: SIH26073</span>
           </div>
 
           <div className="max-w-3xl mx-auto space-y-4">
@@ -205,7 +205,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               id="hero-launch-dashboard"
               onClick={() => onLaunchDashboard('monitor')}
-              className="flex items-center gap-2 px-5 py-3 rounded-md bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm transition-colors"
+              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-amber-500/20"
             >
               <Activity className="w-4 h-4" />
               <span>Launch Live Command Center</span>
@@ -214,7 +214,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             <a
               href="#pipeline"
-              className="flex items-center gap-2 px-5 py-3 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium border border-slate-700 transition-colors"
+              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#1c1f2b] hover:bg-[#222634] text-slate-200 text-sm font-medium border border-[#282c3c] transition-colors"
             >
               <Cpu className="w-4 h-4 text-slate-400" />
               <span>5-Stage Pipeline Tour</span>
@@ -223,7 +223,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               id="hero-fault-lab"
               onClick={() => onLaunchDashboard('faults')}
-              className="flex items-center gap-2 px-5 py-3 rounded-md bg-slate-800 hover:bg-slate-700 text-amber-300 text-sm font-medium border border-slate-700 transition-colors"
+              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-[#1c1f2b] hover:bg-[#222634] text-amber-300 text-sm font-medium border border-[#282c3c] transition-colors"
             >
               <Wrench className="w-4 h-4 text-amber-400" />
               <span>Fault Injection Lab</span>
@@ -231,16 +231,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 text-left">
-            <div className="p-4 rounded-lg bg-slate-900 border border-slate-800">
+            <div className="p-5 rounded-2xl bg-[#1c1f2b] border border-[#282c3c] hover:border-[#383d52] shadow-sm transition-colors">
               <div className="flex items-center gap-2 text-slate-400 text-xs font-mono mb-1">
-                <Globe className="w-3.5 h-3.5 text-blue-400" />
+                <Globe className="w-3.5 h-3.5 text-cyan-400" />
                 <span>OBSERVATORIES</span>
               </div>
               <div className="text-2xl font-bold text-white font-mono">7 Stations</div>
               <div className="text-[11px] text-slate-400 mt-1">6 Indian states & microclimates</div>
             </div>
 
-            <div className="p-4 rounded-lg bg-slate-900 border border-slate-800">
+            <div className="p-5 rounded-2xl bg-[#1c1f2b] border border-[#282c3c] hover:border-[#383d52] shadow-sm transition-colors">
               <div className="flex items-center gap-2 text-slate-400 text-xs font-mono mb-1">
                 <Zap className="w-3.5 h-3.5 text-emerald-400" />
                 <span>INFERENCE LATENCY</span>
@@ -249,31 +249,31 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="text-[11px] text-slate-400 mt-1">Real-time per telemetry packet</div>
             </div>
 
-            <div className="p-4 rounded-lg bg-slate-900 border border-slate-800">
+            <div className="p-5 rounded-2xl bg-[#1c1f2b] border border-[#282c3c] hover:border-[#383d52] shadow-sm transition-colors">
               <div className="flex items-center gap-2 text-slate-400 text-xs font-mono mb-1">
-                <Sliders className="w-3.5 h-3.5 text-blue-400" />
+                <Sliders className="w-3.5 h-3.5 text-amber-400" />
                 <span>SELF-HEALING FILTER</span>
               </div>
-              <div className="text-2xl font-bold text-blue-400 font-mono">99.7%</div>
+              <div className="text-2xl font-bold text-amber-400 font-mono">99.7%</div>
               <div className="text-[11px] text-slate-400 mt-1">Kalman innovation imputation</div>
             </div>
 
-            <div className="p-4 rounded-lg bg-slate-900 border border-slate-800">
+            <div className="p-5 rounded-2xl bg-[#1c1f2b] border border-[#282c3c] hover:border-[#383d52] shadow-sm transition-colors">
               <div className="flex items-center gap-2 text-slate-400 text-xs font-mono mb-1">
-                <Database className="w-3.5 h-3.5 text-amber-400" />
+                <Database className="w-3.5 h-3.5 text-cyan-400" />
                 <span>DUAL INGESTION</span>
               </div>
-              <div className="text-2xl font-bold text-amber-400 font-mono">Live + Replay</div>
+              <div className="text-2xl font-bold text-cyan-400 font-mono">Live + Replay</div>
               <div className="text-[11px] text-slate-400 mt-1">Open-Meteo & IMD archive</div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="pipeline" className="py-20 border-b border-slate-900 relative">
+      <section id="pipeline" className="py-20 border-b border-[#282c3c] relative">
         <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-3 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-950 border border-sky-500/30 text-sky-400 text-xs font-mono uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono uppercase tracking-wider">
               Core Innovation
             </div>
             <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
@@ -294,15 +294,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   onClick={() => setActivePipelineTab(idx)}
                   className={`p-4 rounded-2xl text-left border transition-all relative overflow-hidden ${
                     isActive
-                      ? `bg-gradient-to-b ${st.color} shadow-lg ring-1 ring-white/10`
-                      : 'bg-slate-900/50 border-slate-800/80 hover:bg-slate-800/50 hover:border-slate-700'
+                      ? 'bg-[#222634] border-amber-500 shadow-lg ring-1 ring-amber-500/40 text-amber-300'
+                      : 'bg-[#1c1f2b] border-[#282c3c] hover:bg-[#222634] hover:border-[#383d52]'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-slate-950/60 border border-white/10 text-slate-300">
+                    <span className="text-[10px] font-mono font-bold tracking-wider px-2 py-0.5 rounded-lg bg-[#161822] border border-[#282c3c] text-slate-300">
                       {st.badge}
                     </span>
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-500'}`} />
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-amber-400' : 'text-slate-500'}`} />
                   </div>
                   <h3 className="font-semibold text-sm text-white mb-1">{st.title}</h3>
                   <span className="text-[11px] font-mono text-slate-400 block">{st.tag}</span>
@@ -312,11 +312,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {pipelineStages[activePipelineTab] && (
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-900/80 border border-slate-800/90 shadow-2xl relative overflow-hidden backdrop-blur-xl">
+            <div className="p-6 sm:p-8 rounded-2xl bg-[#1c1f2b] border border-[#282c3c] shadow-sm relative overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                 <div className="lg:col-span-2 space-y-4">
                   <div className="flex items-center gap-3">
-                    <span className="px-3 py-1 rounded-full bg-sky-500/15 border border-sky-500/30 text-sky-400 text-xs font-mono font-bold">
+                    <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold">
                       {pipelineStages[activePipelineTab].badge}
                     </span>
                     <h3 className="text-xl sm:text-2xl font-bold text-white">
@@ -328,7 +328,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                     {pipelineStages[activePipelineTab].highlights.map((h, i) => (
-                      <div key={i} className="flex items-start gap-2 p-3 rounded-xl bg-slate-950/60 border border-slate-800 text-xs text-slate-300">
+                      <div key={i} className="flex items-start gap-2 p-3.5 rounded-xl bg-[#161822] border border-[#282c3c] text-xs text-slate-300">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                         <span>{h}</span>
                       </div>
@@ -336,10 +336,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   </div>
                 </div>
 
-                <div className="p-5 rounded-2xl bg-slate-950/90 border border-slate-800/90 space-y-4">
-                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div className="p-5 rounded-2xl bg-[#161822] border border-[#282c3c] space-y-4">
+                  <div className="flex items-center justify-between border-b border-[#282c3c] pb-3">
                     <span className="text-xs font-mono text-slate-400">Live Stage Verification</span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
                       ACTIVE IN RUNTIME
                     </span>
                   </div>
@@ -354,12 +354,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </div>
                     <div className="flex justify-between text-slate-400">
                       <span>Imputation Target:</span>
-                      <span className="text-sky-400">Continuous Kalman State</span>
+                      <span className="text-amber-400">Continuous Kalman State</span>
                     </div>
                   </div>
                   <button
                     onClick={() => onLaunchDashboard('monitor')}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold transition-all shadow-md"
+                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-semibold transition-all shadow-md shadow-amber-500/20"
                   >
                     <span>View Live in Dashboard</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -371,11 +371,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      <section id="stations" className="py-20 border-b border-slate-900 bg-slate-950/40">
+      <section id="stations" className="py-20 border-b border-[#282c3c] bg-[#161822]/40">
         <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div className="space-y-2 max-w-2xl">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-500/30 text-emerald-400 text-xs font-mono uppercase tracking-wider">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono uppercase tracking-wider">
                 Geographic Coverage
               </div>
               <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
@@ -387,9 +387,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
             <button
               onClick={() => onLaunchDashboard('monitor')}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-medium text-slate-200 transition-all self-start md:self-auto"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#1c1f2b] hover:bg-[#222634] border border-[#282c3c] text-xs font-medium text-slate-200 transition-all self-start md:self-auto"
             >
-              <Compass className="w-3.5 h-3.5 text-sky-400" />
+              <Compass className="w-3.5 h-3.5 text-amber-400" />
               <span>Open GIS Map in Dashboard</span>
             </button>
           </div>
@@ -399,7 +399,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               const climateInfo = STATION_CLIMATES[st.id.toUpperCase()] || {
                 climate: 'Subtropical',
                 icon: Sun,
-                color: 'text-sky-400',
+                color: 'text-amber-400',
                 desc: 'Regional meteorological station',
               };
               const ClimateIcon = climateInfo.icon;
@@ -411,18 +411,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   onClick={() => onLaunchDashboard('monitor', st.id)}
                   className={`p-5 rounded-2xl border cursor-pointer transition-all transform hover:-translate-y-1 group relative overflow-hidden ${
                     isSelected
-                      ? 'bg-slate-900 border-sky-500/50 shadow-lg shadow-sky-500/10'
-                      : 'bg-slate-900/60 border-slate-800/80 hover:bg-slate-900 hover:border-slate-700'
+                      ? 'bg-[#222634] border-amber-500/80 shadow-lg shadow-amber-500/10 ring-1 ring-amber-500/30'
+                      : 'bg-[#1c1f2b] border-[#282c3c] hover:bg-[#222634] hover:border-[#383d52]'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-3">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-base text-white group-hover:text-sky-400 transition-colors">
+                        <span className="font-bold text-base text-white group-hover:text-amber-400 transition-colors">
                           {st.name}
                         </span>
                         {isSelected && (
-                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30">
                             ACTIVE
                           </span>
                         )}
@@ -433,7 +433,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-950/80 border border-slate-800 text-[10px] font-mono">
+                    <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-[#161822] border border-[#282c3c] text-[10px] font-mono">
                       <span
                         className={`w-1.5 h-1.5 rounded-full ${
                           st.status === 'Critical'
@@ -447,7 +447,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/60 mb-3 space-y-1.5">
+                  <div className="p-3 rounded-xl bg-[#161822] border border-[#282c3c]/80 mb-3 space-y-1.5">
                     <div className="flex items-center gap-1.5 text-xs">
                       <ClimateIcon className={`w-3.5 h-3.5 ${climateInfo.color}`} />
                       <span className="font-medium text-slate-200">{climateInfo.climate}</span>
@@ -457,9 +457,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </p>
                   </div>
 
-                  <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 pt-1 border-t border-slate-800/60">
+                  <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 pt-1 border-t border-[#282c3c]/80">
                     <span>GPS: {st.latitude.toFixed(2)}°N, {st.longitude.toFixed(2)}°E</span>
-                    <span className="text-sky-400 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
+                    <span className="text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
                       Stream <ChevronRight className="w-3 h-3" />
                     </span>
                   </div>
@@ -470,10 +470,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      <section id="architecture" className="py-20 border-b border-slate-900 relative">
+      <section id="architecture" className="py-20 border-b border-[#282c3c] relative">
         <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-3 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-950 border border-purple-500/30 text-purple-400 text-xs font-mono uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono uppercase tracking-wider">
               Under the Hood
             </div>
             <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
@@ -485,34 +485,34 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+            <div className="p-6 rounded-2xl bg-[#1c1f2b] border border-[#282c3c] hover:border-[#383d52] shadow-sm space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
                 <Cpu className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-white">Spatial Density (Isolation Forest)</h3>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Trained on localized historical climatological distributions with 150 randomized decision trees. Detects multivariate sensor incongruencies (e.g., high temperature during 98% relative humidity without precipitation).
               </p>
-              <div className="pt-2 text-xs font-mono text-sky-400">
+              <div className="pt-2 text-xs font-mono text-cyan-400">
                 • 150 Estimators • Calibrated Contamination Factor
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+            <div className="p-6 rounded-2xl bg-[#1c1f2b] border border-[#282c3c] hover:border-[#383d52] shadow-sm space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
                 <Activity className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-white">Temporal Dynamics (Bi-LSTM Autoencoder)</h3>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Bi-directional recurrent network tracking sequential patterns across a sliding time window. Captures slow transducer drift and abrupt thermal spikes that stay within static bounds but violate temporal dynamics.
               </p>
-              <div className="pt-2 text-xs font-mono text-indigo-400">
+              <div className="pt-2 text-xs font-mono text-amber-400">
                 • 12-Step Lookback Window • L2 Reconstruction Loss
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+            <div className="p-6 rounded-2xl bg-[#1c1f2b] border border-[#282c3c] hover:border-[#383d52] shadow-sm space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
                 <Zap className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-white">State-Space Self-Healing (Kalman Filter)</h3>
@@ -527,10 +527,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      <section id="personas" className="py-20 border-b border-slate-900 bg-slate-950/40">
+      <section id="personas" className="py-20 border-b border-[#282c3c] bg-[#161822]/40">
         <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-3 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-950 border border-amber-500/30 text-amber-400 text-xs font-mono uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono uppercase tracking-wider">
               Human-In-The-Loop Governance
             </div>
             <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
@@ -542,9 +542,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4">
+            <div className="p-6 rounded-2xl bg-[#1c1f2b] border border-[#282c3c] hover:border-[#383d52] shadow-sm space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 font-semibold">
+                <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-semibold">
                   OPERATIONS
                 </span>
                 <span className="text-xs font-mono text-slate-500">ID: IMD-OP-402</span>
@@ -553,19 +553,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Maintains continuous 24/7 situational awareness across all 7 observatories. Monitors real-time pipeline status, acknowledges urgent critical alarms, and verifies autonomous Kalman synthetic values.
               </p>
-              <ul className="space-y-1.5 text-xs text-slate-400 border-t border-slate-800 pt-3">
+              <ul className="space-y-1.5 text-xs text-slate-400 border-t border-[#282c3c] pt-3">
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-sky-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
                   Real-time AWS telemetry monitoring
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-sky-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
                   Incident acknowledgement & triage
                 </li>
               </ul>
             </div>
 
-            <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4">
+            <div className="p-6 rounded-2xl bg-[#1c1f2b] border border-[#282c3c] hover:border-[#383d52] shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 font-semibold">
                   CALIBRATION
@@ -576,7 +576,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Diagnoses physical transducer failures, solar radiation sensor degradation, and telemetry transceivers. Leverages the interactive Fault Injector to simulate sensor noise, drift, and freeze.
               </p>
-              <ul className="space-y-1.5 text-xs text-slate-400 border-t border-slate-800 pt-3">
+              <ul className="space-y-1.5 text-xs text-slate-400 border-t border-[#282c3c] pt-3">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
                   Sensor health diagnostic matrix
@@ -588,9 +588,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </ul>
             </div>
 
-            <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4">
+            <div className="p-6 rounded-2xl bg-[#1c1f2b] border border-[#282c3c] hover:border-[#383d52] shadow-sm space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 font-semibold">
+                <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold">
                   ADMIN / NWP
                 </span>
                 <span className="text-xs font-mono text-slate-500">ID: IMD-DIR-001</span>
@@ -599,13 +599,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Exercises full governance over numerical weather prediction (NWP) model assimilation parameters, ensemble detection thresholds, and scientific audit compliance across all states.
               </p>
-              <ul className="space-y-1.5 text-xs text-slate-400 border-t border-slate-800 pt-3">
+              <ul className="space-y-1.5 text-xs text-slate-400 border-t border-[#282c3c] pt-3">
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                   Model threshold overrides
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                   NWP ingestion routing protection
                 </li>
               </ul>
@@ -614,10 +614,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      <section id="benchmarks" className="py-20 border-b border-slate-900 relative">
+      <section id="benchmarks" className="py-20 border-b border-[#282c3c] relative">
         <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-3 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-500/30 text-emerald-400 text-xs font-mono uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono uppercase tracking-wider">
               Empirical Validation
             </div>
             <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
@@ -629,39 +629,39 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           <div className="max-w-4xl mx-auto overflow-x-auto">
-            <table className="w-full text-left text-xs sm:text-sm border-collapse rounded-2xl overflow-hidden bg-slate-900/60 border border-slate-800">
+            <table className="w-full text-left text-xs sm:text-sm border-collapse rounded-2xl overflow-hidden bg-[#1c1f2b] border border-[#282c3c] shadow-sm">
               <thead>
-                <tr className="bg-slate-900 border-b border-slate-800 text-slate-400 font-mono text-xs">
+                <tr className="bg-[#161822] border-b border-[#282c3c] text-slate-400 font-mono text-xs">
                   <th className="py-4 px-6">Evaluation Metric</th>
                   <th className="py-4 px-6">Legacy Rule-Based Quality Check</th>
-                  <th className="py-4 px-6 text-sky-400">SkyGuard AI Hybrid Ensemble</th>
+                  <th className="py-4 px-6 text-amber-400">SkyGuard AI Hybrid Ensemble</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80 font-mono text-slate-300">
-                <tr>
+              <tbody className="divide-y divide-[#262a38] font-mono text-slate-300">
+                <tr className="hover:bg-[#222634]/50 transition-colors">
                   <td className="py-4 px-6 font-sans font-medium text-white">Detection Precision</td>
                   <td className="py-4 px-6 text-rose-400">68.2% (High False Alarms)</td>
                   <td className="py-4 px-6 text-emerald-400 font-bold">98.4% (+30.2%)</td>
                 </tr>
-                <tr>
+                <tr className="hover:bg-[#222634]/50 transition-colors">
                   <td className="py-4 px-6 font-sans font-medium text-white">Anomaly Recall</td>
                   <td className="py-4 px-6 text-rose-400">54.0% (Misses Slow Drift)</td>
                   <td className="py-4 px-6 text-emerald-400 font-bold">99.1% (+45.1%)</td>
                 </tr>
-                <tr>
+                <tr className="hover:bg-[#222634]/50 transition-colors">
                   <td className="py-4 px-6 font-sans font-medium text-white">False Positive Rate (FPR)</td>
                   <td className="py-4 px-6 text-rose-400">18.6%</td>
                   <td className="py-4 px-6 text-emerald-400 font-bold">&lt; 1.2%</td>
                 </tr>
-                <tr>
+                <tr className="hover:bg-[#222634]/50 transition-colors">
                   <td className="py-4 px-6 font-sans font-medium text-white">Self-Healing Imputation</td>
                   <td className="py-4 px-6 text-slate-500">None (Drops Packet / NaN)</td>
-                  <td className="py-4 px-6 text-sky-400 font-bold">Real-Time Kalman Filter</td>
+                  <td className="py-4 px-6 text-amber-400 font-bold">Real-Time Kalman Filter</td>
                 </tr>
-                <tr>
+                <tr className="hover:bg-[#222634]/50 transition-colors">
                   <td className="py-4 px-6 font-sans font-medium text-white">Inference Latency</td>
                   <td className="py-4 px-6 text-slate-400">~2 ms (Static)</td>
-                  <td className="py-4 px-6 text-sky-400 font-bold">11.8 ms (Deep Pipeline)</td>
+                  <td className="py-4 px-6 text-amber-400 font-bold">11.8 ms (Deep Pipeline)</td>
                 </tr>
               </tbody>
             </table>
@@ -669,9 +669,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      <section className="py-16 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-900 text-center">
+      <section className="py-16 bg-[#161822] border-b border-[#282c3c] text-center">
         <div className="max-w-4xl mx-auto px-4 space-y-6">
-          <div className="inline-flex p-3 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 mb-2">
+          <div className="inline-flex p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 mb-2">
             <CloudLightning className="w-8 h-8" />
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -684,14 +684,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               id="cta-launch-dashboard"
               onClick={() => onLaunchDashboard('monitor')}
-              className="flex items-center gap-2.5 px-8 py-4 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-bold text-sm shadow-xl shadow-sky-500/30 transition-all transform hover:scale-[1.02] border border-white/20"
+              className="flex items-center gap-2.5 px-8 py-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-xl shadow-amber-500/20 transition-all transform hover:scale-[1.02]"
             >
               <span>Launch Mission Control</span>
               <ArrowRight className="w-4 h-4" />
             </button>
             <button
               onClick={() => onLaunchDashboard('faults')}
-              className="flex items-center gap-2 px-6 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-sm border border-slate-700 transition-all"
+              className="flex items-center gap-2 px-6 py-4 rounded-xl bg-[#1c1f2b] hover:bg-[#222634] text-slate-200 font-medium text-sm border border-[#282c3c] transition-all"
             >
               <Wrench className="w-4 h-4 text-amber-400" />
               <span>Test Fault Injection</span>
@@ -700,10 +700,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      <footer className="py-10 bg-slate-950 text-xs text-slate-500">
+      <footer className="py-10 bg-[#13151b] border-t border-[#282c3c] text-xs text-slate-500">
         <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 font-mono">
           <div className="flex items-center gap-3">
-            <div className="p-1.5 rounded-lg bg-sky-600/20 text-sky-400 border border-sky-500/30">
+            <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/30">
               <CloudLightning className="w-4 h-4" />
             </div>
             <div>
@@ -718,7 +718,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <a href="#benchmarks" className="hover:text-slate-300 transition-colors">Benchmarks</a>
             <button
               onClick={() => onLaunchDashboard('monitor')}
-              className="text-sky-400 hover:text-sky-300 font-semibold"
+              className="text-amber-400 hover:text-amber-300 font-semibold"
             >
               Enter Dashboard →
             </button>

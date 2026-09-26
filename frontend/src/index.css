@@ -5,8 +5,8 @@
 @layer base {
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #0b0f17;
-    color: #e2e8f0;
+    background-color: #13151b;
+    color: #f1f5f9;
     -webkit-font-smoothing: antialiased;
   }
   code, pre {
@@ -14,16 +14,22 @@
   }
 }
 
-/* Institutional Operational Panel Styles */
+.dashboard-card {
+  background-color: #1c1f2b;
+  border: 1px solid #282c3c;
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.3);
+}
+
 .glass-panel {
-  background: #111827;
-  border: 1px solid #1f2937;
+  background: #1c1f2b;
+  border: 1px solid #282c3c;
 }
 
 .glass-panel-glow {
-  background: #111827;
-  border: 1px solid #374151;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  background: #1c1f2b;
+  border: 1px solid #373d52;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.35);
 }
 
 /* Sleek custom scrollbars */

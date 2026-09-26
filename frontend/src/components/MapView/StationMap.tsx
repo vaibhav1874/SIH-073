@@ -96,13 +96,13 @@ export const StationMap: React.FC<StationMapProps> = ({
           <button id="btn-select-${st.id}" style="
             margin-top: 8px;
             width: 100%;
-            background-color: #0284c7;
-            color: white;
+            background-color: #f59e0b;
+            color: #020617;
             border: none;
-            border-radius: 4px;
-            padding: 4px 8px;
+            border-radius: 6px;
+            padding: 5px 8px;
             font-size: 11px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
           ">Focus Station</button>
         </div>
@@ -118,10 +118,10 @@ export const StationMap: React.FC<StationMapProps> = ({
   }, [stations, selectedStationId, onSelectStation]);
 
   return (
-    <div className="bg-[#111827] border border-slate-800 rounded-lg p-4 space-y-3">
-      <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+    <div className="bg-[#1c1f2b] border border-[#282c3c] rounded-2xl p-5 shadow-sm space-y-3">
+      <div className="flex items-center justify-between pb-3 border-b border-[#282c3c]">
         <div className="flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-sky-400" />
+          <MapPin className="w-4 h-4 text-amber-400" />
           <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wide">GIS AWS Observational Network</h3>
         </div>
         <span className="text-[11px] font-mono text-slate-400">
@@ -129,10 +129,10 @@ export const StationMap: React.FC<StationMapProps> = ({
         </span>
       </div>
 
-      <div className="relative w-full h-72 rounded-md overflow-hidden border border-slate-800">
+      <div className="relative w-full h-72 rounded-xl overflow-hidden border border-[#282c3c]">
         <div ref={mapContainerRef} className="w-full h-full z-10" />
 
-        <div className="absolute bottom-2 left-2 z-20 bg-slate-900 border border-slate-800 rounded p-2 text-[10px] space-y-1">
+        <div className="absolute bottom-2 left-2 z-20 bg-[#161822]/95 border border-[#282c3c] rounded-xl p-2.5 text-[10px] space-y-1 shadow-lg backdrop-blur-md">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
             <span className="text-slate-300">Nominal / Valid</span>

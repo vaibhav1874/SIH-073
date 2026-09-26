@@ -3,7 +3,8 @@ import { Station, AnomalyAlert, StaffUser } from './types';
 import { apiService } from './services/api';
 import { useTelemetryStream } from './hooks/useTelemetryStream';
 
-import { Header } from './components/Navigation/Header';
+import { Sidebar } from './components/Navigation/Sidebar';
+import { TopBar } from './components/Navigation/TopBar';
 import { TelemetryCards } from './components/Dashboard/TelemetryCards';
 import { LivePipelineFlow } from './components/Dashboard/LivePipelineFlow';
 import { TelemetryCharts } from './components/Dashboard/TelemetryCharts';
@@ -119,12 +120,8 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-sky-500 selection:text-white">
-      <Header
-        stations={stations}
-        selectedStationId={selectedStationId}
-        onSelectStation={setSelectedStationId}
-        connectionStatus={connectionStatus}
+    <div className="min-h-screen bg-[#13151b] text-slate-100 flex flex-row overflow-hidden selection:bg-amber-500/30 selection:text-white">
+      <Sidebar
         activeTab={activeTab}
         onSelectTab={setActiveTab}
         activeAlertCount={activeAlertCount}
@@ -137,74 +134,87 @@ export const App: React.FC = () => {
         }}
       />
 
-      <StaffAuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        onLoginSuccess={handleLoginSuccess}
-      />
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+        <TopBar
+          stations={stations}
+          selectedStationId={selectedStationId}
+          onSelectStation={setSelectedStationId}
+          connectionStatus={connectionStatus}
+          currentUser={currentUser}
+          onOpenAuth={() => setIsAuthModalOpen(true)}
+          activeAlertCount={activeAlertCount}
+          onSelectTab={setActiveTab}
+        />
 
-      <AlertToast alert={activeAlert} onDismiss={clearAlert} />
+        <StaffAuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+          onLoginSuccess={handleLoginSuccess}
+        />
 
-      <main className="flex-1 max-w-[1440px] w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-6">
-        {activeTab === 'monitor' && (
-          <div className="space-y-6">
-            <LivePipelineFlow telemetry={latestTelemetry} />
+        <AlertToast alert={activeAlert} onDismiss={clearAlert} />
 
-            <TelemetryCards telemetry={latestTelemetry} />
+        <main className="flex-1 w-full max-w-[1550px] mx-auto px-6 py-6 space-y-6">
+          {activeTab === 'monitor' && (
+            <div className="space-y-6">
+              <LivePipelineFlow telemetry={latestTelemetry} />
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2">
-                <TelemetryCharts history={telemetryHistory} />
+              <TelemetryCards telemetry={latestTelemetry} />
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2">
+                  <TelemetryCharts history={telemetryHistory} />
+                </div>
+                <div className="lg:col-span-1">
+                  <StationMap
+                    stations={stations}
+                    selectedStationId={selectedStationId}
+                    onSelectStation={setSelectedStationId}
+                  />
+                </div>
               </div>
-              <div className="lg:col-span-1">
-                <StationMap
-                  stations={stations}
-                  selectedStationId={selectedStationId}
-                  onSelectStation={setSelectedStationId}
-                />
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2">
+                  <AIDiagnosisPanel telemetry={latestTelemetry} />
+                </div>
+                <div className="lg:col-span-1">
+                  <HealthMatrix
+                    health={latestTelemetry?.health || null}
+                    stationName={selectedStation?.name}
+                  />
+                </div>
               </div>
             </div>
+          )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2">
-                <AIDiagnosisPanel telemetry={latestTelemetry} />
-              </div>
-              <div className="lg:col-span-1">
-                <HealthMatrix
-                  health={latestTelemetry?.health || null}
-                  stationName={selectedStation?.name}
-                />
-              </div>
+          {activeTab === 'alerts' && (
+            <AlertLogTable alerts={alerts} onAlertAcknowledged={reloadAlerts} />
+          )}
+
+          {activeTab === 'faults' && (
+            <FaultControlPanel
+              stations={stations}
+              selectedStationId={selectedStationId}
+            />
+          )}
+
+          {activeTab === 'benchmark' && <BenchmarkHub />}
+        </main>
+
+        <footer className="border-t border-[#262a38] bg-[#161822] py-4 text-xs text-slate-500 px-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 font-mono">
+            <div>
+              <span>SkyGuard AI • SIH26073 | Ministry of Earth Sciences (MoES)</span>
+            </div>
+            <div className="flex items-center gap-4 text-[11px]">
+              <span>Model: Hybrid 3-Arm Ensemble (Rules + IF + LSTM)</span>
+              <span>Station: {selectedStationId}</span>
+              <span>Status: Operational</span>
             </div>
           </div>
-        )}
-
-        {activeTab === 'alerts' && (
-          <AlertLogTable alerts={alerts} onAlertAcknowledged={reloadAlerts} />
-        )}
-
-        {activeTab === 'faults' && (
-          <FaultControlPanel
-            stations={stations}
-            selectedStationId={selectedStationId}
-          />
-        )}
-
-        {activeTab === 'benchmark' && <BenchmarkHub />}
-      </main>
-
-      <footer className="border-t border-slate-900 bg-slate-950/90 py-4 text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 font-mono">
-          <div>
-            <span>SkyGuard AI • SIH26073 | Ministry of Earth Sciences (MoES)</span>
-          </div>
-          <div className="flex items-center gap-4 text-[11px]">
-            <span>Model: Hybrid 3-Arm Ensemble (Rules + IF + LSTM)</span>
-            <span>Station: {selectedStationId}</span>
-            <span>Status: Operational</span>
-          </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 };

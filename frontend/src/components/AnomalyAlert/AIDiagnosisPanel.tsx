@@ -41,16 +41,16 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
   };
 
   return (
-    <div className="bg-[#111827] border border-slate-800 rounded-lg p-4 space-y-4">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+    <div className="bg-[#1c1f2b] border border-[#282c3c] rounded-2xl p-5 shadow-sm space-y-4">
+      <div className="flex items-center justify-between pb-3 border-b border-[#262a38]">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-md bg-slate-800 border border-slate-700 text-sky-400">
+          <div className="p-2 rounded-xl bg-[#161822] border border-[#282c3c] text-amber-400">
             <Cpu className="w-4 h-4" />
           </div>
           <div>
             <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wide flex items-center gap-2">
               Hybrid AI Inference Engine
-              <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">
+              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-lg bg-[#161822] border border-[#282c3c] text-amber-300">
                 Triple-Arm Ensemble
               </span>
             </h3>
@@ -62,7 +62,7 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
 
         <div className="flex items-center gap-2">
           <span
-            className={`text-xs font-mono font-bold uppercase px-2.5 py-0.5 rounded border ${getSeverityBadge(
+            className={`text-xs font-mono font-bold uppercase px-2.5 py-0.5 rounded-full border ${getSeverityBadge(
               telemetry.severity
             )}`}
           >
@@ -80,8 +80,8 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
               <span className="text-xs text-slate-400">/100</span>
             </span>
             <span
-              className={`text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded ${
-                isAnomaly ? 'bg-rose-950/70 text-rose-300 border border-rose-700/60' : 'bg-emerald-950/40 text-emerald-400 border border-emerald-700/40'
+              className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full ${
+                isAnomaly ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
               }`}
             >
               {isAnomaly ? 'Breach (≥55)' : 'Nominal Band'}
@@ -89,10 +89,10 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
           </div>
         </div>
 
-        <div className="relative w-full h-2.5 bg-slate-900 rounded overflow-hidden border border-slate-800">
+        <div className="relative w-full h-2.5 bg-[#161822] rounded-full overflow-hidden border border-[#282c3c]">
           <div
-            className={`h-full rounded transition-all duration-300 ${
-              isAnomaly ? 'bg-rose-600' : 'bg-blue-600'
+            className={`h-full rounded-full transition-all duration-300 ${
+              isAnomaly ? 'bg-rose-500' : 'bg-amber-500'
             }`}
             style={{ width: `${Math.min(100, Math.max(0, ensembleScore))}%` }}
           />
@@ -110,7 +110,7 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3">
+        <div className="bg-[#161822] border border-[#282c3c] rounded-xl p-3.5">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold text-slate-400">1. Domain Rules</span>
             <span className="text-[10px] font-mono text-slate-500">Weight: 35%</span>
@@ -120,18 +120,18 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
               Score: {breakdown?.rule_engine?.score ?? 0}
             </span>
             {breakdown?.rule_engine?.violation ? (
-              <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20">
+              <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/20">
                 VIOLATED
               </span>
             ) : (
-              <span className="text-[10px] font-medium text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+              <span className="text-[10px] font-medium text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                 PASSED
               </span>
             )}
           </div>
         </div>
 
-        <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3">
+        <div className="bg-[#161822] border border-[#282c3c] rounded-xl p-3.5">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold text-slate-400">2. Isolation Forest</span>
             <span className="text-[10px] font-mono text-slate-500">Weight: 35%</span>
@@ -141,18 +141,18 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
               Score: {breakdown?.isolation_forest?.score?.toFixed(2) ?? '0.00'}
             </span>
             {breakdown?.isolation_forest?.flag ? (
-              <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20">
+              <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/20">
                 OUTLIER
               </span>
             ) : (
-              <span className="text-[10px] font-medium text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+              <span className="text-[10px] font-medium text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                 INLIER
               </span>
             )}
           </div>
         </div>
 
-        <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3">
+        <div className="bg-[#161822] border border-[#282c3c] rounded-xl p-3.5">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold text-slate-400">3. PyTorch LSTM-AE</span>
             <span className="text-[10px] font-mono text-slate-500">Weight: 30%</span>
@@ -162,11 +162,11 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
               MSE: {breakdown?.lstm_autoencoder?.score?.toFixed(3) ?? '0.000'}
             </span>
             {breakdown?.lstm_autoencoder?.flag ? (
-              <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20">
+              <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/20">
                 RECON ERR
               </span>
             ) : (
-              <span className="text-[10px] font-medium text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+              <span className="text-[10px] font-medium text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                 CONVERGED
               </span>
             )}
@@ -174,10 +174,10 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
         </div>
       </div>
 
-      <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 space-y-3">
+      <div className="bg-[#161822] border border-[#282c3c] rounded-2xl p-4 space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-            <HelpCircle className="w-3.5 h-3.5 text-sky-400" />
+            <HelpCircle className="w-3.5 h-3.5 text-amber-400" />
             SHAP Diagnostic Rationale
           </span>
           <span className="text-[10px] font-mono text-slate-500">Latency: {telemetry.latency_ms ?? 14}ms</span>
@@ -195,7 +195,7 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
             <ul className="space-y-1">
               {explanation.evidence_points.map((pt, idx) => (
                 <li key={idx} className="text-xs text-slate-400 flex items-start gap-2">
-                  <span className="text-sky-400 mt-0.5">•</span>
+                  <span className="text-amber-400 mt-0.5">•</span>
                   <span>{pt}</span>
                 </li>
               ))}
@@ -203,9 +203,9 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
           </div>
         )}
 
-        <div className="pt-2 border-t border-slate-800/80">
+        <div className="pt-2 border-t border-[#282c3c]">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-sky-400">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-400">
               SHAP Feature Attribution & Z-Score Analysis:
             </span>
             <span className="text-[10px] font-mono text-slate-500">Multivariate Weights</span>
@@ -245,12 +245,12 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
               return (
                 <div
                   key={idx}
-                  className="bg-slate-900/90 border border-slate-800 rounded-lg p-2.5 flex flex-col justify-between"
+                  className="bg-[#1c1f2b] border border-[#282c3c] rounded-xl p-3 flex flex-col justify-between"
                 >
                   <div className="flex items-center justify-between text-xs mb-1.5">
                     <span className="font-medium text-slate-200 truncate">{item.feature}</span>
                     <span
-                      className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                      className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
                         isCrit
                           ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
                           : isWarn
@@ -265,10 +265,10 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
                     <span>Attribution Impact</span>
                     <span className="font-mono text-slate-300">{item.importance}%</span>
                   </div>
-                  <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mt-1">
+                  <div className="w-full bg-[#161822] h-1.5 rounded-full overflow-hidden mt-1.5">
                     <div
                       className={`h-full rounded-full ${
-                        isCrit ? 'bg-rose-500' : isWarn ? 'bg-amber-500' : 'bg-sky-500'
+                        isCrit ? 'bg-rose-500' : isWarn ? 'bg-amber-500' : 'bg-amber-400'
                       }`}
                       style={{ width: `${Math.min(100, item.importance)}%` }}
                     />
@@ -281,16 +281,16 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
       </div>
 
       {protocol && (
-        <div className="bg-slate-950/90 border border-sky-500/20 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="bg-[#161822] border border-[#282c3c] rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="space-y-1">
-            <span className="text-xs font-bold text-sky-300 flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-sky-400" />
+            <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-amber-400" />
               {protocol.title}
             </span>
             <p className="text-xs text-slate-300">{protocol.action}</p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 text-xs font-mono">
+          <div className="flex items-center gap-2 shrink-0 bg-[#1c1f2b] px-3 py-1.5 rounded-xl border border-[#282c3c] text-xs font-mono">
             <Clock className="w-3.5 h-3.5 text-amber-400" />
             <span className="text-slate-400">Response SLA:</span>
             <span className="text-amber-300 font-bold">{protocol.sla_hours}h</span>

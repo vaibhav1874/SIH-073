@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import {
   ResponsiveContainer,
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   Tooltip,
@@ -10,7 +10,7 @@ import {
   Legend,
 } from 'recharts';
 import { ReadingHistoryItem } from '../../types';
-import { SlidersHorizontal, Activity } from 'lucide-react';
+import { Activity } from 'lucide-react';
 
 interface TelemetryChartsProps {
   history: ReadingHistoryItem[];
@@ -45,16 +45,16 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
   });
 
   return (
-    <div className="bg-[#111827] border border-slate-800 rounded-lg p-4">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-3 border-b border-slate-800 gap-3">
-        <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-md bg-slate-800 border border-slate-700 text-sky-400">
+    <div className="bg-[#1c1f2b] border border-[#282c3c] rounded-2xl p-5 shadow-sm">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-[#262a38] gap-3">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
             <Activity className="w-4 h-4" />
           </div>
           <div>
             <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wide flex items-center gap-2">
               Observational Telemetry Stream
-              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#161822] border border-[#282c3c] text-slate-300">
                 Rolling 40 Buffer
               </span>
             </h3>
@@ -64,35 +64,43 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
           </div>
         </div>
 
-        <div className="flex items-center bg-slate-900 p-1 rounded-md border border-slate-800 text-xs">
+        <div className="flex items-center bg-[#161822] p-1 rounded-xl border border-[#282c3c] text-xs">
           <button
             onClick={() => setSelectedSensor('all')}
-            className={`px-2.5 py-1 rounded text-xs transition-colors ${
-              selectedSensor === 'all' ? 'bg-slate-800 text-white border border-slate-700 font-medium' : 'text-slate-400 hover:text-slate-200'
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              selectedSensor === 'all'
+                ? 'bg-amber-500/10 text-amber-300 border border-amber-500/40 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             All Channels
           </button>
           <button
             onClick={() => setSelectedSensor('temp')}
-            className={`px-2.5 py-1 rounded text-xs transition-colors ${
-              selectedSensor === 'temp' ? 'bg-slate-800 text-amber-300 border border-slate-700 font-medium' : 'text-slate-400 hover:text-slate-200'
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              selectedSensor === 'temp'
+                ? 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             Temp (°C)
           </button>
           <button
             onClick={() => setSelectedSensor('hum')}
-            className={`px-2.5 py-1 rounded text-xs transition-colors ${
-              selectedSensor === 'hum' ? 'bg-slate-800 text-sky-300 border border-slate-700 font-medium' : 'text-slate-400 hover:text-slate-200'
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              selectedSensor === 'hum'
+                ? 'bg-blue-500/10 text-blue-300 border border-blue-500/40 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             RH (%)
           </button>
           <button
             onClick={() => setSelectedSensor('pres')}
-            className={`px-2.5 py-1 rounded text-xs transition-colors ${
-              selectedSensor === 'pres' ? 'bg-slate-800 text-indigo-300 border border-slate-700 font-medium' : 'text-slate-400 hover:text-slate-200'
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              selectedSensor === 'pres'
+                ? 'bg-indigo-500/10 text-indigo-300 border border-indigo-500/40 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             Pressure (hPa)
@@ -100,34 +108,46 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
         </div>
       </div>
 
-      <div className="mt-4 space-y-6">
+      <div className="mt-5 space-y-6">
         {(selectedSensor === 'all' || selectedSensor === 'temp') && (
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-amber-400 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-amber-400" />
+              <span className="text-xs font-semibold text-cyan-400 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-cyan-400" />
                 Temperature Sensor (Raw vs Kalman Corrected)
               </span>
               <span className="text-[11px] font-mono text-slate-400">Unit: °C</span>
             </div>
             <div className="h-44 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="timeStr" stroke="#64748b" tick={{ fontSize: 9, fill: '#94a3b8' }} interval={4} />
-                  <YAxis domain={['auto', 'auto']} stroke="#64748b" tick={{ fontSize: 10 }} />
+                <AreaChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                  <defs>
+                    <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="colorTempCorr" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.15} />
+                      <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#222634" />
+                  <XAxis dataKey="timeStr" stroke="#475569" tick={{ fontSize: 9, fill: '#94a3b8' }} interval={4} />
+                  <YAxis domain={['auto', 'auto']} stroke="#475569" tick={{ fontSize: 10, fill: '#94a3b8' }} />
                   <Tooltip
                     labelFormatter={(_val, p) => p?.[0]?.payload?.fullTimeStr || _val}
-                    contentStyle={{ backgroundColor: '#090d16', borderColor: '#334155', borderRadius: '8px', fontSize: '11px' }}
+                    contentStyle={{ backgroundColor: '#161822', borderColor: '#2d3245', borderRadius: '12px', fontSize: '11px', boxShadow: '0 4px 12px rgba(0,0,0,0.5)' }}
                     labelStyle={{ color: '#94a3b8' }}
                   />
                   <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '6px' }} />
-                  <Line
+                  <Area
                     type="monotone"
                     dataKey="temp"
                     name="Observed Raw"
-                    stroke="#f59e0b"
+                    stroke="#06b6d4"
                     strokeWidth={2}
+                    fillOpacity={1}
+                    fill="url(#colorTemp)"
                     dot={(props: any) => {
                       const { cx, cy, payload } = props;
                       if (payload.is_anomaly && (payload.affected_sensors?.includes('temperature') || payload.root_cause?.includes('temperature'))) {
@@ -135,19 +155,21 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
                           <circle cx={cx} cy={cy} r={5} fill="#ef4444" stroke="#ffffff" strokeWidth={2} key={props.key} />
                         );
                       }
-                      return <circle cx={cx} cy={cy} r={2} fill="#f59e0b" key={props.key} />;
+                      return <circle cx={cx} cy={cy} r={2} fill="#06b6d4" key={props.key} />;
                     }}
                   />
-                  <Line
+                  <Area
                     type="monotone"
                     dataKey="tempCorr"
                     name="Kalman Expected"
-                    stroke="#38bdf8"
+                    stroke="#f59e0b"
                     strokeDasharray="4 4"
                     strokeWidth={1.5}
+                    fillOpacity={1}
+                    fill="url(#colorTempCorr)"
                     dot={false}
                   />
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
@@ -156,30 +178,38 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
         {(selectedSensor === 'all' || selectedSensor === 'hum') && (
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-cyan-400 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-cyan-400" />
+              <span className="text-xs font-semibold text-blue-400 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-blue-400" />
                 Relative Humidity (Raw vs Kalman Corrected)
               </span>
               <span className="text-[11px] font-mono text-slate-400">Unit: %</span>
             </div>
             <div className="h-44 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="timeStr" stroke="#64748b" tick={{ fontSize: 9, fill: '#94a3b8' }} interval={4} />
-                  <YAxis domain={['auto', 'auto']} stroke="#64748b" tick={{ fontSize: 10 }} />
+                <AreaChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                  <defs>
+                    <linearGradient id="colorHum" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#222634" />
+                  <XAxis dataKey="timeStr" stroke="#475569" tick={{ fontSize: 9, fill: '#94a3b8' }} interval={4} />
+                  <YAxis domain={['auto', 'auto']} stroke="#475569" tick={{ fontSize: 10, fill: '#94a3b8' }} />
                   <Tooltip
                     labelFormatter={(_val, p) => p?.[0]?.payload?.fullTimeStr || _val}
-                    contentStyle={{ backgroundColor: '#090d16', borderColor: '#334155', borderRadius: '8px', fontSize: '11px' }}
+                    contentStyle={{ backgroundColor: '#161822', borderColor: '#2d3245', borderRadius: '12px', fontSize: '11px', boxShadow: '0 4px 12px rgba(0,0,0,0.5)' }}
                     labelStyle={{ color: '#94a3b8' }}
                   />
                   <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '6px' }} />
-                  <Line
+                  <Area
                     type="monotone"
                     dataKey="hum"
                     name="Observed Raw"
-                    stroke="#06b6d4"
+                    stroke="#3b82f6"
                     strokeWidth={2}
+                    fillOpacity={1}
+                    fill="url(#colorHum)"
                     dot={(props: any) => {
                       const { cx, cy, payload } = props;
                       if (payload.is_anomaly && (payload.affected_sensors?.includes('humidity') || payload.root_cause?.includes('humidity'))) {
@@ -187,19 +217,20 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
                           <circle cx={cx} cy={cy} r={5} fill="#ef4444" stroke="#ffffff" strokeWidth={2} key={props.key} />
                         );
                       }
-                      return <circle cx={cx} cy={cy} r={2} fill="#06b6d4" key={props.key} />;
+                      return <circle cx={cx} cy={cy} r={2} fill="#3b82f6" key={props.key} />;
                     }}
                   />
-                  <Line
+                  <Area
                     type="monotone"
                     dataKey="humCorr"
                     name="Kalman Expected"
-                    stroke="#38bdf8"
+                    stroke="#f59e0b"
                     strokeDasharray="4 4"
                     strokeWidth={1.5}
+                    fillOpacity={0}
                     dot={false}
                   />
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
@@ -210,28 +241,36 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-semibold text-indigo-400 flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-indigo-400" />
-                Barometric Pressure MSL (Raw vs Kalman Corrected)
+                Surface Pressure (Raw vs Kalman Corrected)
               </span>
               <span className="text-[11px] font-mono text-slate-400">Unit: hPa</span>
             </div>
             <div className="h-44 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="timeStr" stroke="#64748b" tick={{ fontSize: 9, fill: '#94a3b8' }} interval={4} />
-                  <YAxis domain={['auto', 'auto']} stroke="#64748b" tick={{ fontSize: 10 }} />
+                <AreaChart data={chartData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                  <defs>
+                    <linearGradient id="colorPres" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#818cf8" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#818cf8" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#222634" />
+                  <XAxis dataKey="timeStr" stroke="#475569" tick={{ fontSize: 9, fill: '#94a3b8' }} interval={4} />
+                  <YAxis domain={['auto', 'auto']} stroke="#475569" tick={{ fontSize: 10, fill: '#94a3b8' }} />
                   <Tooltip
                     labelFormatter={(_val, p) => p?.[0]?.payload?.fullTimeStr || _val}
-                    contentStyle={{ backgroundColor: '#090d16', borderColor: '#334155', borderRadius: '8px', fontSize: '11px' }}
+                    contentStyle={{ backgroundColor: '#161822', borderColor: '#2d3245', borderRadius: '12px', fontSize: '11px', boxShadow: '0 4px 12px rgba(0,0,0,0.5)' }}
                     labelStyle={{ color: '#94a3b8' }}
                   />
                   <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '6px' }} />
-                  <Line
+                  <Area
                     type="monotone"
                     dataKey="pres"
                     name="Observed Raw"
                     stroke="#818cf8"
                     strokeWidth={2}
+                    fillOpacity={1}
+                    fill="url(#colorPres)"
                     dot={(props: any) => {
                       const { cx, cy, payload } = props;
                       if (payload.is_anomaly && (payload.affected_sensors?.includes('pressure') || payload.root_cause?.includes('pressure'))) {
@@ -242,16 +281,17 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
                       return <circle cx={cx} cy={cy} r={2} fill="#818cf8" key={props.key} />;
                     }}
                   />
-                  <Line
+                  <Area
                     type="monotone"
                     dataKey="presCorr"
                     name="Kalman Expected"
-                    stroke="#38bdf8"
+                    stroke="#f59e0b"
                     strokeDasharray="4 4"
                     strokeWidth={1.5}
+                    fillOpacity={0}
                     dot={false}
                   />
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>

@@ -73,8 +73,8 @@ export const HealthMatrix: React.FC<HealthMatrixProps> = ({ health, stationName 
   ];
 
   return (
-    <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 backdrop-blur-xl space-y-4">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800 gap-2">
+    <div className="bg-[#1c1f2b] border border-[#282c3c] rounded-2xl p-5 shadow-sm space-y-4">
+      <div className="flex items-center justify-between pb-3 border-b border-[#262a38] gap-2">
         <div className="flex items-center gap-2.5 min-w-0">
           <div className="p-2 rounded-xl bg-teal-500/10 text-teal-400 shrink-0">
             <Activity className="w-5 h-5" />
@@ -108,7 +108,7 @@ export const HealthMatrix: React.FC<HealthMatrixProps> = ({ health, stationName 
           return (
             <div
               key={item.id}
-              className="bg-slate-950/70 border border-slate-800/80 hover:border-slate-700/80 rounded-xl p-3 transition-colors space-y-2"
+              className="bg-[#161822] border border-[#282c3c] hover:border-[#383d52] rounded-xl p-3 transition-colors space-y-2"
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 min-w-0">
@@ -127,7 +127,7 @@ export const HealthMatrix: React.FC<HealthMatrixProps> = ({ health, stationName 
 
                 <div className="flex items-center gap-2 shrink-0">
                   <span
-                    className={`text-[10px] font-mono px-2 py-0.5 rounded border font-medium ${
+                    className={`text-[10px] font-mono px-2 py-0.5 rounded-full border font-medium ${
                       isHealthy
                         ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
                         : isWarning
@@ -143,7 +143,7 @@ export const HealthMatrix: React.FC<HealthMatrixProps> = ({ health, stationName 
                 </div>
               </div>
 
-              <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
+              <div className="w-full h-1.5 bg-[#1c1f2b] rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${getBarGradient(item.score)}`}
                   style={{ width: `${item.score}%` }}
