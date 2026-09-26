@@ -50,7 +50,6 @@ class RuleEngine:
         affected = set()
         severity = "none"
 
-        # 1. Check for Communication Dropout Sentinels
         if temp is not None and temp <= -90.0:
             violations.append({
                 "rule_id": "COMM_PACKET_LOSS",
@@ -69,7 +68,6 @@ class RuleEngine:
             affected.add("pressure")
             severity = "critical"
 
-        # 2. Physical Sensor Bounds
         if temp is not None and not (self.TEMP_MIN <= temp <= self.TEMP_MAX):
             violations.append({
                 "rule_id": "PHYSICAL_BOUND_TEMP",
@@ -97,7 +95,6 @@ class RuleEngine:
             affected.add("pressure")
             severity = "high"
 
-        # 3. Rate-of-Change (Delta) Verification
         if previous is not None:
             prev_temp = previous.get("temperature")
             prev_hum = previous.get("humidity")
@@ -139,7 +136,6 @@ class RuleEngine:
                     if severity in ["none", "low", "medium"]:
                         severity = "high"
 
-        # 3b. Sustained Deviation against Rolling Buffer Baseline (captures multi-step spikes)
         if history_window and len(history_window) >= 4:
             recent_baseline = history_window[:-1]
             for s, max_dev in [("temperature", 7.0), ("humidity", 25.0), ("pressure", 6.0)]:
@@ -158,7 +154,6 @@ class RuleEngine:
                         if severity in ["none", "low", "medium"]:
                             severity = "high"
 
-        # 4. Cross-Sensor Meteorological Inconsistency
         if temp is not None and hum is not None:
             # Extreme heat with tropical saturation
             if temp > 42.0 and hum > 85.0:
@@ -171,7 +166,6 @@ class RuleEngine:
                 affected.add("humidity")
                 severity = "critical"
 
-        # 5. Stagnation / Frozen Sensor Detection (requires at least 6 consecutive points)
         if history_window and len(history_window) >= 6:
             for s in ["temperature", "humidity", "pressure"]:
                 vals = [p[s] for p in history_window if s in p and p[s] is not None]
@@ -199,5 +193,4 @@ class RuleEngine:
         }
 
 
-# Singleton instance
 rule_engine = RuleEngine()

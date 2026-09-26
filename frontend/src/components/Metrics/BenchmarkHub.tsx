@@ -28,7 +28,6 @@ export const BenchmarkHub: React.FC = () => {
     );
   }
 
-  // Handle both array and dictionary format from backend safely
   const modelList: BenchmarkMetrics[] = Array.isArray(data.models)
     ? data.models
     : (data.models && typeof data.models === 'object')
@@ -53,63 +52,60 @@ export const BenchmarkHub: React.FC = () => {
   }));
 
   return (
-    <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 backdrop-blur-xl space-y-6">
-      {/* Title */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
+    <div className="bg-[#111827] border border-slate-800 rounded-lg p-5 space-y-5">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
-            <Award className="w-5 h-5" />
+          <div className="p-2 rounded-md bg-slate-800 border border-slate-700 text-emerald-400">
+            <Award className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-slate-100 flex items-center gap-2">
-              Model Benchmark & Evaluation Hub
-              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-500/30 text-emerald-300">
-                Abohar Test Set (2021–2024)
+            <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
+              Statistical Model Validation & Benchmarks
+              <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">
+                Abohar Chronological Test Split
               </span>
             </h3>
             <p className="text-xs text-slate-400">
-              Evaluated on 23,160 chronologically unseen hourly observations with 1,701 known sensor anomalies
+              Validated on 23,160 hourly observations against ground-truth meteorological sensor faults
             </p>
           </div>
         </div>
       </div>
 
-      {/* Highlights Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-        <div className="bg-slate-950/80 border border-emerald-500/30 rounded-xl p-4 shadow-lg shadow-emerald-950/20">
+        <div className="bg-slate-900 border border-slate-800 rounded-md p-3.5">
           <span className="text-[10px] uppercase font-mono text-emerald-400 block font-semibold">Overall System Accuracy</span>
-          <span className="text-2xl font-extrabold font-mono text-emerald-400 mt-1 block">92.4%</span>
-          <span className="text-[11px] text-emerald-300/80 flex items-center gap-1 mt-1">
-            <CheckCircle2 className="w-3.5 h-3.5" /> 21,393 of 23,149 hours nominal
+          <span className="text-xl font-bold font-mono text-emerald-400 mt-1 block">92.4%</span>
+          <span className="text-[11px] text-slate-400 flex items-center gap-1 mt-1">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> 21,393 of 23,149 hours nominal
           </span>
         </div>
 
-        <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
-          <span className="text-[10px] uppercase font-mono text-slate-500 block">Clean Data Stability</span>
-          <span className="text-2xl font-extrabold font-mono text-sky-400 mt-1 block">98.2%</span>
+        <div className="bg-slate-900 border border-slate-800 rounded-md p-3.5">
+          <span className="text-[10px] uppercase font-mono text-slate-400 block">Clean Data Stability</span>
+          <span className="text-xl font-bold font-mono text-sky-400 mt-1 block">98.2%</span>
           <span className="text-[11px] text-slate-400 mt-1">
             Only 1.78% False Alarm Rate
           </span>
         </div>
 
-        <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
-          <span className="text-[10px] uppercase font-mono text-slate-500 block">Root Cause Accuracy</span>
-          <span className="text-2xl font-extrabold font-mono text-indigo-400 mt-1 block">91.1%</span>
+        <div className="bg-slate-900 border border-slate-800 rounded-md p-3.5">
+          <span className="text-[10px] uppercase font-mono text-slate-400 block">Root Cause Accuracy</span>
+          <span className="text-xl font-bold font-mono text-indigo-400 mt-1 block">91.1%</span>
           <span className="text-[11px] text-slate-400 mt-1">
             XGBoost 8-class diagnostic
           </span>
         </div>
 
-        <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
-          <span className="text-[10px] uppercase font-mono text-slate-500 block">Mean Inference Latency</span>
-          <span className="text-2xl font-extrabold font-mono text-amber-400 mt-1 block">&lt; 1 ms</span>
+        <div className="bg-slate-900 border border-slate-800 rounded-md p-3.5">
+          <span className="text-[10px] uppercase font-mono text-slate-400 block">Mean Inference Latency</span>
+          <span className="text-xl font-bold font-mono text-amber-400 mt-1 block">&lt; 1 ms</span>
           <span className="text-[11px] text-slate-400 mt-1">
             Real-time sub-second SLA
           </span>
         </div>
       </div>
 
-      {/* Comparison Chart */}
       <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-4 space-y-2">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-semibold text-slate-300">
@@ -136,7 +132,6 @@ export const BenchmarkHub: React.FC = () => {
         </div>
       </div>
 
-      {/* Model Benchmark Table */}
       <div className="overflow-x-auto rounded-xl border border-slate-800">
         <table className="w-full text-left text-xs">
           <thead className="bg-slate-950/80 text-slate-400 font-mono text-[11px] border-b border-slate-800 uppercase tracking-wider">
@@ -202,7 +197,6 @@ export const BenchmarkHub: React.FC = () => {
         </table>
       </div>
 
-      {/* Confusion Matrix Breakdown */}
       <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-4 space-y-3">
         <span className="text-xs font-bold uppercase tracking-wider text-slate-300 block">
           Hybrid Ensemble Confusion Matrix (22,968 Unseen Test Hours):

@@ -74,7 +74,6 @@ export const HealthMatrix: React.FC<HealthMatrixProps> = ({ health, stationName 
 
   return (
     <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 backdrop-blur-xl space-y-4">
-      {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-slate-800 gap-2">
         <div className="flex items-center gap-2.5 min-w-0">
           <div className="p-2 rounded-xl bg-teal-500/10 text-teal-400 shrink-0">
@@ -93,7 +92,6 @@ export const HealthMatrix: React.FC<HealthMatrixProps> = ({ health, stationName 
           </div>
         </div>
 
-        {/* Overall Health Pill */}
         <div className="shrink-0">
           <span className={`px-2.5 py-1 rounded-full text-xs font-mono font-bold border ${getScoreColor(overall)}`}>
             {overall >= 80 ? 'HEALTHY' : overall >= 50 ? 'DEGRADED' : 'CRITICAL'} • {overall}/100
@@ -101,7 +99,6 @@ export const HealthMatrix: React.FC<HealthMatrixProps> = ({ health, stationName 
         </div>
       </div>
 
-      {/* Sensor Breakdown List - Vertical Clean Layout (Eliminates horizontal squishing & overlap) */}
       <div className="space-y-2.5">
         {sensorList.map((item) => {
           const Icon = item.icon;
@@ -113,7 +110,6 @@ export const HealthMatrix: React.FC<HealthMatrixProps> = ({ health, stationName 
               key={item.id}
               className="bg-slate-950/70 border border-slate-800/80 hover:border-slate-700/80 rounded-xl p-3 transition-colors space-y-2"
             >
-              {/* Top Row: Icon, Name, and Score */}
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2 min-w-0">
                   <div className={`p-1.5 rounded-lg ${item.bgAccent} ${item.accent} shrink-0`}>
@@ -129,7 +125,6 @@ export const HealthMatrix: React.FC<HealthMatrixProps> = ({ health, stationName 
                   </div>
                 </div>
 
-                {/* Score & Status Badge */}
                 <div className="flex items-center gap-2 shrink-0">
                   <span
                     className={`text-[10px] font-mono px-2 py-0.5 rounded border font-medium ${
@@ -148,7 +143,6 @@ export const HealthMatrix: React.FC<HealthMatrixProps> = ({ health, stationName 
                 </div>
               </div>
 
-              {/* Progress Bar */}
               <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${getBarGradient(item.score)}`}

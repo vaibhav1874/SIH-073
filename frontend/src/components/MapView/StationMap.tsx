@@ -22,7 +22,6 @@ export const StationMap: React.FC<StationMapProps> = ({
     if (!mapContainerRef.current) return;
 
     if (!mapInstanceRef.current) {
-      // Initialize map centered on India to view all multi-state observatories
       const map = L.map(mapContainerRef.current, {
         center: [22.0, 78.5],
         zoom: 4.5,
@@ -30,7 +29,6 @@ export const StationMap: React.FC<StationMapProps> = ({
         attributionControl: false,
       });
 
-      // Clean Dark theme map tiles (Esri Dark Gray Canvas - free & keyless, zero watermark)
       L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 16,
       }).addTo(map);
@@ -40,11 +38,9 @@ export const StationMap: React.FC<StationMapProps> = ({
 
     const map = mapInstanceRef.current;
 
-    // Clear existing markers
     Object.values(markersRef.current).forEach((m) => m.remove());
     markersRef.current = {};
 
-    // Add markers for stations
     stations.forEach((st) => {
       const isSelected = st.id === selectedStationId;
       const isWarning = st.status === 'Warning';
@@ -52,7 +48,6 @@ export const StationMap: React.FC<StationMapProps> = ({
 
       const color = isCritical ? '#ef4444' : isWarning ? '#f59e0b' : '#10b981';
 
-      // Custom SVG Marker Icon
       const customIcon = L.divIcon({
         className: 'custom-station-pin',
         html: `
@@ -116,7 +111,6 @@ export const StationMap: React.FC<StationMapProps> = ({
       markersRef.current[st.id] = marker;
     });
 
-    // Fly smoothly to selected station
     const sel = stations.find((s) => s.id === selectedStationId);
     if (sel) {
       map.flyTo([sel.latitude, sel.longitude], 8, { animate: true, duration: 1.2 });
@@ -124,33 +118,32 @@ export const StationMap: React.FC<StationMapProps> = ({
   }, [stations, selectedStationId, onSelectStation]);
 
   return (
-    <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 backdrop-blur-xl space-y-3">
+    <div className="bg-[#111827] border border-slate-800 rounded-lg p-4 space-y-3">
       <div className="flex items-center justify-between pb-2 border-b border-slate-800">
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 text-sky-400" />
-          <h3 className="text-sm font-bold text-slate-100">GIS AWS Station Network</h3>
+          <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wide">GIS AWS Observational Network</h3>
         </div>
         <span className="text-[11px] font-mono text-slate-400">
-          {stations.length} Active IMD Observatories
+          {stations.length} Active Observatories
         </span>
       </div>
 
-      <div className="relative w-full h-72 rounded-xl overflow-hidden border border-slate-800">
+      <div className="relative w-full h-72 rounded-md overflow-hidden border border-slate-800">
         <div ref={mapContainerRef} className="w-full h-full z-10" />
 
-        {/* Legend Overlay */}
-        <div className="absolute bottom-2 left-2 z-20 bg-slate-950/90 border border-slate-800 rounded-lg p-2 text-[10px] space-y-1 backdrop-blur-md">
+        <div className="absolute bottom-2 left-2 z-20 bg-slate-900 border border-slate-800 rounded p-2 text-[10px] space-y-1">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400" />
-            <span className="text-slate-300">Healthy</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span className="text-slate-300">Nominal / Valid</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-amber-400" />
-            <span className="text-slate-300">Warning / Drift</span>
+            <span className="w-2 h-2 rounded-full bg-amber-500" />
+            <span className="text-slate-300">Caution / Drift</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-rose-400" />
-            <span className="text-slate-300">Critical Anomaly</span>
+            <span className="w-2 h-2 rounded-full bg-rose-500" />
+            <span className="text-slate-300">Confirmed Fault</span>
           </div>
         </div>
       </div>

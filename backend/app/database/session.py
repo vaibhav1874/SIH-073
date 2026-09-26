@@ -11,7 +11,6 @@ from backend.app.db_models.models import Base, Station
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DB_PATH = PROJECT_ROOT / "data" / "skyguard.db"
 
-# Default to SQLite aiosqlite for zero-config local run; switchable to PostgreSQL via env var
 DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite+aiosqlite:///{DB_PATH}")
 
 engine = create_async_engine(

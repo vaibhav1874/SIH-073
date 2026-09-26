@@ -68,12 +68,10 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  // Login form state
   const [badgeInput, setBadgeInput] = useState<string>('IMD-OP-402');
   const [passwordInput, setPasswordInput] = useState<string>('••••••••');
   const [selectedStation, setSelectedStation] = useState<string>('DELHI');
 
-  // Signup form state
   const [signupName, setSignupName] = useState<string>('');
   const [signupEmail, setSignupEmail] = useState<string>('');
   const [signupBadge, setSignupBadge] = useState<string>('');
@@ -99,7 +97,6 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
       return;
     }
 
-    // Determine matched role from badge prefix or default to officer
     const upperBadge = badgeInput.trim().toUpperCase();
     let matchedRole: 'officer' | 'engineer' | 'scientist' = 'officer';
     if (upperBadge.includes('ENG')) matchedRole = 'engineer';
@@ -174,9 +171,7 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in">
-      {/* Modal Container */}
       <div className="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-3xl shadow-2xl shadow-sky-950/60 overflow-hidden text-slate-100 max-h-[92vh] flex flex-col">
-        {/* Top Header Strip with MoES / IMD Seal styling */}
         <div className="p-5 sm:p-6 border-b border-slate-800 bg-gradient-to-r from-slate-900 via-sky-950/40 to-slate-900 flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-2xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white shadow-lg shadow-sky-500/25 ring-1 ring-white/20">
@@ -205,9 +200,7 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
           </button>
         </div>
 
-        {/* Scrollable Modal Body */}
         <div className="p-5 sm:p-6 space-y-5 overflow-y-auto flex-1">
-          {/* ⚡ Quick 1-Click Role Profiles for Jury Demonstration */}
           <div className="p-4 rounded-2xl bg-slate-950/80 border border-sky-500/30 space-y-2.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono text-sky-400 font-semibold flex items-center gap-1.5">
@@ -268,7 +261,6 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
             </div>
           </div>
 
-          {/* Form Tabs: Login vs Register */}
           <div className="flex rounded-xl bg-slate-950 p-1 border border-slate-800">
             <button
               type="button"
@@ -301,7 +293,6 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
             </div>
           )}
 
-          {/* TAB 1: LOGIN FORM */}
           {activeTab === 'login' && (
             <form onSubmit={handleLoginSubmit} className="space-y-4">
               <div>
@@ -372,7 +363,6 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
             </form>
           )}
 
-          {/* TAB 2: SIGNUP FORM */}
           {activeTab === 'signup' && (
             <form onSubmit={handleSignupSubmit} className="space-y-3.5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -507,7 +497,6 @@ export const StaffAuthModal: React.FC<StaffAuthModalProps> = ({
             </form>
           )}
 
-          {/* Guest Observer Bypass */}
           <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
             <span className="text-slate-400">Reviewing for Hackathon?</span>
             <button

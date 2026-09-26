@@ -47,14 +47,11 @@ async def set_simulator_mode(payload: SimulatorModeRequest):
     if mode_changed or city_changed:
         print(f"[Simulator Control] Regime switch detected: {simulator_state['mode'].upper()} ({simulator_state['city'].upper()}). Resetting pipeline filters...")
 
-        # 0. Load city-specific ML models (no-op if same city already loaded)
         anomaly_detector.load_models_for_city(simulator_state["city"])
         
-        # 1. Reset in-memory rolling buffers and Kalman filters
         anomaly_detector.buffers.clear()
         sensor_corrector.filters.clear()
 
-        # 2. Clear previous transient readings and unacknowledged alerts from DB
         try:
             async with AsyncSessionLocal() as session:
                 await session.execute(delete(TelemetryReading))
@@ -63,7 +60,6 @@ async def set_simulator_mode(payload: SimulatorModeRequest):
         except Exception as e:
             print(f"[Simulator Control] Notice clearing DB readings: {e}")
 
-        # 3. Broadcast WebSocket event to frontend to refresh and clear chart histories
         try:
             await ws_manager.broadcast({
                 "type": "RESET_HISTORY",

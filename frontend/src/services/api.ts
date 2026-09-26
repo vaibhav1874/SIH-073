@@ -35,7 +35,6 @@ export interface FaultInjectionPayload {
   magnitude?: number;
 }
 
-// Fallback seed data if backend is offline
 const FALLBACK_STATIONS: Station[] = [
   { id: 'ABOHAR', name: 'Abohar Agro-Met Observatory', state: 'Punjab', latitude: 30.145, longitude: 74.199, elevation_m: 180, status: 'Healthy' },
   { id: 'DELHI', name: 'Safdarjung IMD Station', state: 'Delhi NCT', latitude: 28.585, longitude: 77.206, elevation_m: 216, status: 'Healthy' },
@@ -89,7 +88,6 @@ export const apiService = {
       }
       throw new Error('No historical readings in DB for this station');
     } catch {
-      // Generate synthetic chronological baseline for visualization
       const now = Date.now();
       return Array.from({ length: 30 }, (_, i) => {
         const time = new Date(now - (30 - i) * 60000).toISOString();
@@ -179,7 +177,6 @@ export const apiService = {
       magnitude: payload.magnitude || 25.0,
     };
 
-    // Dispatch custom event for immediate UI responsiveness
     window.dispatchEvent(new CustomEvent('skyguard:fault_injected', { detail: body }));
 
     try {

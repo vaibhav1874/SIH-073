@@ -20,7 +20,6 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
   const explanation = telemetry.explanation;
   const protocol = telemetry.protocol;
 
-  // Format Root Cause label
   const formatRootCause = (rc: string) => {
     return rc
       .split('_')
@@ -42,17 +41,16 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
   };
 
   return (
-    <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 backdrop-blur-xl space-y-5">
-      {/* Header */}
+    <div className="bg-[#111827] border border-slate-800 rounded-lg p-4 space-y-4">
       <div className="flex items-center justify-between pb-3 border-b border-slate-800">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400">
-            <Cpu className="w-5 h-5" />
+          <div className="p-2 rounded-md bg-slate-800 border border-slate-700 text-sky-400">
+            <Cpu className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
+            <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wide flex items-center gap-2">
               Hybrid AI Inference Engine
-              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-indigo-950/80 border border-indigo-500/30 text-indigo-300">
+              <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">
                 Triple-Arm Ensemble
               </span>
             </h3>
@@ -62,10 +60,9 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
           </div>
         </div>
 
-        {/* Root Cause Badge */}
         <div className="flex items-center gap-2">
           <span
-            className={`text-xs font-mono font-bold uppercase px-3 py-1 rounded-full border ${getSeverityBadge(
+            className={`text-xs font-mono font-bold uppercase px-2.5 py-0.5 rounded border ${getSeverityBadge(
               telemetry.severity
             )}`}
           >
@@ -74,36 +71,31 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
         </div>
       </div>
 
-      {/* Ensemble Score Meter */}
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-slate-400 font-medium">Ensemble Anomaly Probability</span>
+          <span className="text-slate-400 font-medium">Anomaly Probability / Confidence</span>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-base font-extrabold text-slate-100">
+            <span className="font-mono text-sm font-bold text-slate-100">
               {ensembleScore.toFixed(1)}
               <span className="text-xs text-slate-400">/100</span>
             </span>
             <span
               className={`text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded ${
-                isAnomaly ? 'bg-rose-500/20 text-rose-400' : 'bg-emerald-500/20 text-emerald-400'
+                isAnomaly ? 'bg-rose-950/70 text-rose-300 border border-rose-700/60' : 'bg-emerald-950/40 text-emerald-400 border border-emerald-700/40'
               }`}
             >
-              {isAnomaly ? 'Threshold Breached (≥55)' : 'Nominal Band'}
+              {isAnomaly ? 'Breach (≥55)' : 'Nominal Band'}
             </span>
           </div>
         </div>
 
-        {/* Progress bar with threshold indicator */}
-        <div className="relative w-full h-3 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+        <div className="relative w-full h-2.5 bg-slate-900 rounded overflow-hidden border border-slate-800">
           <div
-            className={`h-full rounded-full transition-all duration-500 ${
-              isAnomaly
-                ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600'
-                : 'bg-gradient-to-r from-sky-500 to-emerald-500'
+            className={`h-full rounded transition-all duration-300 ${
+              isAnomaly ? 'bg-rose-600' : 'bg-blue-600'
             }`}
             style={{ width: `${Math.min(100, Math.max(0, ensembleScore))}%` }}
           />
-          {/* Threshold marker at 55% */}
           <div
             className="absolute top-0 bottom-0 w-0.5 bg-rose-400/80 z-10"
             style={{ left: '55%' }}
@@ -117,9 +109,7 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
         </div>
       </div>
 
-      {/* 3-Arm Consensus Matrix */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {/* Arm 1: Rule Engine */}
         <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold text-slate-400">1. Domain Rules</span>
@@ -141,7 +131,6 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
           </div>
         </div>
 
-        {/* Arm 2: Isolation Forest */}
         <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold text-slate-400">2. Isolation Forest</span>
@@ -163,7 +152,6 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
           </div>
         </div>
 
-        {/* Arm 3: LSTM Autoencoder */}
         <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold text-slate-400">3. PyTorch LSTM-AE</span>
@@ -186,7 +174,6 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
         </div>
       </div>
 
-      {/* SHAP Diagnostic Rationale & Evidence */}
       <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
@@ -216,7 +203,6 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
           </div>
         )}
 
-        {/* Dynamic SHAP Feature Attribution Analysis */}
         <div className="pt-2 border-t border-slate-800/80">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-semibold uppercase tracking-wider text-sky-400">
@@ -294,7 +280,6 @@ export const AIDiagnosisPanel: React.FC<AIDiagnosisPanelProps> = ({ telemetry })
         </div>
       </div>
 
-      {/* IMD Standard Operating Procedure Protocol Action */}
       {protocol && (
         <div className="bg-slate-950/90 border border-sky-500/20 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="space-y-1">

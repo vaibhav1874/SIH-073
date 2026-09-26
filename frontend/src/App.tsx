@@ -45,7 +45,6 @@ export const App: React.FC = () => {
     return 'landing';
   });
 
-  // Telemetry stream hook
   const {
     connectionStatus,
     latestTelemetry,
@@ -54,7 +53,6 @@ export const App: React.FC = () => {
     clearAlert,
   } = useTelemetryStream(selectedStationId);
 
-  // Fetch initial stations & alerts
   useEffect(() => {
     async function initData() {
       const sts = await apiService.getStations();
@@ -85,7 +83,6 @@ export const App: React.FC = () => {
     if (user.assignedStation && user.assignedStation !== 'ALL') {
       setSelectedStationId(user.assignedStation);
     }
-    // Redirect directly to mission control dashboard on login or signup
     setCurrentView('dashboard');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -100,7 +97,6 @@ export const App: React.FC = () => {
   const selectedStation = stations.find((s) => s.id === selectedStationId) || stations[0];
   const activeAlertCount = alerts.filter((a) => !a.is_acknowledged).length;
 
-  // Render Landing Page
   if (currentView === 'landing') {
     return (
       <>
@@ -124,7 +120,6 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-sky-500 selection:text-white">
-      {/* Top Header */}
       <Header
         stations={stations}
         selectedStationId={selectedStationId}
@@ -142,28 +137,21 @@ export const App: React.FC = () => {
         }}
       />
 
-      {/* Staff Authentication Modal */}
       <StaffAuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         onLoginSuccess={handleLoginSuccess}
       />
 
-      {/* Floating Anomaly Toast */}
       <AlertToast alert={activeAlert} onDismiss={clearAlert} />
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-[1700px] w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-6">
-        {/* TAB 1: LIVE AWS MONITOR */}
+      <main className="flex-1 max-w-[1440px] w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-6">
         {activeTab === 'monitor' && (
           <div className="space-y-6">
-            {/* Real-Time Telemetry Pipeline Flow Architecture */}
             <LivePipelineFlow telemetry={latestTelemetry} />
 
-            {/* Top Cards: Temperature, Humidity, Pressure with Arc Gauges */}
             <TelemetryCards telemetry={latestTelemetry} />
 
-            {/* Mid Grid: Charts (2 cols) & Station GIS Map (1 col) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
                 <TelemetryCharts history={telemetryHistory} />
@@ -177,7 +165,6 @@ export const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Bottom Grid: 3-Arm AI Diagnosis (2 cols) & Sensor Health Matrix (1 col) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
                 <AIDiagnosisPanel telemetry={latestTelemetry} />
@@ -192,12 +179,10 @@ export const App: React.FC = () => {
           </div>
         )}
 
-        {/* TAB 2: ALERTS & TRIAGE CENTER */}
         {activeTab === 'alerts' && (
           <AlertLogTable alerts={alerts} onAlertAcknowledged={reloadAlerts} />
         )}
 
-        {/* TAB 3: CONTROLLED FAULT INJECTOR */}
         {activeTab === 'faults' && (
           <FaultControlPanel
             stations={stations}
@@ -205,11 +190,9 @@ export const App: React.FC = () => {
           />
         )}
 
-        {/* TAB 4: MODEL BENCHMARKS */}
         {activeTab === 'benchmark' && <BenchmarkHub />}
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-slate-900 bg-slate-950/90 py-4 text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 font-mono">
           <div>

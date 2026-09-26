@@ -29,7 +29,6 @@ const STATION_COORDINATES: Record<string, { lat: number; lon: number }> = {
   BHOPAL: { lat: 23.2599, lon: 77.4126 },
 };
 
-// Global in-memory cache for live fallback weather
 const liveFallbackCache: Record<string, { temp: number; hum: number; pres: number; lastFetch: number }> = {};
 
 export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetryStreamReturn {
@@ -45,7 +44,6 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
   const selectedStationRef = useRef<string>(selectedStationId);
   const lastDismissedAlertRef = useRef<string | null>(null);
 
-  // Keep ref synchronized with current prop and immediately clear prior station history
   useEffect(() => {
     if (selectedStationRef.current !== selectedStationId) {
       selectedStationRef.current = selectedStationId;
@@ -63,22 +61,19 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
     steps_remaining: number;
   } | null>(null);
 
-  // Fetch real database history whenever selectedStationId changes
   useEffect(() => {
     let isMounted = true;
-    setTelemetryHistory([]); // Clean slate for new station
+    setTelemetryHistory([]);
     async function loadStationData() {
       try {
         const readings = await apiService.getReadings(selectedStationId, 40);
         if (!isMounted) return;
 
-        // Normalize ensemble_scores
         const normalized = readings.map((r) => ({
           ...r,
           ensemble_score: r.ensemble_score <= 1.0 ? r.ensemble_score * 100 : r.ensemble_score,
         }));
 
-        // Filter out any historical readings from a prior regime across a >10°C mode switch jump
         let cleanHistory = normalized;
         for (let i = normalized.length - 1; i > 0; i--) {
           if (Math.abs(normalized[i].temperature - normalized[i - 1].temperature) > 10.0) {
@@ -145,7 +140,6 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
             };
           });
         } else {
-          // If no database readings exist yet for this station, populate nominal baseline so cards are never blank
           setLatestTelemetry((prev) => {
             if (prev) return prev;
             return {
@@ -197,7 +191,6 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
           });
         }
       } catch {
-        // Handled by fallback
       }
     }
 
@@ -207,7 +200,6 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
     };
   }, [selectedStationId]);
 
-  // Listen for user synthetic fault injection commands
   useEffect(() => {
     const handleInjected = (e: any) => {
       if (e.detail) {
@@ -221,7 +213,6 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
     return () => window.removeEventListener('skyguard:fault_injected', handleInjected);
   }, []);
 
-  // Listen for telemetry regime / mode change reset events to clear graph history
   useEffect(() => {
     const handleReset = () => {
       setTelemetryHistory([]);
@@ -232,7 +223,6 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
     return () => window.removeEventListener('skyguard:reset-telemetry', handleReset);
   }, []);
 
-  // Live real-time observation generator used when offline / deployed on static CDN (Vercel)
   const generateSimulatedReading = useCallback((stationId: string): LiveTelemetryPayload['data'] => {
     simStepRef.current += 1;
     const stUpper = (stationId || 'ABOHAR').toUpperCase();
@@ -240,7 +230,6 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
     const cached = liveFallbackCache[stUpper];
     const nowMs = Date.now();
 
-    // In background, refresh actual satellite observation from Open-Meteo if stale (>60s)
     if (!cached || nowMs - cached.lastFetch > 60000) {
       fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m,relative_humidity_2m,surface_pressure`)
         .then((res) => res.json())
@@ -257,7 +246,6 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
         .catch(() => {});
     }
 
-    // Default to real Open-Meteo temperature if cached, else diurnal model
     const now = new Date();
     const hourOfDay = now.getHours() + (now.getMinutes() / 60.0) + (now.getSeconds() / 3600.0);
     const diurnalTemp = 24 + Math.sin(((hourOfDay - 8) / 24) * 2 * Math.PI) * 6;
@@ -268,7 +256,6 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
     const baseHum = cached ? cached.hum : diurnalHum;
     const basePres = cached ? cached.pres : diurnalPres;
 
-    // Subtle thermal sensor micro-noise (±0.03°C)
     const tempNoise = (Math.random() - 0.5) * 0.05;
     const humNoise = (Math.random() - 0.5) * 0.12;
     const presNoise = (Math.random() - 0.5) * 0.04;
@@ -430,7 +417,6 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
           if (payload.type === 'TELEMETRY_UPDATE' && payload.data) {
             const data = payload.data;
 
-            // Normalize score to 0-100 scale
             const normalizedScore = data.ensemble_score <= 1.0 ? data.ensemble_score * 100 : data.ensemble_score;
             data.ensemble_score = normalizedScore;
 
@@ -466,7 +452,6 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
                 if (prev.length > 0) {
                   const lastReading = prev[prev.length - 1];
                   const tempJump = Math.abs(data.temperature - lastReading.temperature);
-                  // Detect unannounced cross-station or regime shift discontinuity (>15.0°C abrupt jump only when NOT an anomaly)
                   if (!data.is_anomaly && tempJump > 15.0) {
                     setActiveAlert(null);
                     lastDismissedAlertRef.current = null;
@@ -479,7 +464,6 @@ export function useTelemetryStream(selectedStationId = 'ABOHAR'): UseTelemetrySt
             }
           }
         } catch {
-          // ignore parse errors
         }
       };
 

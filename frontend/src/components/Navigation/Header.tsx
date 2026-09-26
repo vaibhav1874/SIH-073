@@ -99,7 +99,6 @@ export const Header: React.FC<HeaderProps> = ({
   const handleToggleMode = async (mode: 'replay' | 'live') => {
     setIsSwitching(true);
     setSimMode(mode);
-    // Immediately reset graphs and alerts so no vertical cliff spike appears
     window.dispatchEvent(new CustomEvent('skyguard:reset-telemetry'));
     await apiService.setSimulatorMode(mode, liveCity);
     setIsSwitching(false);
@@ -108,9 +107,7 @@ export const Header: React.FC<HeaderProps> = ({
   const handleCityChange = async (city: string) => {
     setLiveCity(city);
     onSelectStation(city.toUpperCase());
-    // Immediately reset graphs and alerts so no vertical cliff spike appears
     window.dispatchEvent(new CustomEvent('skyguard:reset-telemetry'));
-    // Preserve current mode when switching city (works for both replay and live)
     await apiService.setSimulatorMode(simMode, city);
   };
 
@@ -118,29 +115,29 @@ export const Header: React.FC<HeaderProps> = ({
     switch (connectionStatus) {
       case 'connected':
         return (
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-medium shrink-0">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block mr-0.5" />
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-950/60 border border-emerald-700/40 text-emerald-400 text-xs font-mono font-medium shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block mr-0.5" />
             LIVE WS
           </div>
         );
       case 'simulated':
         return (
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-medium shrink-0">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 inline-block mr-0.5" />
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/80 border border-slate-700 text-slate-300 text-xs font-mono font-medium shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block mr-0.5" />
             SIMULATED
           </div>
         );
       case 'connecting':
         return (
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-medium shrink-0">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse inline-block mr-0.5" />
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-950/60 border border-amber-700/40 text-amber-400 text-xs font-mono font-medium shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block mr-0.5" />
             CONNECTING
           </div>
         );
       default:
         return (
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-mono font-medium shrink-0">
-            <span className="w-2 h-2 rounded-full bg-rose-400 inline-block mr-0.5" />
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-rose-950/60 border border-rose-700/40 text-rose-400 text-xs font-mono font-medium shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-400 inline-block mr-0.5" />
             OFFLINE
           </div>
         );
@@ -148,47 +145,45 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-950/98 backdrop-blur-md shadow-lg shadow-black/40">
-      <div className="max-w-[1700px] w-full mx-auto px-3 sm:px-5 lg:px-6">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-800/90 bg-[#0e1420]">
+      <div className="max-w-[1440px] w-full mx-auto px-3 sm:px-5 lg:px-6">
         <div className="flex items-center justify-between h-16 gap-2 sm:gap-3">
-          {/* Logo & Identity - strictly protected against flex squishing */}
           <div
             onClick={onGoToLanding}
             className={`flex items-center gap-2.5 shrink-0 ${onGoToLanding ? 'cursor-pointer group select-none' : ''}`}
-            title={onGoToLanding ? "Return to SkyGuard AI Landing Page" : undefined}
+            title={onGoToLanding ? "Return to SkyGuard AWS Portal Overview" : undefined}
           >
-            <div className="p-2 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white shadow-lg shadow-sky-500/20 ring-1 ring-white/20 shrink-0 group-hover:ring-sky-400 transition-all">
-              <CloudLightning className="w-5 h-5" />
+            <div className="p-2 rounded-lg bg-slate-800 border border-slate-700 text-sky-400 shrink-0">
+              <CloudLightning className="w-4 h-4" />
             </div>
             <div className="shrink-0 flex items-center gap-2">
-              <span className="font-bold text-base sm:text-lg tracking-tight bg-gradient-to-r from-sky-400 via-indigo-300 to-white bg-clip-text text-transparent whitespace-nowrap group-hover:from-sky-300 transition-all">
+              <span className="font-bold text-base tracking-tight text-white whitespace-nowrap">
                 SkyGuard AI
               </span>
-              <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-sky-950/80 border border-sky-500/30 text-sky-400 font-semibold tracking-wider shrink-0">
+              <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-semibold tracking-wider shrink-0">
                 SIH26073
               </span>
             </div>
           </div>
 
-          {/* Navigation Tabs - strictly protected with whitespace-nowrap */}
-          <nav className="hidden lg:flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800 shrink-0">
+          <nav className="hidden lg:flex items-center gap-1 bg-slate-900/90 p-1 rounded-lg border border-slate-800 shrink-0">
             {onGoToLanding && (
               <button
                 onClick={onGoToLanding}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-sky-300 hover:bg-slate-800/50 transition-all border-r border-slate-800/80 pr-2.5 mr-0.5 whitespace-nowrap"
-                title="Return to SkyGuard AI Portal Overview"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-all border-r border-slate-800 pr-2.5 mr-0.5 whitespace-nowrap"
+                title="Return to SkyGuard Portal Overview"
               >
-                <Compass className="w-3.5 h-3.5 text-sky-400" />
+                <Compass className="w-3.5 h-3.5 text-slate-400" />
                 <span>Portal</span>
               </button>
             )}
 
             <button
               onClick={() => onSelectTab('monitor')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap ${
                 activeTab === 'monitor'
-                  ? 'bg-sky-600 text-white shadow-sm shadow-sky-500/30 font-semibold'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                  ? 'bg-slate-800 text-white border border-slate-700 font-medium'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
               }`}
             >
               <Activity className="w-3.5 h-3.5" />
@@ -197,16 +192,16 @@ export const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={() => onSelectTab('alerts')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all relative whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all relative whitespace-nowrap ${
                 activeTab === 'alerts'
-                  ? 'bg-sky-600 text-white shadow-sm shadow-sky-500/30 font-semibold'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                  ? 'bg-slate-800 text-white border border-slate-700 font-medium'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
               }`}
             >
               <ShieldAlert className="w-3.5 h-3.5" />
               <span>Alerts</span>
               {activeAlertCount > 0 && (
-                <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-rose-500 text-white animate-pulse">
+                <span className="ml-1 px-1.5 py-0.2 rounded text-[10px] font-bold bg-rose-600 text-white">
                   {activeAlertCount}
                 </span>
               )}
@@ -214,10 +209,10 @@ export const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={() => onSelectTab('faults')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap ${
                 activeTab === 'faults'
-                  ? 'bg-sky-600 text-white shadow-sm shadow-sky-500/30 font-semibold'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                  ? 'bg-slate-800 text-white border border-slate-700 font-medium'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
               }`}
             >
               <Wrench className="w-3.5 h-3.5" />
@@ -226,10 +221,10 @@ export const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={() => onSelectTab('benchmark')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap ${
                 activeTab === 'benchmark'
-                  ? 'bg-sky-600 text-white shadow-sm shadow-sky-500/30 font-semibold'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                  ? 'bg-slate-800 text-white border border-slate-700 font-medium'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
               }`}
             >
               <BarChart2 className="w-3.5 h-3.5" />
@@ -237,9 +232,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </nav>
 
-          {/* Right Controls: Telemetry Source Switcher + Single Unified Station/City Selector + Status + Officer */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-            {/* Dynamic Telemetry Source Switcher (Historical Replay vs Live Real-Time) */}
             <div className="flex items-center bg-slate-900/90 border border-slate-800 rounded-xl p-0.5 shadow-inner shrink-0">
               <button
                 onClick={() => handleToggleMode('replay')}
@@ -270,7 +263,6 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             </div>
 
-            {/* Single Unified Observatory / City Dropdown with width constraint and truncate */}
             <div className="flex items-center gap-1.5 bg-slate-900/90 border border-slate-800 rounded-xl px-2.5 py-1.5 shadow-sm max-w-[145px] sm:max-w-[165px] shrink-0">
               <Radio className="w-3.5 h-3.5 text-sky-400 animate-pulse shrink-0" />
               <select
@@ -302,10 +294,8 @@ export const Header: React.FC<HeaderProps> = ({
               </select>
             </div>
 
-            {/* Live Indicator */}
             {getStatusBadge()}
 
-            {/* Operator Role & Authentication Badge */}
             <div className="relative shrink-0">
               <button
                 onClick={() => setIsRoleMenuOpen(!isRoleMenuOpen)}
@@ -326,7 +316,6 @@ export const Header: React.FC<HeaderProps> = ({
                 <ChevronDown className="w-3 h-3 text-slate-400 shrink-0 ml-0.5" />
               </button>
 
-              {/* Dropdown Menu */}
               {isRoleMenuOpen && (
                 <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-slate-900/95 border border-slate-800 p-3 shadow-2xl backdrop-blur-xl z-50 animate-fade-in space-y-2">
                   <div className="pb-2 border-b border-slate-800 flex items-center justify-between">
@@ -379,7 +368,6 @@ export const Header: React.FC<HeaderProps> = ({
                     })}
                   </div>
 
-                  {/* Auth Actions: Switch / Login & Logout */}
                   <div className="pt-2 border-t border-slate-800/80 space-y-1.5">
                     {onOpenAuth && (
                       <button

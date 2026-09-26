@@ -52,16 +52,12 @@ class SeverityEngine:
         rule_severity: str = "none",
     ) -> Dict[str, Any]:
         """Calculates severity grade and prescribed IMD standard operating procedure."""
-        # 1. Hardware/telemetry communication drop is always critical
         if root_cause in ["communication_failure"] or rule_severity == "critical":
             level = "critical"
-        # 2. Multi-sensor failure or high ensemble confidence
         elif len(affected_sensors) >= 2 or ensemble_score >= 0.75 or rule_severity == "high":
             level = "high"
-        # 3. Moderate confidence or persistent drift/freezing
         elif ensemble_score >= 0.50 or root_cause in ["frozen_sensor", "sensor_drift"] or rule_severity == "medium":
             level = "medium"
-        # 4. Low confidence transient anomaly
         elif ensemble_score >= 0.35:
             level = "low"
         else:

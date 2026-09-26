@@ -18,18 +18,10 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
   const isTempAffected = affectedSensors.includes('temperature') || rootCause.includes('temp');
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-slate-900/90 border border-slate-800 p-5 shadow-2xl backdrop-blur-xl">
-      {/* Background Ambient Glow */}
-      <div
-        className={`absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-36 rounded-full blur-3xl pointer-events-none transition-all duration-700 ${
-          isAnomaly ? 'bg-rose-500/15' : 'bg-sky-500/10'
-        }`}
-      />
-
-      {/* Header bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-800/80">
+    <div className="rounded-lg bg-[#111827] border border-slate-800 p-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
         <div className="flex items-center gap-2.5">
-          <div className={`p-2 rounded-xl border ${isAnomaly ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' : 'bg-sky-500/15 text-sky-400 border-sky-500/30'}`}>
+          <div className={`p-2 rounded-md border ${isAnomaly ? 'bg-rose-950/50 text-rose-400 border-rose-700/50' : 'bg-slate-800 text-slate-300 border-slate-700'}`}>
             <Zap className="w-4 h-4" />
           </div>
           <div>
@@ -37,15 +29,15 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
                 Live Data Ingestion & Self-Healing Pipeline
               </h3>
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold flex items-center gap-1 border ${
+              <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold flex items-center gap-1 border ${
                 isAnomaly
-                  ? 'bg-rose-500/15 text-rose-400 border-rose-500/30 animate-pulse'
-                  : 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                  ? 'bg-rose-950/70 text-rose-300 border-rose-700/60'
+                  : 'bg-emerald-950/50 text-emerald-400 border-emerald-700/40'
               }`}>
                 <span className={`w-1.5 h-1.5 rounded-full ${isAnomaly ? 'bg-rose-400' : 'bg-emerald-400'}`} />
                 {telemetry
-                  ? (isAnomaly ? 'ANOMALY ISOLATION & HEALING ACTIVE' : 'PIPELINE NOMINAL • SYNCHRONIZED')
-                  : 'SYNCHRONIZING TELEMETRY PIPELINE...'}
+                  ? (isAnomaly ? 'ANOMALY ISOLATION ACTIVE' : 'PIPELINE NOMINAL')
+                  : 'SYNCHRONIZING...'}
               </span>
             </div>
             <p className="text-[11px] text-slate-400">
@@ -54,18 +46,15 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
           </div>
         </div>
 
-        {/* Latency & Processing Speed Tag */}
-        <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-slate-800">
-          <span className="text-slate-500">Execution Latency:</span>
-          <span className="text-emerald-400 font-bold">&lt; 14.8 ms</span>
+        <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">
+          <span className="text-slate-400">Latency:</span>
+          <span className="text-slate-200 font-semibold">&lt; 14.8 ms</span>
           <span className="w-1 h-1 rounded-full bg-slate-600" />
-          <span className="text-sky-400">1.0 Hz Stream</span>
+          <span className="text-slate-300">1.0 Hz Stream</span>
         </div>
       </div>
 
-      {/* Flow Nodes Grid */}
       <div className="mt-5 grid grid-cols-1 md:grid-cols-5 gap-3 items-stretch relative">
-        {/* Step 1: Ingestion */}
         <div className="flex flex-col justify-between p-3.5 rounded-xl bg-slate-950/70 border border-slate-800/90 group hover:border-slate-700 transition-all">
           <div>
             <div className="flex items-center justify-between text-[10px] uppercase font-mono text-slate-500 mb-1.5">
@@ -86,7 +75,6 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
           </div>
         </div>
 
-        {/* Step 2: Rules */}
         <div className={`flex flex-col justify-between p-3.5 rounded-xl border transition-all ${
           isAnomaly && affectedSensors.length > 0
             ? 'bg-amber-950/20 border-amber-500/40 text-slate-200'
@@ -111,7 +99,6 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
           </div>
         </div>
 
-        {/* Step 3: ML Models */}
         <div className={`flex flex-col justify-between p-3.5 rounded-xl border transition-all ${
           isAnomaly
             ? 'bg-purple-950/20 border-purple-500/40 text-slate-200'
@@ -136,7 +123,6 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
           </div>
         </div>
 
-        {/* Step 4: Decision & Diagnosis */}
         <div className={`flex flex-col justify-between p-3.5 rounded-xl border transition-all ${
           isAnomaly
             ? 'bg-rose-950/25 border-rose-500/50 shadow-md shadow-rose-950/30'
@@ -161,7 +147,6 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
           </div>
         </div>
 
-        {/* Step 5: Kalman Self-Healing */}
         <div className={`flex flex-col justify-between p-3.5 rounded-xl border transition-all ${
           isAnomaly && tempDiff > 1
             ? 'bg-cyan-950/30 border-cyan-400/60 shadow-lg shadow-cyan-950/40 ring-1 ring-cyan-400/40'
@@ -194,7 +179,6 @@ export const LivePipelineFlow: React.FC<LivePipelineFlowProps> = ({ telemetry })
         </div>
       </div>
 
-      {/* Live Self-Healing Banner if Anomaly is active */}
       {isAnomaly && tempDiff > 1 && (
         <div className="mt-3 p-3 rounded-xl bg-cyan-950/30 border border-cyan-500/40 flex items-center justify-between gap-3 animate-fade-in text-xs font-mono">
           <div className="flex items-center gap-2 text-cyan-300">

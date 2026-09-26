@@ -73,7 +73,6 @@ class SensorCorrector:
             elif sensor == "pressure" and (safe_initial > 1080.0 or safe_initial < 900.0):
                 safe_initial = 1000.0
 
-            # Parameterize based on sensor physics
             if sensor == "temperature":
                 kf = KalmanFilter1D(initial_value=safe_initial, process_noise=0.04, measurement_noise=0.8)
             elif sensor == "humidity":

@@ -122,27 +122,26 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
   };
 
   return (
-    <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 backdrop-blur-xl space-y-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
+    <div className="bg-[#111827] border border-slate-800 rounded-lg p-5 space-y-5">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-sky-500/10 text-sky-400">
-            <Wrench className="w-5 h-5" />
+          <div className="p-2 rounded-md bg-slate-800 border border-slate-700 text-sky-400">
+            <Wrench className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-slate-100 flex items-center gap-2">
-              Controlled Synthetic Fault Injection Lab
-              <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-sky-950/80 border border-sky-500/30 text-sky-300">
+            <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
+              Sensor Stress Testing & Fault Diagnostic Lab
+              <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">
                 Evaluation Testbed
               </span>
             </h3>
             <p className="text-xs text-slate-400">
-              Inject synthetic physical sensor faults into the live simulator to test AI detection and Kalman correction
+              Inject synthetic sensor failures into the simulator to evaluate real-time isolation and Kalman baseline recovery
             </p>
           </div>
         </div>
       </div>
 
-      {/* Preset Quick Scenarios */}
       <div className="space-y-2">
         <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block">
           One-Click SIH Evaluation Scenarios:
@@ -189,9 +188,7 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
         </div>
       </div>
 
-      {/* Target Station & Fault Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left 2 Cols: Fault Type Selection */}
         <div className="lg:col-span-2 space-y-3">
           <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block">
             Select Physical Fault Mode (7 IMD Ground-Truth Types):
@@ -225,13 +222,11 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
           </div>
         </div>
 
-        {/* Right Col: Parameters & Trigger */}
         <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-5 space-y-4">
           <span className="text-xs font-bold uppercase tracking-wider text-slate-300 block">
             Fault Parameters
           </span>
 
-          {/* Station Selection */}
           <div className="space-y-1.5">
             <label className="text-xs text-slate-400">Target AWS Station</label>
             <select
@@ -247,7 +242,6 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
             </select>
           </div>
 
-          {/* Duration Slider */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
               <span className="text-slate-400">Duration (Hours)</span>
@@ -267,7 +261,6 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
             </div>
           </div>
 
-          {/* Magnitude Slider */}
           {faultType !== 'frozen_sensor' && faultType !== 'communication_failure' && (
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs">
@@ -290,7 +283,6 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
             </div>
           )}
 
-          {/* Trigger & Clear Buttons */}
           <div className="space-y-2">
             <button
               onClick={handleInject}
@@ -311,7 +303,6 @@ export const FaultControlPanel: React.FC<FaultControlPanelProps> = ({
             </button>
           </div>
 
-          {/* Feedback message */}
           {statusMessage && (
             <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-start gap-2 animate-fade-in">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />

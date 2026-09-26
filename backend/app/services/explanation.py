@@ -32,12 +32,10 @@ class AnomalyExplainer:
         hum_z = features.get("humidity_zscore_24h", 0.0)
         pres_z = features.get("pressure_zscore_24h", 0.0)
 
-        # 1. Rule Engine Violations
         if rule_result.get("is_violation"):
             for v in rule_result.get("violated_rules", []):
                 points.append(f"Physical constraint breach: {v['message']}")
 
-        # 2. When system is Nominal / Normal
         if root_cause == "normal" and not rule_result.get("is_violation"):
             points = [
                 f"Temperature ({temp}°C, Z={temp_z:+.2f}σ): Continuous diurnal variation within IMD climatological threshold.",
@@ -49,7 +47,6 @@ class AnomalyExplainer:
             rationale = "SHAP feature contributions confirm standard diurnal cycle with zero physical divergence."
 
         else:
-            # 3. Sensor Specific Deviations & Z-Scores
             for s in ["temperature", "humidity", "pressure"]:
                 prefix = "temp" if s == "temperature" else s
                 z_score = features.get(f"{prefix}_zscore_24h", 0.0)
@@ -86,7 +83,6 @@ class AnomalyExplainer:
 
             summary_sentence = f"Flagged as {root_cause.replace('_', ' ').title()}: {points[0]}"
 
-        # 4. Universal SHAP Feature Attribution Matrix
         shap_contributions = [
             {
                 "feature": "Ambient Temperature",

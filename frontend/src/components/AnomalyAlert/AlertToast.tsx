@@ -17,26 +17,24 @@ export const AlertToast: React.FC<AlertToastProps> = ({ alert, onDismiss }) => {
       .join(' ');
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 max-w-md w-full animate-bounce-short">
-      <div className="bg-slate-900 border-2 border-rose-500/80 rounded-2xl shadow-2xl shadow-rose-950/80 overflow-hidden backdrop-blur-2xl">
-        {/* Top Crimson Banner */}
-        <div className="bg-gradient-to-r from-rose-600 to-rose-700 px-4 py-2.5 flex items-center justify-between text-white">
+    <div className="fixed bottom-6 right-6 z-50 max-w-md w-full">
+      <div className="bg-[#111827] border border-rose-700/80 rounded-lg shadow-2xl shadow-black/80 overflow-hidden">
+        <div className="bg-rose-950/90 border-b border-rose-800/80 px-4 py-2.5 flex items-center justify-between text-white">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-white animate-ping" />
-            <ShieldAlert className="w-4 h-4" />
-            <span className="text-xs font-bold uppercase tracking-wider font-mono">
-              CRITICAL ANOMALY ALERT
+            <span className="w-2 h-2 rounded-full bg-rose-500" />
+            <ShieldAlert className="w-4 h-4 text-rose-400" />
+            <span className="text-xs font-bold uppercase tracking-wider font-mono text-rose-200">
+              AWS Operational Anomaly Alert
             </span>
           </div>
           <button
             onClick={onDismiss}
-            className="p-1 rounded-lg hover:bg-rose-800 transition-colors text-rose-100"
+            className="p-1 rounded hover:bg-rose-900 transition-colors text-rose-300"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Content Body */}
         <div className="p-4 space-y-3">
           <div className="flex items-center justify-between">
             <div>
@@ -56,7 +54,6 @@ export const AlertToast: React.FC<AlertToastProps> = ({ alert, onDismiss }) => {
             {alert.explanation?.summary || 'Sensor observation diverges significantly from normal physical bounds.'}
           </p>
 
-          {/* Quick Metrics */}
           <div className="grid grid-cols-2 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 text-xs font-mono">
             <div>
               <span className="text-[10px] text-slate-500 uppercase block">Observed Value</span>
@@ -80,7 +77,6 @@ export const AlertToast: React.FC<AlertToastProps> = ({ alert, onDismiss }) => {
             </div>
           </div>
 
-          {/* Action Row */}
           <div className="flex items-center justify-between pt-1">
             <div className="flex items-center gap-1.5 text-[11px] font-mono text-amber-400">
               <Clock className="w-3.5 h-3.5" />

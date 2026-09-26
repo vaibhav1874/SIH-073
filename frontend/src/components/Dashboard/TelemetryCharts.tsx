@@ -19,7 +19,6 @@ interface TelemetryChartsProps {
 export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => {
   const [selectedSensor, setSelectedSensor] = useState<'all' | 'temp' | 'hum' | 'pres'>('all');
   
-  // Format data for chart with detailed hour, min, and sec
   const chartData = history.map((item) => {
     const d = new Date(item.timestamp);
     const timeStr = d.toLocaleTimeString([], {
@@ -46,55 +45,54 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
   });
 
   return (
-    <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 backdrop-blur-xl">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-800 gap-3">
+    <div className="bg-[#111827] border border-slate-800 rounded-lg p-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-3 border-b border-slate-800 gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-lg bg-sky-500/10 text-sky-400">
+          <div className="p-2 rounded-md bg-slate-800 border border-slate-700 text-sky-400">
             <Activity className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
-              High-Frequency Telemetry Stream
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">
-                Rolling 40 Windows
+            <h3 className="text-xs font-bold text-slate-100 uppercase tracking-wide flex items-center gap-2">
+              Observational Telemetry Stream
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">
+                Rolling 40 Buffer
               </span>
             </h3>
             <p className="text-[11px] text-slate-400">
-              Comparing raw observational signals with continuous Kalman expected baselines
+              Direct sensor signals vs Kalman expected state-space baseline
             </p>
           </div>
         </div>
 
-        {/* Sensor Filter Tabs */}
-        <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs">
+        <div className="flex items-center bg-slate-900 p-1 rounded-md border border-slate-800 text-xs">
           <button
             onClick={() => setSelectedSensor('all')}
-            className={`px-3 py-1 rounded-lg transition-all ${
-              selectedSensor === 'all' ? 'bg-sky-600 text-white font-medium' : 'text-slate-400 hover:text-slate-200'
+            className={`px-2.5 py-1 rounded text-xs transition-colors ${
+              selectedSensor === 'all' ? 'bg-slate-800 text-white border border-slate-700 font-medium' : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            All Sensors
+            All Channels
           </button>
           <button
             onClick={() => setSelectedSensor('temp')}
-            className={`px-3 py-1 rounded-lg transition-all ${
-              selectedSensor === 'temp' ? 'bg-amber-600 text-white font-medium' : 'text-slate-400 hover:text-slate-200'
+            className={`px-2.5 py-1 rounded text-xs transition-colors ${
+              selectedSensor === 'temp' ? 'bg-slate-800 text-amber-300 border border-slate-700 font-medium' : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             Temp (°C)
           </button>
           <button
             onClick={() => setSelectedSensor('hum')}
-            className={`px-3 py-1 rounded-lg transition-all ${
-              selectedSensor === 'hum' ? 'bg-cyan-600 text-white font-medium' : 'text-slate-400 hover:text-slate-200'
+            className={`px-2.5 py-1 rounded text-xs transition-colors ${
+              selectedSensor === 'hum' ? 'bg-slate-800 text-sky-300 border border-slate-700 font-medium' : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             RH (%)
           </button>
           <button
             onClick={() => setSelectedSensor('pres')}
-            className={`px-3 py-1 rounded-lg transition-all ${
-              selectedSensor === 'pres' ? 'bg-indigo-600 text-white font-medium' : 'text-slate-400 hover:text-slate-200'
+            className={`px-2.5 py-1 rounded text-xs transition-colors ${
+              selectedSensor === 'pres' ? 'bg-slate-800 text-indigo-300 border border-slate-700 font-medium' : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             Pressure (hPa)
@@ -103,7 +101,6 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
       </div>
 
       <div className="mt-4 space-y-6">
-        {/* Temperature Chart */}
         {(selectedSensor === 'all' || selectedSensor === 'temp') && (
           <div>
             <div className="flex items-center justify-between mb-2">
@@ -156,7 +153,6 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
           </div>
         )}
 
-        {/* Humidity Chart */}
         {(selectedSensor === 'all' || selectedSensor === 'hum') && (
           <div>
             <div className="flex items-center justify-between mb-2">
@@ -209,7 +205,6 @@ export const TelemetryCharts: React.FC<TelemetryChartsProps> = ({ history }) => 
           </div>
         )}
 
-        {/* Pressure Chart */}
         {(selectedSensor === 'all' || selectedSensor === 'pres') && (
           <div>
             <div className="flex items-center justify-between mb-2">

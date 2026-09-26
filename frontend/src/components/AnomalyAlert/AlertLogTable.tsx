@@ -62,7 +62,6 @@ export const AlertLogTable: React.FC<AlertLogTableProps> = ({ alerts, onAlertAck
 
   return (
     <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 backdrop-blur-xl space-y-5">
-      {/* Title & Toolbar */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
         <div className="flex items-center gap-3">
           <div className="p-2.5 rounded-xl bg-rose-500/10 text-rose-400">
@@ -82,7 +81,6 @@ export const AlertLogTable: React.FC<AlertLogTableProps> = ({ alerts, onAlertAck
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
-          {/* Search Box */}
           <div className="relative flex-1 md:w-64">
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-3" />
             <input
@@ -94,7 +92,6 @@ export const AlertLogTable: React.FC<AlertLogTableProps> = ({ alerts, onAlertAck
             />
           </div>
 
-          {/* Severity Filter */}
           <div className="flex items-center gap-1.5 bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs">
             <Filter className="w-3.5 h-3.5 text-slate-400" />
             <select
@@ -110,7 +107,6 @@ export const AlertLogTable: React.FC<AlertLogTableProps> = ({ alerts, onAlertAck
             </select>
           </div>
 
-          {/* CSV Export Button */}
           <button
             onClick={exportCSV}
             disabled={isExporting}
@@ -122,7 +118,6 @@ export const AlertLogTable: React.FC<AlertLogTableProps> = ({ alerts, onAlertAck
         </div>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto rounded-xl border border-slate-800">
         <table className="w-full text-left text-xs">
           <thead className="bg-slate-950/80 text-slate-400 font-mono text-[11px] border-b border-slate-800 uppercase tracking-wider">

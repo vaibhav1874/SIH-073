@@ -117,20 +117,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-sky-500 selection:text-white">
-      {/* Top Floating Glass Navigation */}
-      <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
-        <div className="max-w-[1700px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-          {/* Brand */}
+      <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-[#0e1420]/95 backdrop-blur-md">
+        <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 text-white shadow-lg shadow-sky-500/20 ring-1 ring-white/20">
+            <div className="p-2 rounded-lg bg-slate-800 border border-slate-700 text-sky-400">
               <CloudLightning className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-sky-400 via-indigo-200 to-white bg-clip-text text-transparent">
+                <span className="font-bold text-lg tracking-tight text-white">
                   SkyGuard AI
                 </span>
-                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-sky-950/80 border border-sky-500/40 text-sky-400 font-semibold tracking-wider">
+                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-semibold tracking-wider">
                   SIH26073
                 </span>
               </div>
@@ -140,19 +138,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
           </div>
 
-          {/* Quick Nav Anchors */}
           <nav className="hidden lg:flex items-center gap-6 text-xs font-medium text-slate-400">
-            <a href="#pipeline" className="hover:text-sky-400 transition-colors">5-Stage Pipeline</a>
-            <a href="#stations" className="hover:text-sky-400 transition-colors">Station Network</a>
-            <a href="#architecture" className="hover:text-sky-400 transition-colors">AI Architecture</a>
-            <a href="#personas" className="hover:text-sky-400 transition-colors">Operator Roles</a>
-            <a href="#benchmarks" className="hover:text-sky-400 transition-colors">Benchmarks</a>
+            <a href="#pipeline" className="hover:text-slate-200 transition-colors">5-Stage Pipeline</a>
+            <a href="#stations" className="hover:text-slate-200 transition-colors">Station Network</a>
+            <a href="#architecture" className="hover:text-slate-200 transition-colors">AI Architecture</a>
+            <a href="#personas" className="hover:text-slate-200 transition-colors">Operator Roles</a>
+            <a href="#benchmarks" className="hover:text-slate-200 transition-colors">Benchmarks</a>
           </nav>
 
-          {/* Right Action: Live Status, Staff Auth & Enter Dashboard */}
           <div className="flex items-center gap-2.5 sm:gap-3">
-            <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
+            <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-950/60 border border-emerald-700/50 text-emerald-400 text-xs font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
               <span>PIPELINE NOMINAL</span>
             </div>
 
@@ -160,10 +156,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <button
                 id="landing-staff-auth-btn"
                 onClick={onOpenAuth}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-700/80 shadow-sm transition-all"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-medium border border-slate-700/80 transition-colors"
                 title="MoES / IMD Staff Login & Field Officer Registration"
               >
-                <Lock className="w-3.5 h-3.5 text-sky-400" />
+                <Lock className="w-3.5 h-3.5 text-slate-400" />
                 <span className="hidden sm:inline">
                   {currentUser?.name ? `${currentUser.name.split(' ')[0]} (${currentUser.badgeId})` : 'Staff Gateway'}
                 </span>
@@ -174,7 +170,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               id="launch-dashboard-header-btn"
               onClick={() => onLaunchDashboard('monitor')}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-lg shadow-sky-500/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] border border-white/10"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-colors border border-blue-500/40"
             >
               <span>Enter Mission Control</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -183,39 +179,33 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative pt-16 pb-20 overflow-hidden border-b border-slate-900">
-        {/* Glow ambient backgrounds */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[350px] bg-sky-500/10 blur-[130px] rounded-full pointer-events-none -z-10" />
-        <div className="absolute top-1/3 left-1/4 w-[400px] h-[300px] bg-indigo-500/10 blur-[110px] rounded-full pointer-events-none -z-10" />
-
-        <div className="max-w-[1700px] w-full mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-          {/* Problem Statement Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-950/60 border border-sky-500/30 text-sky-300 text-xs font-mono shadow-inner shadow-sky-500/10">
-            <Radio className="w-3.5 h-3.5 text-sky-400 animate-pulse" />
-            <span>Smart India Hackathon 2024 • Ministry of Earth Sciences (MoES)</span>
+      <section className="relative pt-16 pb-20 overflow-hidden border-b border-slate-800/80">
+        <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-mono tracking-wider text-slate-400">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
+            <span className="font-semibold text-slate-300">Smart India Hackathon 2024</span>
+            <span className="text-slate-600">•</span>
+            <span>Ministry of Earth Sciences (MoES)</span>
+            <span className="text-slate-600">•</span>
+            <span className="text-slate-400">Problem ID: SIH26073</span>
           </div>
 
-          {/* Main Title */}
-          <div className="max-w-4xl mx-auto space-y-4">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+          <div className="max-w-3xl mx-auto space-y-4">
+            <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
               Autonomous Anomaly Detection & <br />
-              <span className="bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">
-                Self-Healing Telemetry
-              </span>{' '}
+              Self-Healing Telemetry <br className="hidden sm:inline" />
               for India's AWS
             </h1>
-            <p className="text-sm sm:text-base lg:text-lg text-slate-300 leading-relaxed font-normal max-w-3xl mx-auto">
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal max-w-2xl mx-auto">
               Guarding India's national automated weather stations against sensor drift, transmission spikes, and degradation. Real-time Physics-Informed ML validation, Kalman state imputation, and automated incident triage before data reaches Numerical Weather Prediction (NWP) forecasting models.
             </p>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <button
               id="hero-launch-dashboard"
               onClick={() => onLaunchDashboard('monitor')}
-              className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-sky-600 via-sky-500 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-xl shadow-sky-500/30 transition-all transform hover:-translate-y-0.5 border border-white/20"
+              className="flex items-center gap-2 px-5 py-3 rounded-md bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm transition-colors"
             >
               <Activity className="w-4 h-4" />
               <span>Launch Live Command Center</span>
@@ -224,34 +214,33 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             <a
               href="#pipeline"
-              className="flex items-center gap-2 px-5 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 text-sm font-medium border border-slate-700/70 transition-all hover:border-slate-600 shadow-md"
+              className="flex items-center gap-2 px-5 py-3 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium border border-slate-700 transition-colors"
             >
-              <Cpu className="w-4 h-4 text-sky-400" />
+              <Cpu className="w-4 h-4 text-slate-400" />
               <span>5-Stage Pipeline Tour</span>
             </a>
 
             <button
               id="hero-fault-lab"
               onClick={() => onLaunchDashboard('faults')}
-              className="flex items-center gap-2 px-5 py-3.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-sm font-medium border border-amber-500/30 transition-all shadow-md"
+              className="flex items-center gap-2 px-5 py-3 rounded-md bg-slate-800 hover:bg-slate-700 text-amber-300 text-sm font-medium border border-slate-700 transition-colors"
             >
               <Wrench className="w-4 h-4 text-amber-400" />
               <span>Fault Injection Lab</span>
             </button>
           </div>
 
-          {/* Quick Real-Time Telemetry Stats Strip */}
           <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 text-left">
-            <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-md">
+            <div className="p-4 rounded-lg bg-slate-900 border border-slate-800">
               <div className="flex items-center gap-2 text-slate-400 text-xs font-mono mb-1">
-                <Globe className="w-3.5 h-3.5 text-sky-400" />
+                <Globe className="w-3.5 h-3.5 text-blue-400" />
                 <span>OBSERVATORIES</span>
               </div>
               <div className="text-2xl font-bold text-white font-mono">7 Stations</div>
               <div className="text-[11px] text-slate-400 mt-1">6 Indian states & microclimates</div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-md">
+            <div className="p-4 rounded-lg bg-slate-900 border border-slate-800">
               <div className="flex items-center gap-2 text-slate-400 text-xs font-mono mb-1">
                 <Zap className="w-3.5 h-3.5 text-emerald-400" />
                 <span>INFERENCE LATENCY</span>
@@ -260,16 +249,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="text-[11px] text-slate-400 mt-1">Real-time per telemetry packet</div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-md">
+            <div className="p-4 rounded-lg bg-slate-900 border border-slate-800">
               <div className="flex items-center gap-2 text-slate-400 text-xs font-mono mb-1">
-                <Sliders className="w-3.5 h-3.5 text-indigo-400" />
+                <Sliders className="w-3.5 h-3.5 text-blue-400" />
                 <span>SELF-HEALING FILTER</span>
               </div>
-              <div className="text-2xl font-bold text-indigo-400 font-mono">99.7%</div>
+              <div className="text-2xl font-bold text-blue-400 font-mono">99.7%</div>
               <div className="text-[11px] text-slate-400 mt-1">Kalman innovation imputation</div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur-md">
+            <div className="p-4 rounded-lg bg-slate-900 border border-slate-800">
               <div className="flex items-center gap-2 text-slate-400 text-xs font-mono mb-1">
                 <Database className="w-3.5 h-3.5 text-amber-400" />
                 <span>DUAL INGESTION</span>
@@ -281,9 +270,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* SECTION 1: 5-Stage Live Pipeline Flow Deep Dive */}
       <section id="pipeline" className="py-20 border-b border-slate-900 relative">
-        <div className="max-w-[1700px] w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-3 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-950 border border-sky-500/30 text-sky-400 text-xs font-mono uppercase tracking-wider">
               Core Innovation
@@ -296,7 +284,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </p>
           </div>
 
-          {/* Interactive Stage Selector & Cards */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
             {pipelineStages.map((st, idx) => {
               const Icon = st.icon;
@@ -324,7 +311,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             })}
           </div>
 
-          {/* Selected Stage Detail Panel */}
           {pipelineStages[activePipelineTab] && (
             <div className="p-6 sm:p-8 rounded-3xl bg-slate-900/80 border border-slate-800/90 shadow-2xl relative overflow-hidden backdrop-blur-xl">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
@@ -385,9 +371,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* SECTION 2: Interactive Station Network Coverage Grid */}
       <section id="stations" className="py-20 border-b border-slate-900 bg-slate-950/40">
-        <div className="max-w-[1700px] w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div className="space-y-2 max-w-2xl">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-500/30 text-emerald-400 text-xs font-mono uppercase tracking-wider">
@@ -409,7 +394,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </button>
           </div>
 
-          {/* Station Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {stations.map((st) => {
               const climateInfo = STATION_CLIMATES[st.id.toUpperCase()] || {
@@ -486,9 +470,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* SECTION 3: Deep AI Architecture & Defense Matrix */}
       <section id="architecture" className="py-20 border-b border-slate-900 relative">
-        <div className="max-w-[1700px] w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-3 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-950 border border-purple-500/30 text-purple-400 text-xs font-mono uppercase tracking-wider">
               Under the Hood
@@ -502,7 +485,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Pillar 1 */}
             <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
                 <Cpu className="w-6 h-6" />
@@ -516,7 +498,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
             </div>
 
-            {/* Pillar 2 */}
             <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
                 <Activity className="w-6 h-6" />
@@ -530,7 +511,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
             </div>
 
-            {/* Pillar 3 */}
             <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
                 <Zap className="w-6 h-6" />
@@ -547,9 +527,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* SECTION 4: Operator Clearance Roles & Workflows */}
       <section id="personas" className="py-20 border-b border-slate-900 bg-slate-950/40">
-        <div className="max-w-[1700px] w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-3 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-950 border border-amber-500/30 text-amber-400 text-xs font-mono uppercase tracking-wider">
               Human-In-The-Loop Governance
@@ -563,7 +542,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Role 1 */}
             <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 font-semibold">
@@ -587,7 +565,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </ul>
             </div>
 
-            {/* Role 2 */}
             <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 font-semibold">
@@ -611,7 +588,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </ul>
             </div>
 
-            {/* Role 3 */}
             <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800/80 space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 font-semibold">
@@ -638,9 +614,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* SECTION 5: Benchmark Verification & Comparison */}
       <section id="benchmarks" className="py-20 border-b border-slate-900 relative">
-        <div className="max-w-[1700px] w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-3 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950 border border-emerald-500/30 text-emerald-400 text-xs font-mono uppercase tracking-wider">
               Empirical Validation
@@ -694,7 +669,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* Pre-Flight Launch Banner */}
       <section className="py-16 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-900 text-center">
         <div className="max-w-4xl mx-auto px-4 space-y-6">
           <div className="inline-flex p-3 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-sky-400 mb-2">
@@ -726,9 +700,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-10 bg-slate-950 text-xs text-slate-500">
-        <div className="max-w-[1700px] w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 font-mono">
+        <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 font-mono">
           <div className="flex items-center gap-3">
             <div className="p-1.5 rounded-lg bg-sky-600/20 text-sky-400 border border-sky-500/30">
               <CloudLightning className="w-4 h-4" />

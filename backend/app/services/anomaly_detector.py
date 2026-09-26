@@ -34,7 +34,6 @@ from backend.app.services.severity import severity_engine
 from backend.app.services.explanation import anomaly_explainer
 from backend.app.services.health_score import sensor_health_tracker
 
-# Restrict PyTorch thread count to save memory on low-RAM containers (Render 512MB)
 try:
     torch.set_num_threads(1)
 except Exception:
@@ -90,12 +89,10 @@ class AnomalyDetector:
             fallback_path = fallback_dir / filename
             if fallback_path.exists():
                 return fallback_path
-            # Legacy flat layout (original placement before multi-city)
             return MODELS_DIR / filename
 
         print(f"[AnomalyDetector] Loading models for city: {city.upper()}...")
 
-        # Explicitly release previous city model tensors from memory
         self.if_model = None
         self.if_scaler = None
         self.lstm_model = None
@@ -106,7 +103,6 @@ class AnomalyDetector:
         self.if_feature_names = FEATURE_NAMES
         self.lstm_feature_names = CORE_FEATURES
 
-        # 1. Isolation Forest
         if_path        = resolve("isolation_forest.joblib")
         if_scaler_path = resolve("if_scaler.joblib")
         if_meta_path   = resolve("if_metadata.json")
@@ -122,7 +118,6 @@ class AnomalyDetector:
                 self.if_feature_names = meta.get("feature_names", FEATURE_NAMES)
             print(f"[AnomalyDetector] Loaded IF model from: {if_path.parent.name}/ ({len(self.if_feature_names)} features)")
 
-        # 2. LSTM Autoencoder
         lstm_path        = resolve("lstm_autoencoder.pt")
         lstm_scaler_path = resolve("lstm_scaler.joblib")
         lstm_meta_path   = resolve("lstm_metadata.json")
@@ -145,7 +140,6 @@ class AnomalyDetector:
             self.lstm_model.eval()
             print(f"[AnomalyDetector] Loaded LSTM model from: {lstm_path.parent.name}/")
 
-        # 3. XGBoost Root Cause Classifier (always use abohar's shared model)
         xgb_path = resolve("root_cause_xgb.joblib")
         enc_path = resolve("label_encoder.joblib")
         if xgb_path.exists() and enc_path.exists():
@@ -181,20 +175,17 @@ class AnomalyDetector:
 
 
         buffer.append(telemetry)
-        # Retain last 30 samples for rolling statistics
         if len(buffer) > 30:
             buffer.pop(0)
 
         prev_reading = buffer[-2] if len(buffer) >= 2 else None
 
-        # 1. Rule Engine Evaluation
         rule_res = rule_engine.evaluate(
             current=telemetry,
             previous=prev_reading,
             history_window=buffer,
         )
 
-        # 2. Feature Extraction
         # If buffer is too small (<5), use basic defaults
         if len(buffer) >= 2:
             buf_df = pd.DataFrame(buffer)
@@ -205,10 +196,8 @@ class AnomalyDetector:
             # Fallback simple features
             features_dict = {f: float(telemetry.get(f, 0.0)) if f in telemetry else 0.0 for f in FEATURE_NAMES}
 
-        # Vector of 40 features (used for XGBoost & explanation)
         xgb_feature_vector = np.array([[features_dict.get(f, 0.0) for f in FEATURE_NAMES]], dtype=np.float32)
 
-        # 3. Isolation Forest Evaluation (uses city-specific features)
         if_cols = getattr(self, "if_feature_names", FEATURE_NAMES)
         if_feature_vector = np.array([[features_dict.get(f, 0.0) for f in if_cols]], dtype=np.float32)
 
@@ -222,7 +211,6 @@ class AnomalyDetector:
             if_score = float(np.clip((raw_score - self.if_score_min) / denom, 0.0, 1.0))
             if_flag = raw_score >= self.if_threshold
 
-        # 4. LSTM Autoencoder Evaluation
         lstm_score = 0.0
         lstm_flag = False
         lstm_cols = getattr(self, "lstm_feature_names", CORE_FEATURES)
@@ -242,26 +230,21 @@ class AnomalyDetector:
                 lstm_score = min(1.0, step_mse / max(1e-6, self.lstm_threshold * 2.0))
                 lstm_flag = step_mse >= self.lstm_threshold
 
-        # 5. SkyGuard Weighted Ensemble
         rule_score = rule_res["rule_score"]
-        # Formula: 35% Rules + 35% IF + 30% LSTM
         ensemble_score = float(np.clip(
             0.35 * rule_score + 0.35 * if_score + 0.30 * lstm_score,
             0.0, 1.0
         ))
 
-        # Overall anomaly decision:
         # Triggered if rule violated OR ensemble exceeds threshold (0.55) OR both ML models flag it
         is_anomaly = bool(rule_res["is_violation"] or ensemble_score >= 0.55 or (if_flag and lstm_flag))
 
-        # Baseline stabilization safeguard: after regime switch or cold start (<= 2 readings),
         # require baseline to stabilize to prevent false rate-of-change flags
         if len(buffer) <= 2:
             is_anomaly = False
             ensemble_score = min(ensemble_score, 0.08)
             rule_score = 0.0
 
-        # 6. XGBoost Root Cause Classification
         root_cause = "normal"
         root_cause_probs = {}
         if is_anomaly and self.xgb_model is not None and self.label_encoder is not None:
@@ -269,7 +252,6 @@ class AnomalyDetector:
             classes = self.label_encoder.classes_
             root_cause_probs = {c: round(float(p), 4) for c, p in zip(classes, probs)}
 
-            # Pick highest non-normal class if overall is_anomaly
             sorted_classes = sorted(root_cause_probs.items(), key=lambda x: x[1], reverse=True)
             for c_name, c_prob in sorted_classes:
                 if c_name != "normal":
@@ -278,10 +260,8 @@ class AnomalyDetector:
         elif not is_anomaly:
             root_cause = "normal"
 
-        # 7. Identify Affected Sensors
         affected_sensors = list(set(rule_res["affected_sensors"]))
 
-        # Hard physical boundary checks (guarantee anomalous sensor is flagged even if classifier labels general fault)
         if telemetry.get("temperature") is not None and (telemetry["temperature"] > 50.0 or telemetry["temperature"] < -10.0):
             affected_sensors.append("temperature")
         if telemetry.get("humidity") is not None and (telemetry["humidity"] > 100.0 or telemetry["humidity"] < 0.0):
@@ -311,7 +291,6 @@ class AnomalyDetector:
 
         affected_sensors = list(set(affected_sensors))
 
-        # 8. Severity Assessment
         severity_info = severity_engine.assess_severity(
             ensemble_score=ensemble_score,
             root_cause=root_cause,
@@ -319,7 +298,6 @@ class AnomalyDetector:
             rule_severity=rule_res.get("rule_severity", "none"),
         )
 
-        # 9. Explainability
         explanation = anomaly_explainer.explain(
             telemetry=telemetry,
             features=features_dict,
@@ -329,7 +307,6 @@ class AnomalyDetector:
             affected_sensors=affected_sensors,
         )
 
-        # 10. Kalman Filter Imputation & Correction
         corrected_values = sensor_corrector.correct_telemetry(
             station_id=station_id,
             telemetry=telemetry,
@@ -337,7 +314,6 @@ class AnomalyDetector:
             affected_sensors=affected_sensors,
         )
 
-        # 11. Sensor & Station Health Index Update
         health_info = sensor_health_tracker.update(
             station_id=station_id,
             is_anomaly=is_anomaly,
@@ -386,5 +362,4 @@ class AnomalyDetector:
         }
 
 
-# Global singleton instance
 anomaly_detector = AnomalyDetector()

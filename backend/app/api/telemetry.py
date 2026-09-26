@@ -20,7 +20,6 @@ router = APIRouter(prefix="/api/telemetry", tags=["Telemetry"])
 # Global ingestion counter to schedule periodic memory reclamation
 _packet_count: int = 0
 
-# Safe glibc memory trim for low-RAM Linux Docker containers (Render 512MB)
 try:
     _libc = ctypes.CDLL("libc.so.6")
     def _trim_system_memory():
@@ -135,7 +134,6 @@ async def ingest_telemetry(
     # Asynchronous broadcast without blocking response
     background_tasks.add_task(ws_manager.broadcast, ws_payload)
 
-    # Periodic memory reclamation on low-RAM containers
     global _packet_count
     _packet_count += 1
     if _packet_count % 30 == 0:
